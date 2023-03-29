@@ -11,7 +11,6 @@ export default class ProductManager {
       const parsedProducts = JSON.parse(products);
       return parsedProducts;
     } else {
-      console.log("No se encontró el archivo de productos");
       return [];
     }
   }
@@ -28,8 +27,7 @@ export default class ProductManager {
   }
 
   async addProduct(title, description, price, thumbnail, code, stock) {
-
-    const productsList = await this.this.readProdsFile(this.path);
+    const productsList = await this.readProdsFile(this.path);
 
     let id = 1;
     if (productsList.length !== 0) {
@@ -67,8 +65,9 @@ export default class ProductManager {
       return validate;
     }
 
-    //Agregar validación para que no se repita el código
-    if (validData() && !this.codeExists(code)) {
+    //Agregar validación para que no se repita el código anulada
+    //  && !this.codeExists(code))
+    if (validData()) {
       productsList.push(product);
       await this.writeProdsFile(productsList);
       return productsList;
@@ -77,13 +76,13 @@ export default class ProductManager {
     }
   }
 
-  async codeExists(code) {
-    const productsList = await this.readProdsFile(this.path);
-    let found = productsList.find((prod) => prod.code === code);
-    if (found) {
-      return true;
-    } else return false;
-  }
+  // async codeExists(code) {
+  //   const productsList = await this.readProdsFile(this.path);
+  //   let found = productsList.find((prod) => prod.code === code);
+  //   if (found) {
+  //     return true;
+  //   } else return false;
+  // }
 
   async getProducts() {
     const productsList = await this.readProdsFile(this.path);
@@ -97,46 +96,57 @@ export default class ProductManager {
     );
     if (found) return found;
     else {
-      console.log("Not found");
+      console.log("Id Not found");
       return null;
     }
   }
 
-  async updateProduct(prodId, title, description, price, thumbnail, code, stock){
+  async updateProduct(
+    prodId,
+    title,
+    description,
+    price,
+    thumbnail,
+    code,
+    stock
+  ) {
     const productsList = await this.readProdsFile(this.path);
-    const product = this.getProductById(prodId);
-    if (title){
-        product[title] = title;
+    const product = await this.getProductById(prodId);
+    if (product) {
+      if (title) {
+        product["title"] = title;
+      }
+      if (description) {
+        product["description"] = description;
+      }
+      if (price) {
+        product["price"] = price;
+      }
+      if (thumbnail) {
+        product["thumbnail"] = thumbnail;
+      }
+      if (code) {
+        product["code"] = code;
+      }
+      if (stock) {
+        product["stock"] = stock;
+      }
+      const index = productsList.findIndex((prod) => prod.id === prodId);
+      productsList[index] = product;
+      await this.writeProdsFile(productsList);
     }
-    if (description){
-        product[description] = description;
-    }
-    if (price){
-        product[price] = price;
-    }
-    if (thumbnail){
-        product[thumbnail] = thumbnail;
-    }
-    if (code){
-        product[code] = code;
-    }
-    if (stock){
-        product[stock] = stock;
-    }
-    productsList.forEach(prod => {
-        if (prod.id === prodId){
-            prod = product;
-        }
-    });
-    await this.writeProdsFile(productsList);
+    return product;
   }
 
-  async deleteProduct(prodId){
-    const productsList = await this.readProdsFile(this.path);
-    const newProductsList = productsList.filter(prod => prod.id !== prodId)
-    await this.writeProdsFile(newProductsList);
+  async deleteProduct(prodId) {
+    if (await this.getProductById(prodId)){
+      const productsList = await this.readProdsFile(this.path);
+      const newProductsList = productsList.filter((prod) => prod.id !== prodId);
+      await this.writeProdsFile(newProductsList);
+    } else {
+      console.log('No existe el ID a borrar')
+    }
   }
-  
 }
 
 const product = new ProductManager("./productos.json");
