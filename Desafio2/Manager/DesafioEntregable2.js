@@ -21,10 +21,9 @@ export default class ProductManager {
         this.path,
         JSON.stringify(prodsList, null, "\t")
       );
-    } catch {
-      console.log("Error al escribir el archivo de productos");
-    }
-  }
+    } catch(e) {
+        console.log("Error al escribir el archivo de productos", e)
+      }
 
   async addProduct(title, description, price, thumbnail, code, stock) {
     const productsList = await this.readProdsFile(this.path);
