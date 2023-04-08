@@ -1,0 +1,46 @@
+[
+	{
+		"id": 1,
+		"title": "Producto1",
+		"description": "Descripción de producto 1",
+		"code": "COD0001",
+		"price": 99,
+		"status": true,
+		"stock": 14,
+		"category": "Home",
+		"thumbnail": ""
+	},
+	{
+		"id": 2,
+		"title": "Producto2",
+		"description": "Descripción de producto 1",
+		"code": "COD0002",
+		"price": 99,
+		"status": true,
+		"stock": 25,
+		"category": "Home",
+		"thumbnail": ""
+	},
+	{
+		"id": 3,
+		"title": "Producto3",
+		"description": "Descripción de producto 1",
+		"code": "COD0003",
+		"price": 70,
+		"status": true,
+		"stock": 8,
+		"category": "Home",
+		"thumbnail": ""
+	},
+	{
+		"id": 4,
+		"title": "Producto4",
+		"description": "Descripción de producto",
+		"code": "COD0004",
+		"price": 85,
+		"status": true,
+		"stock": 10,
+		"category": "Home",
+		"thumbnail": ""
+	}
+]
