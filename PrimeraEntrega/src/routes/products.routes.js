@@ -76,8 +76,6 @@ router.put("/:pid", async (req, res) => {
   }
 });
 
-/*La ruta DELETE /:pid deberá eliminar el producto con el pid indicado.*/
-
 router.delete("/:pid", async (req, res) => {
     let { pid } = req.params;
     const productToDelete = await products.deleteProduct(pid);

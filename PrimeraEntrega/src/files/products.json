@@ -44,14 +44,25 @@
 		"thumbnail": []
 	},
 	{
-		"id": 5,
-		"title": "Producto5",
-		"description": "Descripción de producto 5",
-		"code": "COD0005",
-		"price": 9,
+		"id": 6,
+		"title": "Producto 6",
+		"description": "Descripción modificada",
+		"code": "HOG0006",
+		"price": "99",
+		"status": true,
+		"stock": 15,
+		"category": "Ilumination",
+		"thumbnail": "[]"
+	},
+	{
+		"id": 7,
+		"title": "Producto 8",
+		"description": "Descripción de producto 8",
+		"code": "COD0008",
+		"price": 155,
 		"status": true,
 		"stock": 1,
-		"category": "Home",
+		"category": "Ilumination",
 		"thumbnail": []
 	}
 ]

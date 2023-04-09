@@ -52,7 +52,6 @@ export default class ProductManager {
       //Thumbnails no requiere validación:
       objValues.pop(); 
 
-      //Validación de campos vacíos.
       objValues.forEach((value) => {
         if (value == undefined || value === "") {
           console.log("Validación de campos vacios falló");
@@ -60,7 +59,6 @@ export default class ProductManager {
         }
       });
 
-      //Validación de campos de tipo numérico.
       if (isNaN(objValues[4]) || isNaN(objValues[6])) {
         validate = false;
         console.log("Validación de campo de tipo numérico falló")
@@ -70,7 +68,6 @@ export default class ProductManager {
       return validate;
     }
 
-    //Agregar validación para que no se repita el código anulada
     const validCode = ! await this.codeExists(code)
     if (validData() && validCode) {
       productsList.push(product);
