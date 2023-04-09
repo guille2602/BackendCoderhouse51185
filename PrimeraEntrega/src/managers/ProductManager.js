@@ -153,10 +153,12 @@ export default class ProductManager {
   }
 
   async deleteProduct(prodId) {
-    if (await this.getProductById(prodId)){
+    const prodToDelete = await this.getProductById(prodId);
+    if (prodToDelete){
       const productsList = await this.readProdsFile(this.path);
-      const newProductsList = productsList.filter((prod) => prod.id !== prodId);
+      const newProductsList = productsList.filter((prod) => parseInt(prod.id) !== parseInt(prodId));
       await this.writeProdsFile(newProductsList);
+      return prodToDelete;
     } else {
       console.log('No existe el ID a borrar')
     }

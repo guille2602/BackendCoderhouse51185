@@ -1,14 +1,14 @@
 [
 	{
 		"id": 1,
-		"title": "Producto1",
-		"description": "Descripción de producto 1",
-		"code": "COD0001",
-		"price": 99,
-		"status": true,
-		"stock": 14,
+		"title": "Producto 1",
+		"description": "Descripción modificada",
+		"code": "HOG0001",
+		"price": "109",
+		"status": "true",
+		"stock": "10",
 		"category": "Home",
-		"thumbnail": []
+		"thumbnail": "[]"
 	},
 	{
 		"id": 2,
