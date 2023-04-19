@@ -1,5 +1,6 @@
 import { Router } from "express";
 import ProductManager from "../managers/ProductManager.js";
+import { io } from "../app.js";
 
 const router = Router();
 const products = new ProductManager("./src/files/products.json");
@@ -39,6 +40,7 @@ router.post("/", async (req, res) => {
     req.body.thumbnail
   );
   if (prodsList) {
+    io.emit('updatelist', prodsList);
     res.send({
       status: "Success",
       product: prodsList[prodsList.length - 1],
@@ -80,6 +82,8 @@ router.delete("/:pid", async (req, res) => {
     let { pid } = req.params;
     const productToDelete = await products.deleteProduct(pid);
     if (productToDelete) {
+        const prodsList = await products.getProducts()
+        io.emit('updatelist', prodsList);
         res.send({
             status: "Success",
             "deleted item": productToDelete

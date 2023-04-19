@@ -64,5 +64,16 @@
 		"stock": 1,
 		"category": "Ilumination",
 		"thumbnail": []
+	},
+	{
+		"id": 8,
+		"title": "Title",
+		"description": "descripción",
+		"code": "123",
+		"price": 123,
+		"status": true,
+		"stock": 123,
+		"category": "123",
+		"thumbnail": []
 	}
 ]
