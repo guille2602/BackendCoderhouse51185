@@ -37,7 +37,7 @@ socket.on('updatelist', (data) =>{
             <h2>Status: ${prod.status}</h2>
             <h2>Stock: ${prod.stock}</h2>
             <h2>Category: ${prod.category}</h2>
-            <button onclick="handleDelete(${prod.id})">Eliminar</button>
+            <button onclick="handleDelete(${prod._id})">Eliminar</button>
         </div>
         `
         products.innerHTML+=htmlProd;
