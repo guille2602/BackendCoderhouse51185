@@ -11,8 +11,7 @@
             <h2>Status: {{this.status}}</h2>
             <h2>Stock: {{this.stock}}</h2>
             <h2>Category: {{this.category}}</h2>
-            {{!-- *** Botón para eliminar el producto llamando al método indicado con event.target.id*** --}}
-            <button onclick="handleDelete({{this.id}})">Eliminar</button>
+            <button onclick="handleDelete('id_{{this.id}}')">Eliminar</button>
         </div>
     {{/each}}
     </div>

@@ -53,7 +53,18 @@ io.on("connection", (socket) => {
             });
             if (sucess) {
                 const updatedList = await productsModel.find();
-                io.emit("updatelist", updatedList);
+                let parsedUpdatedList = updatedList.map(item => ({
+                    id: item.id,
+                    title: item.title,
+                    description: item.description,
+                    code: item.code,
+                    price: item.price,
+                    status: item.status,
+                    stock: item.stock,
+                    category: item.category
+                  }))
+
+                io.emit("updatelist", parsedUpdatedList);
             }
         } catch (error) {
             console.log("Error al agregar un producto en MongoDB" + error);
@@ -64,8 +75,18 @@ io.on("connection", (socket) => {
       try{
         const deleted = await productsModel.deleteOne({ _id:id });
         if (deleted) {
-            const prodsList = await productsModel.find();
-            io.emit("updatelist", prodsList);
+            const updatedList = await productsModel.find();
+                let parsedUpdatedList = updatedList.map(item => ({
+                    id: item.id,
+                    title: item.title,
+                    description: item.description,
+                    code: item.code,
+                    price: item.price,
+                    status: item.status,
+                    stock: item.stock,
+                    category: item.category
+                  }))
+            io.emit("updatelist", parsedUpdatedList);
         }
       } catch (error){
         console.log('Error al conectar con MongoDB' + error);
