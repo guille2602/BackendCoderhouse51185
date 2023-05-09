@@ -11,12 +11,12 @@
             <h2>Status: {{this.status}}</h2>
             <h2>Stock: {{this.stock}}</h2>
             <h2>Category: {{this.category}}</h2>
-            <button onclick="handleDelete('id_{{this.id}}')">Eliminar</button>
+            <button onclick="handleDelete('id_{{this.id}}')" class="btn btn-primary">Eliminar</button>
         </div>
     {{/each}}
     </div>
-    <form id="newProdForm" style="display:flex; flex-direction:column">
         <h1>Crear nuevo producto:</h1>
+    <form id="newProdForm">
         <label>Título</label>
         <input name="title" id="title">
         <label>Descripción:</label>
@@ -31,7 +31,7 @@
         <input name="category" id="category">
         <label>Ruta de imágen:</label>
         <input name="thumbnail" id="thumbnail">
-        <button id="submitBtn">Confirmar</button>
+        <button id="submitBtn" class="btn btn-primary">Confirmar</button>
     </form>
 </div>
 <script src="/socket.io/socket.io.js"></script>

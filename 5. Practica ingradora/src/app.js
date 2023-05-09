@@ -2,14 +2,14 @@ import express from "express";
 import handlebars from "express-handlebars";
 import cartsRouter from "./routes/carts.routes.js";
 import productsRouter from "./routes/products.routes.js";
+import chatRouter from "./routes/chat.routes.js";
 import viewsRouter from "./routes/views.routes.js";
 import __dirname from "./utils.js";
 import { Server } from "socket.io";
-import ProductManager from "./dao/managers/ProductManager.js";
 import mongoose from "mongoose";
 import productsModel from "./dao/models/products.model.js";
+import messageModel from "./dao/models/messages.model.js";
 
-const products = new ProductManager("./src/files/products.json");
 const MONGOOSE =
     "mongodb+srv://guille2602:75i!JbPUxHM-i39@cluster0.uk8yenl.mongodb.net/ecommerce?retryWrites=true&w=majority";
 mongoose.connect(MONGOOSE);
@@ -53,7 +53,7 @@ io.on("connection", (socket) => {
             });
             if (sucess) {
                 const updatedList = await productsModel.find();
-                let parsedUpdatedList = updatedList.map(item => ({
+                let parsedUpdatedList = updatedList.map((item) => ({
                     id: item.id,
                     title: item.title,
                     description: item.description,
@@ -61,8 +61,8 @@ io.on("connection", (socket) => {
                     price: item.price,
                     status: item.status,
                     stock: item.stock,
-                    category: item.category
-                  }))
+                    category: item.category,
+                }));
 
                 io.emit("updatelist", parsedUpdatedList);
             }
@@ -72,11 +72,11 @@ io.on("connection", (socket) => {
     });
 
     socket.on("delete", async (id) => {
-      try{
-        const deleted = await productsModel.deleteOne({ _id:id });
-        if (deleted) {
-            const updatedList = await productsModel.find();
-                let parsedUpdatedList = updatedList.map(item => ({
+        try {
+            const deleted = await productsModel.deleteOne({ _id: id });
+            if (deleted) {
+                const updatedList = await productsModel.find();
+                let parsedUpdatedList = updatedList.map((item) => ({
                     id: item.id,
                     title: item.title,
                     description: item.description,
@@ -84,17 +84,54 @@ io.on("connection", (socket) => {
                     price: item.price,
                     status: item.status,
                     stock: item.stock,
-                    category: item.category
-                  }))
-            io.emit("updatelist", parsedUpdatedList);
+                    category: item.category,
+                }));
+                io.emit("updatelist", parsedUpdatedList);
+            }
+        } catch (error) {
+            console.log("Error al conectar con MongoDB" + error);
         }
-      } catch (error){
-        console.log('Error al conectar con MongoDB' + error);
-      }
-
     });
+
+    socket.on("submitedMessage", async (data) => {
+        // socket.on => messages
+        const { user, message } = data;
+        try {
+            const newMessage = await messageModel.create({
+                user,
+                message,
+            });
+            if (newMessage) {
+                const chatLog = await messageModel.find();
+                let parsedchatLog = chatLog.map((item) => ({
+                    user: item.user,
+                    message: item.message,
+                }));
+                io.emit("updateChat", parsedchatLog); //emit => messageLogs
+            }
+        } catch (error) {
+            console.log("Error al agregar un producto en MongoDB" + error);
+        }
+    });
+
+    socket.on("authenticated", async (data) => {
+        const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+        if (emailRegex.test(data)) {
+            const chatLog = await messageModel.find();
+            let parsedchatLog = chatLog.map((item) => ({
+                user: item.user,
+                message: item.message,
+            }));
+            io.emit("updateChat", parsedchatLog);
+        } else {
+            io.emit("failedLogin");
+            console.log('Login failed')
+        }
+    });
+    
 });
 
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/", viewsRouter);
+app.use("/chat", chatRouter);
