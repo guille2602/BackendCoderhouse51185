@@ -8,8 +8,8 @@ router.get("/", async (req, res) => {
     try {
         const { limit } = req.query;
         if (!limit) {
-          const prodsList = await productsModel.find();
-          res.send(prodsList);
+            const prodsList = await productsModel.find();
+            res.send(prodsList);
         } else {
             const prodsList = await productsModel.find().limit(limit);
             res.send(prodsList);
@@ -96,6 +96,8 @@ router.put("/:pid", async (req, res) => {
             { _id: pid },
             prodToUpdate
         );
+        const prodsList = await productsModel.find();
+        io.emit("updatelist", prodsList);
         res.send(updatedProduct);
     } catch (error) {
         console.log("Error al actualizar la base de datos de MongoDB" + error);
@@ -107,10 +109,12 @@ router.delete("/:pid", async (req, res) => {
     try {
         const result = await productsModel.deleteOne({ _id: pid });
         if (result) {
+            const prodsList = await productsModel.find();
+            io.emit("updatelist", prodsList);
             res.send(result);
         } else
             res.status(400).send({
-                status: "Falló, el id no existe"
+                status: "Falló, el id no existe",
             });
     } catch (error) {
         console.log("Error al eliminar el elemento" + error);

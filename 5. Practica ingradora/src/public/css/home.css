@@ -52,3 +52,7 @@ h1 {
 #newProdForm input {
     width: 80%;
 }
+
+body{
+    padding-top: 1em;
+}

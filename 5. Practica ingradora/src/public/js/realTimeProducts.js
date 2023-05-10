@@ -28,10 +28,11 @@ function handleDelete(id) {
 //     let products = document.getElementById('products');
 //     products.innerHTML = "";
 //     data.forEach((prod)=>{
+//         console.log(prod);
 //         const productDiv = document.createElement('div');
 //         productDiv.classList.add('product');
 //         const productId = document.createElement('h2');
-//         productId.textContent = `Id: ${prod.id}`;
+//         productId.textContent = `Id: ${prod._id}`;
 //         productDiv.appendChild(productId);
 //         const productTitle = document.createElement('h2');
 //         productTitle.textContent = `Title: ${prod.title}`;
@@ -57,7 +58,7 @@ function handleDelete(id) {
 //         const deleteButton = document.createElement('button');
 //         deleteButton.textContent = 'Eliminar';
 //         deleteButton.addEventListener('click', () => {
-//             handleDelete('id_'+prod.id);
+//             handleDelete('id_'+prod._id);
 //         });
 //         productDiv.appendChild(deleteButton);
 //         products.insertAdjacentElement('beforeend', productDiv);
@@ -70,7 +71,7 @@ socket.on("updatelist", (data) => {
     data.forEach((prod) => {
         const htmlProd = `
         <div class="product">
-            <h2>Id: ${prod.id}</h2>
+            <h2>Id: ${prod._id}</h2>
             <h2>Title: ${prod.title}</h2>
             <h2>Description: ${prod.description}</h2>
             <h2>Code: ${prod.code}</h2>
@@ -78,7 +79,7 @@ socket.on("updatelist", (data) => {
             <h2>Status: ${prod.status}</h2>
             <h2>Stock: ${prod.stock}</h2>
             <h2>Category: ${prod.category}</h2>
-            <button onclick="handleDelete('id_${prod.id}')" class="btn btn-primary">Eliminar</button>
+            <button onclick="handleDelete('id_${prod._id}')" class="btn btn-primary">Eliminar</button>
         </div>
         `;
         products.innerHTML += htmlProd;
