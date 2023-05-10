@@ -1,124 +1,72 @@
 import { Router } from "express";
 import { io } from "../app.js";
 import productsModel from "../dao/models/products.model.js";
+import MongoProductManager from "../dao/mongoManagers/dbProductManager.js";
 
 const router = Router();
+const prodManager = new MongoProductManager();
 
 router.get("/", async (req, res) => {
-    try {
-        const { limit } = req.query;
-        if (!limit) {
-            const prodsList = await productsModel.find();
-            res.send(prodsList);
-        } else {
-            const prodsList = await productsModel.find().limit(limit);
-            res.send(prodsList);
-        }
-    } catch (error) {
-        console.log("Error al leer la base de datos de MongoDB" + error);
-    }
-});
+    const prodsList = await prodManager.readProducts( req.query.limit );
+    prodsList ? res.status(200).send(prodsList) : res.status(500).send(prodsList);
+})
 
 router.get("/:pid", async (req, res) => {
-    try {
-        const prod = await productsModel.find({ _id: pid });
-        if (prod) {
-            res.send(prod);
-        } else {
-            res.send({ Error: "El id de producto ingresado no existe" });
-        }
-    } catch (error) {
-        console.log("Error al leer la base de datos de MongoDB" + error);
+    const {product, status, description } = await prodManager.readProduct( req.params.pid );
+    res.status(status).send({
+        status,
+        description,
+        product
+    })
     }
-});
+);
 
 router.post("/", async (req, res) => {
-    const { title, description, code, price, stock, category, thumbnail } =
-        req.body;
-    if (!title || !description || !code || !price || !stock || !category)
-        return res
-            .status(400)
-            .send({ status: "error", error: "Datos incompletos" });
-    const status = true;
-    const product = {
-        title,
-        description,
-        code,
-        price,
+    const {status, description, payload } = await prodManager.addProduct( req.body );
+
+    if (status == 200){
+        const prodsList = await prodManager.readProducts();
+        io.emit("updatelist", prodsList);
+    }
+
+    res.status(status).send({
         status,
-        stock,
-        category,
-        thumbnail,
-    };
-    const result = await productsModel.create(product);
-    //Envío a realTimeProducts
-    const prodsList = await productsModel.find();
-    io.emit("updatelist", prodsList);
-    res.send(result);
+        description,
+        payload
+    })
 });
 
 router.put("/:pid", async (req, res) => {
-    const { pid } = req.params;
-    const {
-        title,
-        description,
-        code,
-        price,
-        status,
-        stock,
-        category,
-        thumbnail,
-    } = req.body;
-    if (
-        !title ||
-        !description ||
-        !code ||
-        !price ||
-        !status ||
-        !stock ||
-        !category
-    )
-        res.send({
-            status: "Falló al actualizar, datos de producto incompletos",
-        });
-    const prodToUpdate = {
-        title,
-        description,
-        code,
-        price,
-        status,
-        stock,
-        category,
-        thumbnail,
-    };
-    try {
-        const updatedProduct = await productsModel.updateOne(
-            { _id: pid },
-            prodToUpdate
-        );
-        const prodsList = await productsModel.find();
+    const {status, description, payload } = await prodManager.updateProduct(  req.params.pid , req.body );
+
+    if (status == 200){
+        const prodsList = await prodManager.readProducts();
         io.emit("updatelist", prodsList);
-        res.send(updatedProduct);
-    } catch (error) {
-        console.log("Error al actualizar la base de datos de MongoDB" + error);
     }
-});
+
+    res.status(status).send({
+        status,
+        description,
+        payload
+    })
+})
+
 
 router.delete("/:pid", async (req, res) => {
-    let { pid } = req.params;
-    try {
-        const result = await productsModel.deleteOne({ _id: pid });
-        if (result) {
-            const prodsList = await productsModel.find();
-            io.emit("updatelist", prodsList);
-            res.send(result);
-        } else
-            res.status(400).send({
-                status: "Falló, el id no existe",
-            });
-    } catch (error) {
-        console.log("Error al eliminar el elemento" + error);
+    
+    const {status, description, payload } = await prodManager.deleteProduct(  req.params.pid , req.body );
+
+    if (status == 200){
+        const prodsList = await prodManager.readProducts();
+        io.emit("updatelist", prodsList);
     }
+
+    res.status(status).send({
+        status,
+        description,
+        payload
+    })
+
 });
 
 export default router;
