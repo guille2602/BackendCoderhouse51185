@@ -1,6 +1,4 @@
 import { Router } from "express";
-import cartsModel from "../dao/models/carts.model.js";
-import productsModel from "../dao/models/products.model.js";
 import MongoCartManager from "../dao/mongoManagers/dbCartManager.js";
 
 const router = Router();
@@ -36,8 +34,14 @@ router.post("/:cid/product/:pid", async (req, res) => {
         description,
         payload
     })
-    
+});
 
+router.put("/:cid/products/:pid", async (req, res) => {
+    const { code, status, payload } = await cartManager.updateCart( req.params.cid, req.params.pid, req.body.quantity);
+    res.status(code).send({
+        status,
+        payload
+    })
 });
 
 export default router;

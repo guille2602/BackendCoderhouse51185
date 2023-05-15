@@ -7,7 +7,7 @@ const router = Router();
 const prodManager = new MongoProductManager();
 
 router.get("/", async (req, res) => {
-    const prodsList = await prodManager.readProducts( req.query.limit );
+    const prodsList = await prodManager.readProducts( { limit: req.query.limit , sort: req.query.sort } );
     prodsList ? res.status(200).send(prodsList) : res.status(500).send(prodsList);
 })
 
@@ -50,7 +50,6 @@ router.put("/:pid", async (req, res) => {
         payload
     })
 })
-
 
 router.delete("/:pid", async (req, res) => {
     

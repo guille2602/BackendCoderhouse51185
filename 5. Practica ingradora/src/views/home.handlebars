@@ -2,7 +2,7 @@
     <div id="products">
     <h1>Listado de productos:</h1>
     <div class="productsList">
-        {{#each parsedProdsList}}
+        {{#each payload}}
             <div class="product">
                 <h2>Id: {{this.id}}</h2>
                 <h2>Title: {{this.title}}</h2>
@@ -14,5 +14,16 @@
                 <h2>Category: {{this.category}}</h2>
             </div>
         {{/each}}
+        {{#if hasPrevPage}}
+            <a href={{prevLink}}><button class="btn btn-primary">Prev. page</button></a>
+        {{else}}
+            <a href="#"><button class="btn btn-secondary">Prev. page</button></a>
+        {{/if}}
+
+        {{#if hasNextPage}}
+            <a href={{nextLink}}><button class="btn btn-primary">Next page</button></a>
+        {{else}}
+            <a href="#"><button class="btn btn-secondary">Next page</button></a>
+        {{/if}}
     </div>
 </div>

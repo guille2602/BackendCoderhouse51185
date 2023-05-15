@@ -156,4 +156,39 @@ export default class MongoCartManager {
         }
     }
 
+    async updateCart ( cid, pid, qty ){
+        try {
+            const cart = await cartsModel.findOne({ _id:cid });
+            let prodIndex = cart.products.findIndex( (prod) => prod.product._id == pid )
+            if (prodIndex !== -1) {
+                cart.products[prodIndex].quantity = qty;
+                const result = await cartsModel.updateOne( {_id:cid }, cart )
+                if (modifiedCount == 1) {
+                    return {
+                        code: 200,
+                        status: "Sucess",
+                        payload: result
+                    }
+                } else {
+                    return {
+                        code: 200,
+                        status: "No se han detectado cambios en el producto",
+                        payload: result
+                    }
+                }
+            }
+            return{
+                code: 400,
+                status: "Bad request: Se han pasado parametros incorrectos",
+                payload: null
+            }
+        } catch (error) {
+            console.log('Error al actualizar el carrito' + error);
+            return ({
+                code: 500,
+                status: "Error",
+                payload: error
+            })
+        }
+    }
 }
