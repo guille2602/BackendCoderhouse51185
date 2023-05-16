@@ -234,7 +234,7 @@ export default class MongoCartManager {
             if (prodIndex !== -1) {
                 cart.products[prodIndex].quantity = qty;
                 const result = await cartsModel.updateOne({ _id: cid }, cart);
-                if (modifiedCount == 1) {
+                if (result.modifiedCount == 1) {
                     return {
                         code: 200,
                         status: "Sucess",
@@ -263,7 +263,7 @@ export default class MongoCartManager {
         }
     }
 
-    async deleteProduct(cid, pid) {
+    async deleteProduct( cid, pid ) {
         const regEx = /^[0-9a-fA-F]{24}$/;
         const validIdFormat = regEx.test(cid) && regEx.test(pid);
         if (validIdFormat) {
@@ -277,9 +277,10 @@ export default class MongoCartManager {
                         payload: null,
                     };
                 }
-                cart.products = cart.products.filter((prod) => {
-                    prod.product._id !== pid;
-                });
+                const newProdsList = cart.products.filter((prod) => 
+                    prod.product._id.toString() !== String(pid)
+                )
+                cart.products = newProdsList;
                 const result = await cartsModel.updateOne({ _id: cid }, cart);
                 return {
                     code: 200,
