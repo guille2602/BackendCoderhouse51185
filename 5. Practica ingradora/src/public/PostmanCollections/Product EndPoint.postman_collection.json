@@ -24,7 +24,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/products/",
+					"raw": "http://localhost:8080/api/products",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -32,8 +32,7 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"products",
-						""
+						"products"
 					]
 				}
 			},
@@ -46,7 +45,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\":\"Producto 3\",\r\n    \"description\": \"Descripción de producto 3\",\r\n    \"code\": \"COD0003\",\r\n    \"price\": \"90\",\r\n    \"stock\": \"15\",\r\n    \"category\": \"Categoría2\",\r\n    \"thumbnail\": \"\"\r\n}",
+					"raw": "{\r\n    \"title\":\"Producto X\",\r\n    \"description\": \"Descripción de producto x\",\r\n    \"code\": \"COD000X\",\r\n    \"price\": \"999\",\r\n    \"stock\": \"100\",\r\n    \"category\": \"Categoría2\",\r\n    \"thumbnail\": \"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
