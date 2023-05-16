@@ -13,8 +13,9 @@
 
 .product{
     margin-bottom: 2em;
-    padding: 1em 1em 1em 3em; 
+    padding: 1em 3em 1em 3em; 
     width: 30vw;
+    min-width: 400px;
     border-radius: 1em;
     border-width: 0.1em;
     font-family: Arial, Helvetica, sans-serif;
@@ -58,13 +59,19 @@ body{
     padding-top: 1em;
 }
 
+.addToCart{
+    margin-top: 1em;
+    width: 100%
+}
+
 .buttons-span{
     width: 100%;
     display: flex;
     flex-direction: row;
     flex-grow: 2;
     gap: 1em;
-    padding: 0 3em 2em 2em;
+    padding: 1em 3em 2em 2em;
+
 }
 
 .buttons-span *{

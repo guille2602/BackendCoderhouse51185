@@ -2,7 +2,6 @@ import cartsModel from "../models/carts.model.js";
 import productsModel from "../models/products.model.js";
 
 export default class MongoCartManager {
-
     async createCart() {
         let code;
         let status;
@@ -60,8 +59,8 @@ export default class MongoCartManager {
         return {
             code,
             status,
-            payload: cart
-        }
+            payload: cart,
+        };
     }
 
     async addToCart(cartId, prodId) {
@@ -134,7 +133,7 @@ export default class MongoCartManager {
                     code: 500,
                     status: "Error al actualizar el carrito",
                     payload,
-                }
+                };
             }
         } else {
             return {
@@ -144,15 +143,16 @@ export default class MongoCartManager {
         }
     }
 
-    async replaceCart(cid, products) {
+    async insertManyInCart(cid, newProducts) {
         const regEx = /^[0-9a-fA-F]{24}$/;
         const validIdFormat = regEx.test(cid);
-        if (!validIdFormat)
+        if (!validIdFormat || newProducts?.length === 0)
             return {
                 code: 400,
                 status: "Error: El formato de id es incorrecto",
                 payload: null,
             };
+
         try {
             const cart = await cartsModel.findOne({ _id: cid });
             if (!cart)
@@ -161,23 +161,48 @@ export default class MongoCartManager {
                     status: "Error, no se encontró el id",
                     payload: null,
                 };
-            const originalLength = products.length;
-            const filteredArray = [];
-            for (let product of products) {
-                console.log(product.product._id);
+            //Validación de productos existentes
+            const newProds = [];
+            const invalidProds = [];
+            for (let product of newProducts) {
+                const id = product.product._id;
                 const validation =
-                    regEx.test(product.product._id) &&
-                    (await productsModel.findOne({
-                        _id: product.product._id,
-                    })) &&
-                    parseInt(product.quantity) >= 1;
+                    regEx.test(id) &&
+                    parseInt(product.quantity) >= 1 &&
+                    (await productsModel.findOne({ _id: id }));
+
                 if (validation) {
-                    filteredArray.push(product);
+                    const alreadyInCart = cart.products.findIndex(
+                        (p) => p.product._id == id
+                    );
+                    if (alreadyInCart !== -1) {
+                        cart.products[alreadyInCart].quantity =
+                            cart.products[alreadyInCart].quantity +
+                            product.quantity;
+                    } else {
+                        newProds.push(product);
+                    }
+                } else {
+                    invalidProds.push(product);
                 }
             }
-            if (originalLength == filteredArray.length) {
-                cart.products = products;
-                const result = await cartsModel.updateOne({ _id: cid }, cart);
+            if (newProds.length > 0) {
+                cart.products = cart.products.concat(newProds);
+            }
+            const result = await cartsModel.updateOne({ _id: cid }, cart);
+
+            if (invalidProds.length == newProducts.length) {
+                return {
+                    code: 400,
+                    status: "Failed: No se han superado las validaciones",
+                    payload: newProducts,
+                };
+            }
+
+            if (
+                invalidProds.length == 0 &&
+                invalidProds.length !== newProducts.length
+            ) {
                 return {
                     code: 200,
                     status: "Sucess",
@@ -185,9 +210,9 @@ export default class MongoCartManager {
                 };
             } else {
                 return {
-                    code: 400,
-                    status: "Falló al actualizar, error en los datos enviados",
-                    payload: null,
+                    code: 200,
+                    status: `Sucess with errors: No se pudo actualizar ${invalidProds.length} elementos`,
+                    payload: invalidProds,
                 };
             }
         } catch (error) {

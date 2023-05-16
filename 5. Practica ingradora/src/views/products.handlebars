@@ -12,20 +12,22 @@
                 <h2>Status: {{this.status}}</h2>
                 <h2>Stock: {{this.stock}}</h2>
                 <h2>Category: {{this.category}}</h2>
+                <button class="addToCart btn btn-primary">Agregar al carrito</button>
             </div>
         {{/each}}
-        <div class="buttons-span">
+    </div>
+    <div class="buttons-span">
             {{#if hasPrevPage}}
-                <a href="/{{prevLink}}"><button class="btn btn-primary">Prev. page</button></a>
+                <a href="/products{{prevLink}}"><button class="btn btn-primary">Prev. page</button></a>
             {{else}}
                 <a href="#"><button class="btn btn-secondary">Prev. page</button></a>
             {{/if}}
 
             {{#if hasNextPage}}
-                <a href="/{{nextLink}}"><button class="btn btn-primary">Next page</button></a>
+            <a href="/products{{nextLink}}"><button class="btn btn-primary">Next page</button></a>
             {{else}}
-                <a href="#"><button class="btn btn-secondary">Next page</button></a>
+            <a href="#"><button class="btn btn-secondary">Next page</button></a>
             {{/if}}
         </div>
-    </div>
 </div>
+<script src="js/products.js"></script>

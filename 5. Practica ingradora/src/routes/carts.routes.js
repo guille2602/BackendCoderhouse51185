@@ -25,10 +25,8 @@ router.get("/:cid", async (req, res) => {
 })
 
 router.put("/:cid", async (req, res) => {
-    
     const products = req.body.products;
-    const cid = req.params.cid;
-    const { code, status, payload } = await cartManager.replaceCart( cid, products );
+    const { code, status, payload } = await cartManager.insertManyInCart( req.params.cid, products );
     res.status(code).send({
         status,
         payload
@@ -51,8 +49,6 @@ router.put("/:cid/products/:pid", async (req, res) => {
         payload
     })
 })
-
-//Faltan los 2 DELETE
 
 router.delete("/:cid/products/:pid", async (req, res) => {
     const { code, status, payload } = await cartManager.deleteProduct( req.params.cid, req.params.pid );

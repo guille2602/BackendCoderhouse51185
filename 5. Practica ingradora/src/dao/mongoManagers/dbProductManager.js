@@ -159,17 +159,22 @@ export default class MongoProductManager {
                 thumbnail,
             };
             try {
-                payload = await productsModel.updateOne( { _id: id }, prodToUpdate )
+                payload = await productsModel.updateOne(
+                    { _id: id },
+                    prodToUpdate
+                );
                 if (payload?.modifiedCount >= 1) {
                     resStatus = 200;
                     resDescription = "Sucess";
                 } else {
-                    if ( payload?.matchedCount >= 1 ){
+                    if (payload?.matchedCount >= 1) {
                         resStatus = 200;
-                        resDescription = "No se detectaron modificaciones en el producto"
+                        resDescription =
+                            "No se detectaron modificaciones en el producto";
                     } else {
                         resStatus = 400;
-                        resDescription = "Error: No se encontró ningún producto con el id enviado";
+                        resDescription =
+                            "Error: No se encontró ningún producto con el id enviado";
                     }
                 }
             } catch (error) {
@@ -205,13 +210,14 @@ export default class MongoProductManager {
 
         if (validIdFormat) {
             try {
-                const payload = await productsModel.deleteOne({ _id:id });
+                const payload = await productsModel.deleteOne({ _id: id });
                 if (payload?.deletedCount >= 1) {
                     resStatus = 200;
                     resDescription = "Sucess";
                 } else {
                     resStatus = 400;
-                    resDescription = "Error: No se encontró ningún producto con el id enviado";
+                    resDescription =
+                        "Error: No se encontró ningún producto con el id enviado";
                 }
             } catch (error) {
                 console.log("Error al eliminar el elemento" + error);
@@ -230,5 +236,87 @@ export default class MongoProductManager {
             description: resDescription,
             payload,
         };
+    }
+
+    async paginateContent ( limit, sort, page , query ) {
+
+        const parsedQuery = query && query.split("_");
+        let searchKey = null;
+        let searchValue = null;
+        if (parsedQuery?.length == 2) {
+            searchKey = parsedQuery[0];
+            searchValue = parsedQuery[1];
+            if (searchKey == "price" || searchKey == "stock") {
+                searchValue = parseInt(searchValue);
+            } else if (searchKey === "status") {
+                searchValue = searchValue == "true" ? true : false;
+            }
+        }
+
+        try {
+            const {
+                docs,
+                totalPages,
+                prevPage,
+                nextPage,
+                hasPrevPage,
+                hasNextPage,
+            } = await productsModel.paginate(
+                { [searchKey]: searchValue },
+                {
+                    limit: limit,
+                    page: page,
+                    sort: sort == 1 || sort == -1 ? { price: sort } : null,
+                }
+            )
+            let parsedProdsList = docs.map((item) => ({
+                id: item._id,
+                title: item.title,
+                description: item.description,
+                code: item.code,
+                price: item.price,
+                status: item.status,
+                stock: item.stock,
+                category: item.category,
+            }));
+            const prevLink = `?page=${
+                hasPrevPage ? prevPage : null
+            }&limit=${limit ? limit : null}&${
+                query ? query : null
+            }&sort=${sort}`;
+            const nextLink = `?page=${
+                hasNextPage ? nextPage : null
+            }&limit=${limit ? limit : null}&${
+                query ? query : null
+            }&sort=${sort}`;
+            return {
+                code: 200,
+                status: "sucess",
+                payload: parsedProdsList,
+                totalPages,
+                prevPage,
+                nextPage,
+                page,
+                hasPrevPage,
+                hasNextPage,
+                prevLink,
+                nextLink,
+            };
+        } catch (error) {
+            console.log("Error al leer la base de datos de MongoDB", +error);
+            return {
+                code: 400,
+                status: "Error al leer la base de datos de MongoDB",
+                payload: null,
+                totalPages: null,
+                prevPage: null,
+                nextPage: null,
+                page: null,
+                hasPrevPage: null,
+                hasNextPage: null,
+                prevLink: null,
+                nextLink: null,
+            };
+        }
     }
 }

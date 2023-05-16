@@ -1,56 +1,9 @@
 import { Router } from "express";
 import productsModel from "../dao/models/products.model.js";
+import MongoproductManager from "../dao/mongoManagers/dbProductManager.js";
 
 const router = Router();
-
-router.get("/", async (req, res) => {
-    const { limit = 10, sort = null, page = 1, query = null } = req.query;
-
-    //Parse query
-    const parsedQuery = query && query.split("_");
-    let searchKey = null;
-    let searchValue = null;
-    if (parsedQuery?.length == 2) {
-        searchKey = parsedQuery[0];
-        searchValue = parsedQuery[1];
-        if(searchKey == "price" || searchKey == "stock") {
-            searchValue = parseInt(searchValue)
-        } else if (searchKey === "status") {
-            searchValue = searchValue == "true" ? true : false
-        }
-    }
-
-    try {
-        const { docs, totalPages, prevPage, nextPage, hasPrevPage, hasNextPage } = await productsModel.paginate({[searchKey]:searchValue}, {limit:limit, page: page,  sort: sort == 1 || sort == -1 ? {price: sort} : null})
-        let parsedProdsList = docs.map((item) => ({
-            id: item._id,
-            title: item.title,
-            description: item.description,
-            code: item.code,
-            price: item.price,
-            status: item.status,
-            stock: item.stock,
-            category: item.category,
-        }));
-        const prevLink = `/?page=${hasPrevPage? parseInt(page) - 1: null}&limit=${limit? limit: null}&${ query ? query: null}&sort=${sort}`
-        const nextLink = `/?page=${hasNextPage? parseInt(page) + 1: null}&limit=${limit? limit: null}&${ query ? query: null}&sort=${sort}`
-        res.render("home", {
-            css: "home.css",
-            status: "sucess",
-            payload: parsedProdsList,
-            totalPages,
-            prevPage,
-            nextPage,
-            page, 
-            hasPrevPage, 
-            hasNextPage,
-            prevLink,
-            nextLink
-        });
-    } catch (error) {
-        console.log("Error al leer la base de datos de MongoDB", +error);
-    }
-});
+const productManager = new MongoproductManager();
 
 router.get("/realtimeproducts", async (req, res) => {
     try {
@@ -72,6 +25,89 @@ router.get("/realtimeproducts", async (req, res) => {
     } catch (error) {
         console.log("Error al leer la base de datos de MongoDB", +error);
     }
-});
+})
+
+router.get("/", async (req, res) => {
+    const { limit = 10, sort = null, page = 1, query = null } = req.query;
+    const {
+        code,
+        status,
+        payload,
+        totalPages,
+        prevPage,
+        nextPage,
+        hasPrevPage,
+        hasNextPage,
+        prevLink,
+        nextLink,
+    } = await productManager.paginateContent( limit, sort, page, query );
+    // res.render("home", {
+    //     css: "home.css", 
+    //     code,
+    //     status,
+    //     payload,
+    //     totalPages,
+    //     prevPage,
+    //     nextPage,
+    //     page,
+    //     hasPrevPage,
+    //     hasNextPage,
+    //     prevLink,
+    //     nextLink,
+    // })
+    res.status(code).send({
+        status,
+        payload,
+        totalPages,
+        prevPage,
+        nextPage,
+        page,
+        hasPrevPage,
+        hasNextPage,
+        prevLink,
+        nextLink,
+    })
+
+})
+
+router.get("/products", async (req, res) => {
+
+    const { limit = 10, sort = null, page = 1, query = null } = req.query;
+    const {
+        code,
+        status,
+        payload,
+        totalPages,
+        prevPage,
+        nextPage,
+        hasPrevPage,
+        hasNextPage,
+        prevLink,
+        nextLink,
+    } = await productManager.paginateContent( limit, sort, page, query );
+    
+    res.render("products", {
+        css: "../css/products.css", 
+        code,
+        status,
+        payload,
+        totalPages,
+        prevPage,
+        nextPage,
+        page,
+        hasPrevPage,
+        hasNextPage,
+        prevLink,
+        nextLink,
+    })
+
+    //3. Agregar botones para agregar a carrito > agregar Swal > ingresar ID de carrito
+
+})
+
+router.get("/carts/:cid", async (req, res) => {
+    //1. Recibir el contenido del carrito
+    //2. Renderizar la vista
+})
 
 export default router;
