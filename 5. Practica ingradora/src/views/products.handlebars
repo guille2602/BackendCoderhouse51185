@@ -1,6 +1,11 @@
 <div id="productsList">
     <div id="products">
     <h1>Bienvenido{{#if user}} {{user.name}}{{/if}}!</h1>
+    
+    <div class="text-center">
+        <a style="padding: auto" href="/profile" class="d-inline-block btn btn-secondary">Ir al perfil</a>
+    </div>
+    
     <h1>Listado de productos:</h1>
     <div class="productsList">
         {{#each payload}}

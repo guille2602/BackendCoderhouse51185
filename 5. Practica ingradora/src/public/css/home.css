@@ -70,3 +70,27 @@ body{
 .buttons-span *{
     width: 100%
 }
+
+.flex-column{
+    margin: auto;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 30vw;
+    min-width: 400px;
+
+}
+
+.flex-column form{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    width: 100%;
+}
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+}

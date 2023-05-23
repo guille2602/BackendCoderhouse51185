@@ -119,7 +119,9 @@ router.get("/carts/:cid", async (req, res) => {
 });
 
 router.get('/login', publicAccess, (req,res) => {
-    res.render('login', {css:"home.css"})
+    res.render('login', {
+        css:"home.css"
+    })
 })
 
 router.get('/register', (req,res) => {

@@ -48,18 +48,19 @@ sessionRouter.post('/register', async ( req , res ) => {
             status: "Failed",
             message: "Error al actualizar, datos incompletos"
         })
+        return;
     }
-
+    
     const alreadyExists = await userModel.findOne({ email:email })
     if (alreadyExists) {
         res.status(400).send({
             status: "Failed",
             message: "El correo ya se encuentra registrado"
         })
+    return;
     }
 
     const user = { firstName, lastName, email, age, password }
-
     const payload = await userModel.create( user );
 
     res.send ({

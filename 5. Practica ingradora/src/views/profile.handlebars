@@ -1,9 +1,11 @@
-<div className="profileData">
+<div class="flex-column">
+    <h2>Nombre:</h2>
     <p>{{user.name}}</p>
+    <h2>Correo</h2>
     <p>{{user.email}}</p>
     {{#if admin}}
-    <p>Se ha conectado como administrador</p>
+    <p><b>Se ha conectado como administrador</b></p>
     {{/if}}
-    <button id="logout-btn">Cerrar sesión</button>
+    <button class="btn btn-primary" id="logout-btn">Cerrar sesión</button>
 </div>
 <script src="/js/logout.js"></script>
