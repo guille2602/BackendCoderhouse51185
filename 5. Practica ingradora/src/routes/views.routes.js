@@ -7,6 +7,16 @@ const router = Router();
 const productManager = new MongoProductManager();
 const cartManager = new MongoCartManager();
 
+const publicAccess = ( req , res , next ) => {
+    if(req.session.user) return res.redirect('/profile');
+    next();
+}
+
+const privateAccess = ( req , res , next ) => {
+    if(!req.session.user) return res.redirect('/login');
+    next();
+}
+
 router.get("/realtimeproducts", async (req, res) => {
     try {
         const prodsList = await productsModel.find();
@@ -74,6 +84,7 @@ router.get("/products", async (req, res) => {
     } = await productManager.paginateContent(limit, sort, page, query);
 
     res.render("products", {
+        user: req.session.user,
         css: "../css/products.css",
         code,
         status,
@@ -106,5 +117,25 @@ router.get("/carts/:cid", async (req, res) => {
         payload: parsedList
     });
 });
+
+router.get('/login', publicAccess, (req,res) => {
+    res.render('login', {css:"home.css"})
+})
+
+router.get('/register', (req,res) => {
+    res.render('register',{
+        css:"home.css"
+    })
+})
+
+router.get('/profile', privateAccess, (req,res) => {
+    res.render('profile',{
+        css: "home.css",
+        user: req.session.user,
+        admin: req.session.admin
+    })
+})
+
+
 
 export default router;

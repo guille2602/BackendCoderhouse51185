@@ -1,5 +1,6 @@
 <div id="productsList">
     <div id="products">
+    <h1>Bienvenido{{#if user}} {{user.name}}{{/if}}!</h1>
     <h1>Listado de productos:</h1>
     <div class="productsList">
         {{#each payload}}

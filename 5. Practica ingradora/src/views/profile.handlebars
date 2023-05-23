@@ -1,0 +1,9 @@
+<div className="profileData">
+    <p>{{user.name}}</p>
+    <p>{{user.email}}</p>
+    {{#if admin}}
+    <p>Se ha conectado como administrador</p>
+    {{/if}}
+    <button id="logout-btn">Cerrar sesión</button>
+</div>
+<script src="/js/logout.js"></script>

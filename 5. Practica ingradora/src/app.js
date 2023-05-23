@@ -9,6 +9,9 @@ import { Server } from "socket.io";
 import mongoose from "mongoose";
 import productsModel from "./dao/models/products.model.js";
 import messageModel from "./dao/models/messages.model.js";
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
+import sessionRouter from './routes/sessions.routes.js'
 
 const MONGOOSE =
     "mongodb+srv://guille2602:75i!JbPUxHM-i39@cluster0.uk8yenl.mongodb.net/ecommerce?retryWrites=true&w=majority";
@@ -29,6 +32,17 @@ app.use(express.json());
 const server = app.listen(PORT, () => {
     console.log(`Servidor funcionando en el puerto: ${PORT}`);
 });
+
+app.use(session({
+    store: new MongoStore({
+        mongoUrl: MONGOOSE,
+        mongoOptions:{useNewUrlParser:true},
+        ttl: 1500
+    }),
+    secret:"palabraSecreta",
+    resave: false,
+    saveUninitialized: false
+}))
 
 //Configurando el Socket IO:
 
@@ -135,3 +149,4 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/", viewsRouter);
 app.use("/chat", chatRouter);
+app.use("/api/sessions/", sessionRouter)
