@@ -17,5 +17,6 @@ registerForm.addEventListener('submit', (event) => {
     .then (result => {
         console.log( result );
         registerForm.reset();
+        window.location.replace('/login')
     })
 })

@@ -22,7 +22,7 @@ sessionRouter.post('/login', async ( req , res) => {
         name: `${payload.firstName} ${payload.lastName}`,
         email
     }
-    if (email == "adminCoder@coder.com"){
+    if (email == "adminCoder@coder.com" && password == "adminCod3r123"){
         req.session.admin = true;
     } else {
         req.session.admin = false;

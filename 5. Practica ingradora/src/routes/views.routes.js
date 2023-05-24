@@ -40,32 +40,13 @@ router.get("/realtimeproducts", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-    const { limit = 10, sort = null, page = 1, query = null } = req.query;
-    const {
-        code,
-        status,
-        payload,
-        totalPages,
-        prevPage,
-        nextPage,
-        hasPrevPage,
-        hasNextPage,
-        prevLink,
-        nextLink,
-    } = await productManager.paginateContent(limit, sort, page, query);
-
-    res.status(code).send({
-        status,
-        payload,
-        totalPages,
-        prevPage,
-        nextPage,
-        page,
-        hasPrevPage,
-        hasNextPage,
-        prevLink,
-        nextLink,
-    });
+    if (!req.session.user){
+        res.render('login', {
+            css:"home.css"
+        })
+    } else {
+        res.redirect('/profile')
+    }
 });
 
 router.get("/products", async (req, res) => {
@@ -137,7 +118,5 @@ router.get('/profile', privateAccess, (req,res) => {
         admin: req.session.admin
     })
 })
-
-
 
 export default router;
