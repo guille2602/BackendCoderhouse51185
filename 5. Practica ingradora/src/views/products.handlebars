@@ -1,7 +1,11 @@
 <div id="productsList">
     <div id="products">
     <h1>Bienvenido{{#if user}} {{user.name}}{{/if}}!</h1>
-    
+    {{#if admin}}
+        <h2 class="text-center">Rol: Administrador</h2>
+    {{else}}
+        <h2 class="text-center">Rol: Usuario</h2>
+    {{/if}}
     <div class="text-center">
         <a style="padding: auto" href="/profile" class="d-inline-block btn btn-secondary">Ir al perfil</a>
     </div>

@@ -66,6 +66,7 @@ router.get("/products", async (req, res) => {
 
     res.render("products", {
         user: req.session.user,
+        admin: req.session.admin,
         css: "../css/products.css",
         code,
         status,
