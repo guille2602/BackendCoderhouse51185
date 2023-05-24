@@ -16,6 +16,7 @@ sessionRouter.post('/login', async ( req , res) => {
             status: "Failed",
             message: "Alguno de los datos ingresados es incorrecto, revise los datos"
         })
+        return;
     } 
 
     req.session.user = {
@@ -36,7 +37,6 @@ sessionRouter.post('/login', async ( req , res) => {
 } catch (error) {
     console.log(error);
 }
-
 })
 
 sessionRouter.post('/register', async ( req , res ) => {
