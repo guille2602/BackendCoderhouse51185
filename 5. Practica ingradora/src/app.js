@@ -12,6 +12,8 @@ import messageModel from "./dao/models/messages.model.js";
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import sessionRouter from './routes/sessions.routes.js'
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
 
 const MONGOOSE =
     "mongodb+srv://guille2602:75i!JbPUxHM-i39@cluster0.uk8yenl.mongodb.net/ecommerce?retryWrites=true&w=majority";
@@ -141,9 +143,12 @@ io.on("connection", (socket) => {
             io.emit("failedLogin");
             console.log('Login failed')
         }
-    });
-    
+    }); 
 });
+
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
