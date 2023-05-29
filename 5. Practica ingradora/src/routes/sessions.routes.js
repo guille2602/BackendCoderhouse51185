@@ -5,6 +5,16 @@ import passport from "passport";
 
 const sessionRouter = Router();
 
+sessionRouter.get('/github', passport.authenticate('github',{scope:['user:email']}),async(req,res)=>{})
+
+sessionRouter.get('/githubcallback',passport.authenticate('github',{failureRedirect:'/login'}),async(req,res)=>{
+    req.session.user = {
+    name: req.user.firstName,
+    email:'Private mail'
+    };
+    res.redirect('/products');
+})
+
 sessionRouter.post(
     "/login",
     passport.authenticate("login", { failureRedirect: "/faillogin" }),

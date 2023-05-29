@@ -94,3 +94,14 @@ body{
     flex-direction: row;
     gap: 0.5em;
 }
+
+.gh-button{
+    display: flex;
+    margin-top: 0.5em;
+    margin-bottom:1em;
+    width: 100%;
+}
+
+.gh-button *{
+    width: 100%;
+}
