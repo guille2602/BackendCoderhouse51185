@@ -18,11 +18,11 @@ const initializePassport = () => {
             let user = await userModel.findOne({email:profile._json.email})
             if (!user) {
                 let newUser = {
-                    firstName:profile._json.name,
-                    lastName:' ',
+                    first_name:profile._json.name,
+                    last_name:' ',
                     age:18,
                     email:profile._json.email || "private email",
-                    password:''
+                    password:'',
                 }
                 let result = await userModel.create(newUser);
                 done (null,result)}
@@ -41,19 +41,24 @@ const initializePassport = () => {
         new LocalStrategy(
             { passReqToCallback: true, usernameField: "email" },
             async (req, username, password, done) => {
-                const { firstName, lastName, email, age } = req.body;
+                const { first_name, last_name, email, age } = req.body;
                 try {
                     let user = await userModel.findOne({ email: username });
                     if (user) {
                         console.log("El usuario ya existe");
                         return done(null, false);
                     }
+                    let role;
+                    if ( email == "adminCoder@coder.com" && password == "adminCod3r123") {
+                        role = "admin";
+                    }
                     const newUser = {
-                        firstName,
-                        lastName,
+                        first_name,
+                        last_name,
                         email,
                         age,
                         password: createHash(password),
+                        role
                     };
 
                     const result = await userModel.create(newUser);

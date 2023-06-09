@@ -9,7 +9,7 @@ sessionRouter.get('/github', passport.authenticate('github',{scope:['user:email'
 
 sessionRouter.get('/githubcallback',passport.authenticate('github',{failureRedirect:'/login'}),async(req,res)=>{
     req.session.user = {
-    name: req.user.firstName,
+    name: req.user.first_name,
     email:'Private mail'
     };
     res.redirect('/products');
@@ -27,7 +27,7 @@ sessionRouter.post(
             return;
         }
         req.session.user = {
-            name: `${req.user.firstName} ${req.user.lastName}`,
+            name: `${req.user.first_name} ${req.user.last_name}`,
             email: req.user.email,
             age: req.user.age,
         };
