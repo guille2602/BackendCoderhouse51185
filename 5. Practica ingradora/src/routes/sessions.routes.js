@@ -89,7 +89,7 @@ sessionRouter.get("/logout", async (req, res) => {
 sessionRouter.get("/current", async (req, res) => {
     let user;
     try{
-        if (req.user.email) {
+        if (req.user?.email) {
             user = await usersModel.findOne({ email:req.user.email })
             user.password = null;
         }
