@@ -15,15 +15,22 @@ const initializePassport = () => {
         callbackURL:'http://localhost:8080/api/sessions/githubcallback'
     }, async (accessToken, refreshToken, profile, done) => {
         try{
-            console.log(profile);
-            let user = await userModel.findOne({email:profile._json.email})
+            let email = profile._json.email || profile._json.login; 
+            let user = await userModel.findOne({email:email})
             if (!user) {
                 let newUser = {
                     first_name:profile._json.name,
                     last_name:' ',
                     age:18,
-                    email:profile._json.email || "private email",
+                    email:profile._json.email || profile._json.login,
                     password:'',
+                }
+                const emptyCart = { 
+                    products: [] 
+                }
+                const newCart = await cartsModel.create( emptyCart )
+                if (newCart) {
+                    newUser.cart = newCart._id;
                 }
                 let result = await userModel.create(newUser);
                 done (null,result)}
