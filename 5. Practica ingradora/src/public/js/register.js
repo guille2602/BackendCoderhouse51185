@@ -15,7 +15,11 @@ registerForm.addEventListener('submit', (event) => {
     })
     .then (result => result.json())
     .then (result => {
-        registerForm.reset();
-        window.location.replace('/login')
+        if (result.status === "Sucess") {
+            registerForm.reset();
+            window.location.replace("/login");
+        } else {
+            console.log(result.message)
+        }
     })
 })

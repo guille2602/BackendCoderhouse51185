@@ -3,6 +3,7 @@ import local from "passport-local";
 import userModel from "../dao/models/user.model.js";
 import { createHash, validatePassword } from "../utils.js";
 import GitHubStrategy from 'passport-github2';
+import cartsModel from "../dao/models/carts.model.js";
 
 const LocalStrategy = local.Strategy;
 
@@ -57,11 +58,17 @@ const initializePassport = () => {
                         last_name,
                         email,
                         age,
-                        password: createHash(password),
+                        password: createHash( password ),
                         role
                     };
-
-                    const result = await userModel.create(newUser);
+                    const emptyCart = { 
+                        products: [] 
+                    }
+                    const newCart = await cartsModel.create( emptyCart )
+                    if (newCart) {
+                        newUser.cart = newCart._id;
+                    }
+                    const result = await userModel.create( newUser );
                     return done(null, result);
                 } catch (error) {
                     return done("Error en el registro de usuario" + error);
