@@ -1,18 +1,8 @@
 import { Router } from "express";
-import messageModel from "../dao/models/messages.model.js";
-import { io } from "../app.js";
+import chatView from "../views/chat.view.js";
 
 const router = Router();
 
-router.get("/", async (req, res) => {
-
-    let  chatLog = await messageModel.find();
-    chatLog = !chatLog && []; 
-
-    res.render("chat", {
-        css: "chat.css",
-        chatLog,
-    });
-});
+router.get("/", chatView.renderChat);
 
 export default router;

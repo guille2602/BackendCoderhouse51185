@@ -4,6 +4,7 @@ import userModel from "../dao/models/user.model.js";
 import { createHash, validatePassword } from "../utils.js";
 import GitHubStrategy from 'passport-github2';
 import cartsModel from "../dao/models/carts.model.js";
+import config from './config.js';
 
 const LocalStrategy = local.Strategy;
 
@@ -57,7 +58,7 @@ const initializePassport = () => {
                         return done(null, false);
                     }
                     let role;
-                    if ( email == "adminCoder@coder.com" && password == "adminCod3r123") {
+                    if ( email == config.adminMail && password == "config.adminPassword") {
                         role = "admin";
                     }
                     const newUser = {

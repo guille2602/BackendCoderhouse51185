@@ -1,33 +1,39 @@
+//General imports
 import express from "express";
+import { Server } from "socket.io";
+import mongoose from "mongoose";
+import MongoStore from 'connect-mongo';
+import session from 'express-session';
+import passport from "passport";
 import handlebars from "express-handlebars";
+
+//Custom imports
 import cartsRouter from "./routes/carts.routes.js";
 import productsRouter from "./routes/products.routes.js";
 import chatRouter from "./routes/chat.routes.js";
 import viewsRouter from "./routes/views.routes.js";
 import __dirname from "./utils.js";
-import { Server } from "socket.io";
-import mongoose from "mongoose";
 import productsModel from "./dao/models/products.model.js";
 import messageModel from "./dao/models/messages.model.js";
-import session from 'express-session';
-import MongoStore from 'connect-mongo';
 import sessionRouter from './routes/sessions.routes.js'
-import passport from "passport";
 import initializePassport from "./config/passport.config.js";
+import config from './config/config.js';
 
-const MONGOOSE =
-    "mongodb+srv://guille2602:75i!JbPUxHM-i39@cluster0.uk8yenl.mongodb.net/ecommerce?retryWrites=true&w=majority";
+//Server vars
+const MONGOOSE = config.mongoUrl;
+const PORT = config.port;
+
+//Server connection
 mongoose.connect(MONGOOSE);
-
-const PORT = 8080;
 export const app = express();
 
+//Handlebars config
 app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 
+//Server settings
 app.use(express.static(__dirname + "/public"));
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -35,21 +41,26 @@ const server = app.listen(PORT, () => {
     console.log(`Servidor funcionando en el puerto: ${PORT}`);
 });
 
+//Sessions config with Mongo.
 app.use(session({
     store: new MongoStore({
         mongoUrl: MONGOOSE,
         mongoOptions:{useNewUrlParser:true},
         ttl: 1500
     }),
-    secret:"palabraSecreta",
+    secret:config.secret,
     resave: false,
     saveUninitialized: false
 }))
 
-//Configurando el Socket IO:
+//Passport config.
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
+//Socket config.
 
 export const io = new Server(server);
-
 io.on("connection", (socket) => {
     console.log("Nuevo cliente conectado");
 
@@ -146,10 +157,7 @@ io.on("connection", (socket) => {
     }); 
 });
 
-initializePassport();
-app.use(passport.initialize());
-app.use(passport.session());
-
+//Routes config.
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/", viewsRouter);
