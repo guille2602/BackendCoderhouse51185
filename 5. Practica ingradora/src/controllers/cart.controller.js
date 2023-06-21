@@ -60,6 +60,7 @@ class CartController {
             payload
         })
     }
+
 }
 
 export default new CartController();

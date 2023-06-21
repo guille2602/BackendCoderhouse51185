@@ -1,5 +1,5 @@
 import { Router } from "express";
-import chatView from "../views/chat.view.js";
+import chatView from '../controllers/chat.controller.js'
 
 const router = Router();
 

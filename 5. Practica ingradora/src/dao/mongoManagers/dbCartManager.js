@@ -39,7 +39,7 @@ export default class MongoCartManager {
 
         if (validIdFormat) {
             try {
-                cart = await cartsModel.findOne({ _id: id });
+                cart = await cartsModel.findOne({ _id: id }).lean();
                 if (cart) {
                     code = 200;
                     status = "Sucess";

@@ -3,25 +3,12 @@ import productsModel from "../models/products.model.js";
 export default class MongoProductManager {
     async readProducts(limit = null) {
         let prodsList = null;
-
         try {
             if (!limit) {
-                prodsList = await productsModel.find();
+                prodsList = await productsModel.find().lean();
             } else {
-                prodsList = await productsModel.find().limit(limit);
+                prodsList = await productsModel.find().limit(limit).lean();
             }
-
-            //Parseado para realTimeView
-            prodsList = prodsList.map((item) => ({
-                id: item.id,
-                title: item.title,
-                description: item.description,
-                code: item.code,
-                price: item.price,
-                status: item.status,
-                stock: item.stock,
-                category: item.category,
-            }));
             return prodsList;
         } catch (error) {
             console.log("Error al leer la base de datos de MongoDB" + error);
