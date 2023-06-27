@@ -1,4 +1,5 @@
 import usersModel from "../dao/models/user.model.js";
+import { validatePassword } from '../utils.js'
 
 class SessionController {
     async gitHubLogin(req, res) {
