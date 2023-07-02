@@ -1,0 +1,17 @@
+<div id="productsList">
+    <div id="products">
+    <h1>Listado de productos del carrito:</h1>
+    <div class="productsList">
+        {{#each payload}}
+            <div class="product">
+                <h2>Id: {{this.product._id}}</h2>
+                <h2>Title: {{this.product.title}}</h2>
+                <h2>Description: {{this.product.description}}</h2>
+                <h2>Code: {{this.product.code}}</h2>
+                <h2>Price: {{this.product.price}}</h2>
+                <h2>Category: {{this.product.category}}</h2>
+                <h2>Quantity: {{this.product.quantity}}</h2>
+            </div>
+        {{/each}}
+    </div>
+</div>

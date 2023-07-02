@@ -1,0 +1,180 @@
+{
+	"info": {
+		"_postman_id": "653e9703-81db-4a7c-8df7-e799acf081c4",
+		"name": "Carts EndPoint",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23540489"
+	},
+	"item": [
+		{
+			"name": "Método GET sobre carts/:cid",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/carts/6461c3275df4573775e02354",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carts",
+						"6461c3275df4573775e02354"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Método POST sobre carts",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/carts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Método POST en /:cid/product/:pid",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/carts/6461c3275df4573775e02354/product/645bda4e18579662c5695a70",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carts",
+						"6461c3275df4573775e02354",
+						"product",
+						"645bda4e18579662c5695a70"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Método PUT sobre /:cid/products/:pid ",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"quantity\":\"10\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/carts/6461c3275df4573775e02354/products/645bda4e18579662c5695a70",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carts",
+						"6461c3275df4573775e02354",
+						"products",
+						"645bda4e18579662c5695a70"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Método PUT sobre carts/:cid",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"products\": [\r\n        {\r\n            \"product\": {\r\n                \"_id\": \"64583f030ff1c8a93caed839\"\r\n            },\r\n            \"quantity\": 4\r\n        },\r\n        {\r\n            \"product\": {\r\n                \"_id\": \"645bda4e18579662c5695a70\"\r\n            },\r\n            \"quantity\": 2\r\n        }]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/carts/6461c3275df4573775e02354",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carts",
+						"6461c3275df4573775e02354"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Método DELETE sobre carts/:cid/products/:pid",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/carts/6461c3275df4573775e02354/products/645bda4e18579662c5695a70",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carts",
+						"6461c3275df4573775e02354",
+						"products",
+						"645bda4e18579662c5695a70"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE sobre carts/:cid",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/carts/6461c3275df4573775e02354",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carts",
+						"6461c3275df4573775e02354"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

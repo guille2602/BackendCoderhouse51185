@@ -1,0 +1,47 @@
+{
+	"info": {
+		"_postman_id": "2fc9b7b7-d66b-4afe-968d-7b5c8c43fcb6",
+		"name": "Root Endpoint",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23540489"
+	},
+	"item": [
+		{
+			"name": "GET en / con querys",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/?query=status_true&sort=1&limit=1&page=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						""
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "status_true"
+						},
+						{
+							"key": "sort",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "1"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

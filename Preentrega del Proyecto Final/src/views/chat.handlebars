@@ -1,0 +1,21 @@
+
+<div class="main">
+<h1>¡Bienvenido al chat!</h1>
+<div id="chats">
+    {{#each chatLog}}
+        <div class="user">
+            {{this.user}} dice:
+        </div>      
+        <div class="message">
+            {{this.message}}
+        </div>   
+    {{/each}}
+</div>
+<form id="submit-form" class="container">
+    <input type="text" id="chatBox" class="form-control">
+    <button onclick="handleSubmit(event)" type="button" class="btn btn-primary">Enviar</button>
+</form>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/chat.js"></script>
+</div>

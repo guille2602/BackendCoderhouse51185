@@ -1,0 +1,43 @@
+<div id="productsList">
+    <div id="products">
+    <h1>Bienvenido{{#if user}} {{user.name}}{{/if}}!</h1>
+    {{#if admin}}
+        <h2 class="text-center">Rol: Administrador</h2>
+    {{else}}
+        <h2 class="text-center">Rol: Usuario</h2>
+    {{/if}}
+    <div class="text-center">
+        <a style="padding: auto" href="/profile" class="d-inline-block btn btn-secondary">Ir al perfil</a>
+    </div>
+    
+    <h1>Listado de productos:</h1>
+    <div class="productsList">
+        {{#each payload}}
+            <div class="product">
+                <h2>Id: {{this.id}}</h2>
+                <h2>Title: {{this.title}}</h2>
+                <h2>Description: {{this.description}}</h2>
+                <h2>Code: {{this.code}}</h2>
+                <h2>Price: {{this.price}}</h2>
+                <h2>Status: {{this.status}}</h2>
+                <h2>Stock: {{this.stock}}</h2>
+                <h2>Category: {{this.category}}</h2>
+                <button class="addToCart btn btn-primary" onclick="handleAddToCart(event,'{{this.id}}')">Agregar al carrito</button>
+            </div>
+        {{/each}}
+    </div>
+    <div class="buttons-span">
+            {{#if hasPrevPage}}
+                <a href="/products{{prevLink}}"><button class="btn btn-primary">Prev. page</button></a>
+            {{else}}
+                <a href="#"><button class="btn btn-secondary">Prev. page</button></a>
+            {{/if}}
+
+            {{#if hasNextPage}}
+            <a href="/products{{nextLink}}"><button class="btn btn-primary">Next page</button></a>
+            {{else}}
+            <a href="#"><button class="btn btn-secondary">Next page</button></a>
+            {{/if}}
+        </div>
+</div>
+<script src="js/products.js"></script>

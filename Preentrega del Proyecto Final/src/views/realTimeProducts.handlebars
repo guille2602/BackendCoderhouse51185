@@ -1,0 +1,42 @@
+<div id="productsList">
+    <h1>Listado de productos:</h1>
+    <div id="products">
+    {{#each prodsList}}
+        <div class="product">
+            <h2>Id: {{this._id}}</h2>
+            <h2>Title: {{this.title}}</h2>
+            <h2>Description: {{this.description}}</h2>
+            <h2>Code: {{this.code}}</h2>
+            <h2>Price: {{this.price}}</h2>
+            <h2>Status: {{this.status}}</h2>
+            <h2>Stock: {{this.stock}}</h2>
+            <h2>Category: {{this.category}}</h2>
+            {{#if @root.admin}}
+                <button onclick="handleDelete('id_{{this._id}}')" class="btn btn-primary">Eliminar</button>
+            {{/if}}
+        </div>
+    {{/each}}
+    {{#if admin}}
+    </div>
+        <h1>Crear nuevo producto:</h1>
+    <form id="newProdForm">
+        <label>Título</label>
+        <input name="title" id="title">
+        <label>Descripción:</label>
+        <input name="description" id="description">
+        <label>Código:</label>
+        <input name="code" id="code">
+        <label>Precio:</label>
+        <input name="price" id="price">
+        <label>Stock</label>
+        <input name="stock" id="stock">
+        <label>Categoria</label>
+        <input name="category" id="category">
+        <label>Ruta de imágen:</label>
+        <input name="thumbnail" id="thumbnail">
+        <button id="submitBtn" class="btn btn-primary">Confirmar</button>
+    </form>
+    {{/if}}
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/realTimeProducts.js"></script>

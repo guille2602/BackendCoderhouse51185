@@ -1,0 +1,38 @@
+#chats{
+    display:flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-items: flex-start;
+    margin-bottom: 0.2em;
+    padding-left: 2em;
+    width: 100%;
+}
+
+#chatBox{
+    height: 6rem;
+}
+
+.main{
+    margin: auto;
+    margin-top: 2em;
+    padding: auto auto auto;
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    max-width: 600px;
+
+}
+
+#submit-form{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.user{
+    font-weight: 700;
+}
