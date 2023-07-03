@@ -12,5 +12,6 @@ router.post("/:cid/product/:pid", onlyuserAuth, validateUser, cartController.add
 router.put("/:cid/products/:pid", onlyuserAuth, validateUser, cartController.updateCart)
 router.delete("/:cid/products/:pid", cartController.deleteCart)
 router.delete("/:cid", validateUser, cartController.emptyCart)
+router.post("/:cid/purchase", cartController.purchase)
 
 export default router;

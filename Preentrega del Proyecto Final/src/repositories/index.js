@@ -10,9 +10,12 @@ import messageModel from '../dao/models/messages.model.js';
 //Session imports
 import { SessionsRepository }from './sessions.repository.js';
 import userModel from '../dao/models/user.model.js';
+//Ticket imports
+import MongoTicketManager from '../dao/mongoManagers/dbTicketManager.js';
+import { TicketRepository } from './tickets.repository.js'
 
 //Cart
-const cartManager = new MongoCartManager()
+const cartManager = new MongoCartManager();
 export const cartsService = new CartsRepository(cartManager);
 //Product
 const prodManager = new MongoProductManager();
@@ -21,3 +24,6 @@ export const productService = new ProductsRepository(prodManager);
 export const chatService = new ChatRepository(messageModel);
 //User session
 export const userService = new SessionsRepository(userModel);
+//Ticket
+const ticketManager = new MongoTicketManager();
+export const ticketService = new TicketRepository(ticketManager);

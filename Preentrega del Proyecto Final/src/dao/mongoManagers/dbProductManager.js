@@ -83,8 +83,6 @@ export default class MongoProductManager {
 
         try {
             payload = await productsModel.create(product);
-            let prodsList = await productsModel.find();
-
             resStatus = 200;
             resDescription = "Sucess";
         } catch (error) {
@@ -225,8 +223,7 @@ export default class MongoProductManager {
         };
     }
 
-    async paginateContent ( limit, sort, page , query ) {
-
+    async paginateContent(limit, sort, page, query) {
         const parsedQuery = query && query.split("_");
         let searchKey = null;
         let searchValue = null;
@@ -255,7 +252,7 @@ export default class MongoProductManager {
                     page: page,
                     sort: sort == 1 || sort == -1 ? { price: sort } : null,
                 }
-            )
+            );
             let parsedProdsList = docs.map((item) => ({
                 id: item._id,
                 title: item.title,
@@ -266,16 +263,12 @@ export default class MongoProductManager {
                 stock: item.stock,
                 category: item.category,
             }));
-            const prevLink = `?page=${
-                hasPrevPage ? prevPage : null
-            }&limit=${limit ? limit : null}&${
-                query ? query : null
-            }&sort=${sort}`;
-            const nextLink = `?page=${
-                hasNextPage ? nextPage : null
-            }&limit=${limit ? limit : null}&${
-                query ? query : null
-            }&sort=${sort}`;
+            const prevLink = `?page=${hasPrevPage ? prevPage : null}&limit=${
+                limit ? limit : null
+            }&${query ? query : null}&sort=${sort}`;
+            const nextLink = `?page=${hasNextPage ? nextPage : null}&limit=${
+                limit ? limit : null
+            }&${query ? query : null}&sort=${sort}`;
             return {
                 code: 200,
                 status: "sucess",
@@ -304,6 +297,38 @@ export default class MongoProductManager {
                 prevLink: null,
                 nextLink: null,
             };
+        }
+    }
+
+    async updateStock(products) {
+        try {
+            // console.log(products);
+            let updates = [];
+            products.forEach((p) => {
+                updates.push({
+                    updateOne: {
+                        filter: { _id: p.product._id },
+                        update: { $inc: { stock: -p.quantity } },
+                    },
+                });
+            });
+            // console.log(updates);
+            const payload = await productsModel.bulkWrite(updates);
+            // console.log(payload)
+            return{
+                status: "Sucess",
+                description: "Productos actualizados exitosamente",
+                statusCode: 200,
+                payload
+            }
+        } catch (error) {
+            console.log("Error al actualizar lote de productos:", error)
+            return{
+                status:"Failed",
+                description: "Falló al actualizar el lote de productos",
+                statusCode: 500,
+                payload: null,
+            }
         }
     }
 }

@@ -33,5 +33,10 @@ export class ProductsRepository {
         const payload = this.dao.paginateContent(limit, sort, page, query);
         return payload;
     }
+
+    async updateStock( products ) {
+        const payload = this.dao.updateStock( products )
+        return payload;
+    }
     
 }
