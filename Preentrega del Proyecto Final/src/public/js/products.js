@@ -18,3 +18,55 @@ function handleAddToCart(event, product) {
           console.error('Error:', error);
         });
 }
+
+async function handlePurchase(event){
+  fetch(`/api/carts/cart/purchase`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(data =>{
+    console.log(data);
+    if ( data.status === "Sucess"){
+      alert(`Compra finalizada con éxito! \n \n Fecha y hora: ${data.ticket.purchase_datetime} \n N° de ticket: ${data.ticket.code} \n Total operación: $${data.ticket.amount}`)
+    }
+    if ( data.status === "Failed" ){
+      alert('Se ha producido un error en la compra');
+      console.log(data);
+    }
+  })
+}
+
+async function handleEmptyCart(event){
+  fetch(`/api/carts/cart`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(data =>{
+    if ( data.status === "Sucess"){
+      alert(`Carrito vaciado con éxito`)
+      location.reload();
+    }
+    if ( data.status === "Failed" ){
+      alert('Ha ocurrido un error al vaciar el carrito');
+    }
+  })
+}
+
+//Funcion para ir al carrito desde un fetch del current
+
+  function handleGoToCart(event){
+  event.preventDefault();
+  fetch("/api/sessions/current")
+  .then(response=> response.json())
+  .then(data => {
+    const cartId = data.payload.cart._id
+    window.location.replace(`/carts/${cartId}`)
+  })
+
+}

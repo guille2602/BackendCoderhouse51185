@@ -104,7 +104,7 @@ class CartController {
 
             // Armar datos del ticket
             const code = uuidv4();
-            const purchase_datetime = new Date();
+            const purchase_datetime = new Date().toLocaleString();
             const amount = acceptedProds.reduce((total, prod) => {
                 return total + prod.product.price * prod.quantity;
             }, 0);
