@@ -6,17 +6,15 @@
     {{else}}
         <h2 class="text-center">Rol: Usuario</h2>
     {{/if}}
-    <div class="text-center">
-        <a style="padding: auto" href="/profile" class="d-inline-block btn btn-warning mb-4">Ir al perfil</a>
-    </div>
-      <div class="text-center">
-        <button onClick="handleGoToCart(event)" class="btn btn-secondary mb-4">Ir al carrito</button>
+    <div class="row text-center">
+        <a style="padding: auto" href="/profile" class="col mx-2 btn btn-warning mb-4">Ir al perfil</a>
+        <button onClick="handleGoToCart(event)" class="col mx-2 btn btn-success mb-4">Ir al carrito</button>
     </div>
     
     <h1>Listado de productos:</h1>
     <div class="productsList">
         {{#each payload}}
-            <div class="product">
+            <div class="product mx-auto">
                 <h2>Id: {{this.id}}</h2>
                 <h2>Title: {{this.title}}</h2>
                 <h2>Description: {{this.description}}</h2>

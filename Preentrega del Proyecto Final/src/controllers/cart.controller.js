@@ -117,14 +117,14 @@ class CartController {
             };
             
             const sucess = await productService.updateStock(acceptedProds);
-
-            if (sucess) {
-                cartsService.emptyCart(req.params.cid);
-                cartsService.insertManyInCart(req.params.cid, rejectedProds);
-            }
-
+            
             const { statusCode, status, message, payload } = await ticketService.createTicket(ticket);
 
+            if (sucess) {
+                await cartsService.emptyCart(req.params.cid)
+                cartsService.insertManyInCart(req.params.cid, rejectedProds);
+            }
+            
             res.status(statusCode).send({
                 status,
                 message,

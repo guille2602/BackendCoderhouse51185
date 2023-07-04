@@ -6,6 +6,9 @@
     {{#if admin}}
     <p><b>Se ha conectado como administrador</b></p>
     {{/if}}
-    <button class="btn btn-primary" id="logout-btn">Cerrar sesión</button>
+    <div class="row">
+        <button class="btn btn-danger mb-2" id="logout-btn">Cerrar sesión</button>
+        <a href="/products" class="btn btn-primary mb-4">Volver a productos</a>
+    </div>
 </div>
 <script src="/js/logout.js"></script>

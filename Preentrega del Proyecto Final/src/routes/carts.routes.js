@@ -4,6 +4,7 @@ import { validateUser, onlyuserAuth } from "../middlewares/policies.js"
 
 const router = Router();
 
+//Access granted to any user because it's 'read only'
 router.post("/", cartController.createCart)
 router.get("/:cid", cartController.readCart)
 //Auth user only restriction

@@ -29,13 +29,26 @@ async function handlePurchase(event){
   .then(response => response.json())
   .then(data =>{
     console.log(data);
+    let text = ""
+    data.rejected.forEach(element => {
+      text = `${element.product.title} (Cant: ${element.quantity})\n`
+    })
     if ( data.status === "Sucess"){
-      alert(`Compra finalizada con éxito! \n \n Fecha y hora: ${data.ticket.purchase_datetime} \n N° de ticket: ${data.ticket.code} \n Total operación: $${data.ticket.amount}`)
+      alert(`
+      Compra finalizada con éxito! \n
+      Fecha y hora: ${data.ticket.purchase_datetime} \n 
+      N° de ticket: ${data.ticket.code} \n 
+      Total operación: $${data.ticket.amount}
+
+      Productos rechazados por falta de stock:\n
+      ${text}
+      `)
     }
     if ( data.status === "Failed" ){
       alert('Se ha producido un error en la compra');
       console.log(data);
     }
+    location.reload();
   })
 }
 
