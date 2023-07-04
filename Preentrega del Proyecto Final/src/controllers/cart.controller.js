@@ -1,9 +1,6 @@
-import {
-    cartsService,
-    productService,
-    ticketService,
-} from "../repositories/index.js";
+import { cartsService, productService, ticketService } from "../repositories/index.js";
 import { v4 as uuidv4 } from "uuid";
+import transport from "../config/gmail.js";
 
 class CartController {
     async createCart(req, res) {
@@ -117,6 +114,14 @@ class CartController {
             };
             
             const sucess = await productService.updateStock(acceptedProds);
+
+            if (acceptedProds.length === 0){
+                return res.status(400).send({
+                    status:"Failed",
+                    message:"No hay stock suficiente para procesar el pedido",
+                    payload: null,
+                })
+            }
             
             const { statusCode, status, message, payload } = await ticketService.createTicket(ticket);
 
@@ -124,6 +129,30 @@ class CartController {
                 await cartsService.emptyCart(req.params.cid)
                 cartsService.insertManyInCart(req.params.cid, rejectedProds);
             }
+
+            let rejectedProdsText = "<h3>Productos rechazados por falta de stock:</h3><br>";
+            if (rejectedProds.length>0){
+                rejectedProds.forEach(prod=>{
+                    rejectedProdsText = rejectedProdsText + `<b>Producto:</b> ${prod.product.title} - <b>Cantidad:</b> ${prod.quantity}<br>`
+                })
+            }
+            const htmlContent = `
+            <h1>Información de su compra</h1>
+            <p>
+            <b>N° de ticket:</b> ${payload.code}<br>
+            <b>Fecha y hora de compra:</b>  ${payload.purchase_datetime.toLocaleDateString()}, ${payload.purchase_datetime.toLocaleTimeString()}<br>
+            <b>Importe total:</b> $${payload.amount}<br>
+            ${rejectedProdsText !== "" ? rejectedProdsText : ""}
+            </p>
+            `
+
+            const result = transport.sendMail({
+                from: 'CoderBackend 51185 ecommerce',
+                // to: req.session.email,
+                to: 'guille.2602@gmail.com',
+                subject:'Ticket de compra',
+                html: htmlContent
+            })
             
             res.status(statusCode).send({
                 status,

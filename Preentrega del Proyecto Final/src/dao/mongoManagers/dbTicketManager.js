@@ -9,7 +9,7 @@ class MongoTicketManager {
                 amount,
                 purchaser,
             };
-            // if (!code || !purchase_datetime || !amount || !purchaser) //Por testing se sacó, hay que volver a agregar purchaser
+            // if (!code || !purchase_datetime || !amount || !purchaser) //Se sacó la validación de purchaser porque en github autentication no trae el mail.
             if (!code || !purchase_datetime || !amount ) {
                 return {
                     status: "Failed",

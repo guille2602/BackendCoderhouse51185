@@ -28,20 +28,22 @@ async function handlePurchase(event){
   })
   .then(response => response.json())
   .then(data =>{
+    if (data.message === "No hay stock suficiente para procesar el pedido"){
+      alert('No hay suficiente stock para realizar el pedido');
+      return;
+    }
     console.log(data);
-    let text = ""
-    data.rejected.forEach(element => {
-      text = `${element.product.title} (Cant: ${element.quantity})\n`
+    let text = `Productos rechazados por falta de stock: \n`
+    data.rejected.length > 0 && data.rejected.forEach(element => {
+      text = text.concat( `\n ${element.product.title} (Cant: ${element.quantity})`);
     })
     if ( data.status === "Sucess"){
       alert(`
       Compra finalizada con éxito! \n
       Fecha y hora: ${data.ticket.purchase_datetime} \n 
       N° de ticket: ${data.ticket.code} \n 
-      Total operación: $${data.ticket.amount}
-
-      Productos rechazados por falta de stock:\n
-      ${text}
+      Total operación: $${data.ticket.amount}\n 
+      ${data.rejected.length > 0 && text}
       `)
     }
     if ( data.status === "Failed" ){
