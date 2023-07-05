@@ -1,8 +1,13 @@
-function handleAddToCart(event, product) {
-    event.preventDefault();
-    const serverAdress =`/api/carts/cart/product/${product}`
+function getCurrentCartId() {
+  return fetch('/api/sessions/current')
+    .then(response => response.json())
+    .then(data => data.payload.cart._id);
+}
 
-    fetch(serverAdress, {
+function handleAddToCart(event, product) {
+  getCurrentCartId()
+  .then(cartId => {
+    fetch(`/api/carts/${cartId}/product/${product}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -10,17 +15,17 @@ function handleAddToCart(event, product) {
       })
         .then(response => response.json())
         .then(data => {
-          console.log(data);
           data.status == "Sucess" && alert("Producto agregado al carrito");
           data.status == "Failed" && alert("No autorizado");
         })
         .catch(error => {
           console.error('Error:', error);
-        });
+        })})
 }
 
 async function handlePurchase(event){
-  fetch(`/api/carts/cart/purchase`, {
+  getCurrentCartId()
+  .then(cartId => {fetch(`/api/carts/${cartId}/purchase`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -43,7 +48,7 @@ async function handlePurchase(event){
       Fecha y hora: ${data.ticket.purchase_datetime} \n 
       N° de ticket: ${data.ticket.code} \n 
       Total operación: $${data.ticket.amount}\n 
-      ${data.rejected.length > 0 && text}
+      ${data.rejected.length > 0 ? text : ""}
       `)
     }
     if ( data.status === "Failed" ){
@@ -52,10 +57,12 @@ async function handlePurchase(event){
     }
     location.reload();
   })
-}
+})}
 
 async function handleEmptyCart(event){
-  fetch(`/api/carts/cart`, {
+  getCurrentCartId()
+  .then(cartId => {
+    fetch(`/api/carts/${cartId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
@@ -71,17 +78,38 @@ async function handleEmptyCart(event){
       alert('Ha ocurrido un error al vaciar el carrito');
     }
   })
+})
 }
-
-//Funcion para ir al carrito desde un fetch del current
 
   function handleGoToCart(event){
   event.preventDefault();
-  fetch("/api/sessions/current")
-  .then(response=> response.json())
-  .then(data => {
-    const cartId = data.payload.cart._id
+
+  getCurrentCartId()
+  .then(cartId => {
     window.location.replace(`/carts/${cartId}`)
   })
+}
 
+function handleDeleteProduct(event, pid ){
+  event.preventDefault();
+  const productId = pid.toString();
+  getCurrentCartId()
+  .then(cartId => {
+  fetch(`/api/carts/${cartId}/products/${productId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(data =>{
+    if ( data.status === "Sucess"){
+      alert(`Producto eliminado correctamente`)
+      location.reload();
+    }
+    if ( data.status === "Failed" ){
+      alert('Ha ocurrido un error al eliminar el producto');
+    }
+  })
+})
 }

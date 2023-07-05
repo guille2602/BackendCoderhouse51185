@@ -11,6 +11,9 @@
                 <h2>Price: {{this.product.price}}</h2>
                 <h2>Category: {{this.product.category}}</h2>
                 <h2>Quantity: {{this.quantity}}</h2>
+                <div class="row mt-4 mb-2 me-3">
+                <button class="btn btn-primary" onclick="handleDeleteProduct(event, '{{this.product._id}}')">Eliminar del carrito</button>
+                 </div>   
             </div>
         {{/each}}
     </div>
@@ -18,6 +21,7 @@
         <a class="btn btn-primary mb-4" href="/products">Volver a productos</a>
         <button onClick="handleEmptyCart(event)" class="btn btn-secondary mb-4">Vaciar carrito</button>
         <button onClick="handlePurchase(event)" class="btn btn-danger mb-4">Finalizar compra</button>
+
     </div>
 </div>
 <script src="../js/products.js"></script>

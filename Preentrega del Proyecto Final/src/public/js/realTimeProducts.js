@@ -2,7 +2,7 @@ const socket = io();
 
 let form = document.getElementById("newProdForm");
 let submitBtn = document.getElementById("submitBtn");
-submitBtn.addEventListener("click", handleClick);
+submitBtn?.addEventListener("click", handleClick);
 
 function handleClick(e) {
     e.preventDefault();

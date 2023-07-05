@@ -142,14 +142,13 @@ class CartController {
             <b>N° de ticket:</b> ${payload.code}<br>
             <b>Fecha y hora de compra:</b>  ${payload.purchase_datetime.toLocaleDateString()}, ${payload.purchase_datetime.toLocaleTimeString()}<br>
             <b>Importe total:</b> $${payload.amount}<br>
-            ${rejectedProdsText !== "" ? rejectedProdsText : ""}
+            ${rejectedProds.length > 0 ? rejectedProdsText : ""}
             </p>
             `
 
             const result = transport.sendMail({
                 from: 'CoderBackend 51185 ecommerce',
-                // to: req.session.email,
-                to: 'guille.2602@gmail.com',
+                to: req.user.email,
                 subject:'Ticket de compra',
                 html: htmlContent
             })
