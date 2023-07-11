@@ -1,5 +1,6 @@
 import { cartsService } from "../repositories/index.js";
 import { productService } from "../repositories/index.js";
+import { generateProduct } from "../utils.js";
 
 class WebViews {
 
@@ -84,6 +85,19 @@ class WebViews {
             css: "home.css",
             user: req.session.user,
             admin: req.session.admin,
+        });
+    }
+
+    async renderMockingProducts ( req, res ){
+        const quantity = req.query.quantity || 100;
+        const products = [];
+        for ( let i = 1; i <= parseInt(quantity); i++){
+            const newProduct = await generateProduct();
+            products.push(newProduct);
+        }
+        res.render("mocking", {
+            prodsList: products,
+            css: "../css/products.css"
         });
     }
 }

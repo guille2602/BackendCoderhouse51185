@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import bcrypt from 'bcrypt';
-import { faker } from '@faker-js/faker';
+import { faker } from '@faker-js/faker/locale/es_MX';
 import { v4 } from "uuid";
 
 //Absolut path
@@ -18,19 +18,21 @@ faker.location = 'es';
 
 export const generateProduct = () => {
     const category = faker.commerce.department();
-    const code = concat(category.slice(0,3), v4())
+    const code = category.slice(0,3).concat("-",v4())
     return {
+        _id: faker.database.mongodbObjectId(),
         title: faker.commerce.product(),
         description: faker.commerce.productDescription(),
         code,
         price: faker.commerce.price(),
         stock: faker.number.int({ min: 1, max: 200}),
         category,
+        status: true,
         thumbnail: [faker.image.url()]
     }
 }
 
-export const generateUsers = () => {
+export const generateUser = () => {
     let productsList = [];
     const cantProducts = Math.floor(Math.random()*10)
     for ( i = 1; i <= cantProducts; i++){

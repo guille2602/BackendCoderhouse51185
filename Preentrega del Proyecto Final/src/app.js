@@ -18,6 +18,7 @@ import messageModel from "./dao/models/messages.model.js";
 import sessionRouter from './routes/sessions.routes.js'
 import initializePassport from "./config/passport.config.js";
 import config from './config/config.js';
+import errorHandler from './middlewares/errorHandler.js'
 
 //Server vars
 const MONGOOSE = config.mongoUrl;
@@ -163,3 +164,6 @@ app.use("/api/carts", cartsRouter);
 app.use("/", viewsRouter);
 app.use("/chat", chatRouter);
 app.use("/api/sessions/", sessionRouter)
+
+//Error handler
+app.use(errorHandler);

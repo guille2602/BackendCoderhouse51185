@@ -11,5 +11,6 @@ router.get( "/products", webViews.renderProductsPage );
 router.get( "/login", publicAccess, webViews.renderLogin )
 router.get( "/register", webViews.renderRegister )
 router.get( "/profile", privateAccess, webViews.renderProfile )
+router.get( "/mockingproducts", webViews.renderMockingProducts )
 
 export default router;
