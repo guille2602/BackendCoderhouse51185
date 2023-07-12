@@ -45,7 +45,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\":\"Producto X\",\r\n    \"description\": \"Descripción de producto x\",\r\n    \"code\": \"COD000X\",\r\n    \"price\": \"999\",\r\n    \"stock\": \"100\",\r\n    \"category\": \"Categoría2\",\r\n    \"thumbnail\": \"\"\r\n}",
+					"raw": "{\r\n    \"title\":\"Producto Prueba Julio\",\r\n    \"description\": \"Descripción de producto Julio\",\r\n    \"code\": \"JUL0001\",\r\n    \"price\": \"95\",\r\n    \"stock\": \"8\",\r\n    \"category\": \"Julio\",\r\n    \"thumbnail\": \"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

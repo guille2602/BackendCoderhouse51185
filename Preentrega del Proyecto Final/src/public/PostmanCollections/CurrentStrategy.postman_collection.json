@@ -1,0 +1,31 @@
+{
+	"info": {
+		"_postman_id": "7f3ebb37-949c-4f28-8d6b-9f65bd3e5d7f",
+		"name": "CurrentStrategy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23540489"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/api/sessions/current",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/sessions/current",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"sessions",
+						"current"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

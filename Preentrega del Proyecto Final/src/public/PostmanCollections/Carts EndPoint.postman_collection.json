@@ -85,7 +85,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/carts/6461c3275df4573775e02354/products/645bda4e18579662c5695a70",
+					"raw": "http://localhost:8080/api/carts/6485fa85bbc9cfc8533679e4/products/645bda4e18579662c5695a70",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -94,7 +94,7 @@
 					"path": [
 						"api",
 						"carts",
-						"6461c3275df4573775e02354",
+						"6485fa85bbc9cfc8533679e4",
 						"products",
 						"645bda4e18579662c5695a70"
 					]
@@ -171,6 +171,28 @@
 						"api",
 						"carts",
 						"6461c3275df4573775e02354"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Método POST en purchase",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/carts/6485fa85bbc9cfc8533679e4/purchase",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carts",
+						"6485fa85bbc9cfc8533679e4",
+						"purchase"
 					]
 				}
 			},
