@@ -1,6 +1,15 @@
 import { cartsService, productService, ticketService } from "../repositories/index.js";
 import { v4 as uuidv4 } from "uuid";
 import transport from "../config/gmail.js";
+import { CustomError } from "../services/errors/CustomErrors.service.js";
+import { 
+    generateUpdateCartErrorInfo, 
+    generateCartErrorParams, 
+    generateCartOrProductErrorParams, 
+    generateProdsQuantityErrorParams, 
+    generateCartNotFoundError 
+} from "../services/errors/cartErrorsInfo.js";
+import { EErrors } from "../services/errors/enums.js"
 
 class CartController {
     async createCart(req, res) {
@@ -11,75 +20,209 @@ class CartController {
         });
     }
 
-    async readCart(req, res) {
-        const { code, status, payload } = await cartsService.readCart(
-            req.params.cid
-        );
-        res.status(code).send({
-            status,
-            payload,
-        });
+    async readCart(req, res, next) {
+        try{
+            //Handle id error
+            const OjbIdRegEx = /^[0-9a-fA-F]{24}$/;
+            const validIdFormat = OjbIdRegEx.test(req.params.cid);
+            if ( !validIdFormat ) {
+                CustomError.createError({
+                    name: "Read cart error",
+                    cause: generateCartErrorParams(req.params.cid),
+                    message: "Id provided didn't pass validation",
+                    errorCode: EErrors.INVALID_PARAM,
+                });
+            }
+            const { code, status, payload } = await cartsService.readCart(
+                req.params.cid
+            );
+            res.status(code).send({
+                status,
+                payload,
+            });
+        }
+        catch (error) {
+            next(error);
+        }
     }
 
-    async insertManyInCart(req, res) {
+    async insertManyInCart(req, res, next) {
         const products = req.body.products;
-        const { code, status, payload } = await cartsService.insertManyInCart(
+        try{
+            //handle id error
+            const OjbIdRegEx = /^[0-9a-fA-F]{24}$/;
+            const validIdFormat = OjbIdRegEx.test(req.params.cid);
+            if ( !validIdFormat ) {
+                CustomError.createError({
+                    name: "Update cart error",
+                    cause: generateCartErrorParams(req.params.cid),
+                    message: "Id provided didn't pass validation",
+                    errorCode: EErrors.INVALID_PARAM,
+                });
+            }
+            //handle json error
+            let validation = true;
+            products.forEach(item => {
+                if (!OjbIdRegEx.test(item.product._id) || typeof item.quantity !== "number"){
+                    validation = false;
+                }
+            })
+            if ( !validation ) {
+                CustomError.createError({
+                    name: "Update cart error",
+                    cause: generateUpdateCartErrorInfo(req.body.products),
+                    message: "Error updating cart with many products",
+                    errorCode: EErrors.INVALID_JSON,
+                });
+            }
+            const { code, status, payload } = await cartsService.insertManyInCart(
             req.params.cid,
             products
-        );
-        res.status(code).send({
-            status,
-            payload,
-        });
+            );
+            res.status(code).send({
+                status,
+                payload,
+            })
+        } catch (error){
+            next(error);
+        }
     }
 
-    async addProductInCart(req, res) {
-        const { code, status, payload } = await cartsService.addToCart(
-            req.params.cid,
-            req.params.pid
-        );
-        res.status(code).send({
-            status,
-            payload,
-        });
+    async addProductInCart(req, res, next) {
+        try{
+            //handle id error
+            const OjbIdRegEx = /^[0-9a-fA-F]{24}$/;
+            const validIdFormat = OjbIdRegEx.test(req.params.cid) && OjbIdRegEx.test(req.params.pid);
+            if ( !validIdFormat ) {
+                CustomError.createError({
+                    name: "Update cart error",
+                    cause: generateCartOrProductErrorParams(req.params.cid, req.params.pid),
+                    message: "Id provided didn't pass validation",
+                    errorCode: EErrors.INVALID_PARAM,
+                });
+            }
+            const { code, status, payload } = await cartsService.addToCart(
+                req.params.cid,
+                req.params.pid
+            );
+            res.status(code).send({
+                status,
+                payload,
+            });
+        } catch(error){
+            next(error);
+        }
     }
 
-    async updateCart(req, res) {
-        const { code, status, payload } = await cartsService.updateCart(
-            req.params.cid,
-            req.params.pid,
-            req.body.quantity
-        );
-        res.status(code).send({
-            status,
-            payload,
-        });
+    async updateCart(req, res, next) {
+        try{
+            //handle id error
+            if ( typeof parseInt(req.body.quantity) !== "number" || parseInt(req.body.quantity) === 0) {
+                CustomError.createError({
+                    name: "Update cart error",
+                    cause: generateProdsQuantityErrorParams(req.body.quantity),
+                    message: "Invalid quantity to update product in cart",
+                    errorCode: EErrors.INVALID_JSON,
+                });
+            }
+            const OjbIdRegEx = /^[0-9a-fA-F]{24}$/;
+            const validIdFormat = OjbIdRegEx.test(req.params.cid) && OjbIdRegEx.test(req.params.pid);
+            if ( !validIdFormat ) {
+                CustomError.createError({
+                    name: "Update cart error",
+                    cause: generateCartOrProductErrorParams(req.params.cid, req.params.pid),
+                    message: "Id provided didn't pass validation",
+                    errorCode: EErrors.INVALID_PARAM,
+                });
+            }
+
+            const { code, status, payload } = await cartsService.updateCart(
+                req.params.cid,
+                req.params.pid,
+                req.body.quantity
+            );
+            res.status(code).send({
+                status,
+                payload,
+            });
+        } catch(error){
+            next(error);
+        }
     }
 
-    async deleteCart(req, res) {
-        const { code, status, payload } = await cartsService.deleteProduct(
-            req.params.cid,
-            req.params.pid
-        );
-        res.status(code).send({
-            status,
-            payload,
-        });
+    async deleteCart(req, res, next) {
+        try{
+            //handle id error
+            const OjbIdRegEx = /^[0-9a-fA-F]{24}$/;
+            const validIdFormat = OjbIdRegEx.test(req.params.cid) && OjbIdRegEx.test(req.params.pid);
+            if ( !validIdFormat ) {
+                CustomError.createError({
+                    name: "Update cart error",
+                    cause: generateCartOrProductErrorParams(req.params.cid, req.params.pid),
+                    message: "Id provided didn't pass validation",
+                    errorCode: EErrors.INVALID_PARAM,
+                });
+            }
+            const { code, status, payload } = await cartsService.deleteProduct(
+                req.params.cid,
+                req.params.pid
+            );
+            res.status(code).send({
+                status,
+                payload,
+            });
+        } catch (error){
+            next(error);
+        }
     }
 
-    async emptyCart(req, res) {
-        const { code, status, payload } = await cartsService.emptyCart(
-            req.params.cid
-        );
-        res.status(code).send({
-            status,
-            payload,
-        });
+    async emptyCart(req, res, next) {
+        try{
+            //Handle id error
+            const OjbIdRegEx = /^[0-9a-fA-F]{24}$/;
+            const validIdFormat = OjbIdRegEx.test(req.params.cid);
+            if ( !validIdFormat ) {
+                CustomError.createError({
+                    name: "Read cart error",
+                    cause: generateCartErrorParams(req.params.cid),
+                    message: "Id provided didn't pass validation",
+                    errorCode: EErrors.INVALID_PARAM,
+                });
+            }
+            const { code, status, payload } = await cartsService.emptyCart(
+                req.params.cid
+            );
+            res.status(code).send({
+                status,
+                payload,
+            });
+        } catch (error){
+            next(error);
+        }
     }
 
-    async purchase(req, res) {
+    async purchase(req, res, next) {
         try {
+            //Handle id error
+            const OjbIdRegEx = /^[0-9a-fA-F]{24}$/;
+            const validIdFormat = OjbIdRegEx.test(req.params.cid);
+            if ( !validIdFormat ) {
+                CustomError.createError({
+                    name: "Read cart error",
+                    cause: generateCartErrorParams(req.params.cid),
+                    message: "Id provided didn't pass validation",
+                    errorCode: EErrors.INVALID_PARAM,
+                });
+            }
             const cart = await cartsService.readCart(req.params.cid);
+            if ( !cart ) {
+                CustomError.createError({
+                    name: "Read cart error",
+                    cause: generateCartNotFoundError(req.params.cid),
+                    message: "Cart with Id provided not found",
+                    errorCode: EErrors.INVALID_PARAM,
+                });
+            }
             const prodsList = cart.payload.products;
             //chequeo de stock
             let acceptedProds = [];
@@ -162,12 +305,7 @@ class CartController {
                 payload,
             });
         } catch (error) {
-            console.log("Error al finalizar la compra: " + error);
-            res.status(500).send({
-                status: "Failed",
-                message: "Falló al generar ticket",
-                payload: null,
-            });
+            next(error);
         }
     }
 }

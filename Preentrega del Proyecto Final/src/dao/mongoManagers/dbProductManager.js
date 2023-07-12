@@ -102,78 +102,42 @@ export default class MongoProductManager {
         let resStatus;
         let resDescription;
         let payload = null;
+        
+        const { title, description, code, price, status, stock, category, thumbnail } = updProduct;
+        const prodToUpdate = {
+            title,
+            description,
+            code,
+            price,
+            status,
+            stock,
+            category,
+            thumbnail,
+        };
 
-        //Validacion de formato
-        const regEx = /^[0-9a-fA-F]{24}$/;
-        const validIdFormat = regEx.test(id);
-
-        if (validIdFormat) {
-            const {
-                title,
-                description,
-                code,
-                price,
-                status,
-                stock,
-                category,
-                thumbnail,
-            } = updProduct;
-
-            if (
-                !title ||
-                !description ||
-                !code ||
-                !price ||
-                !status ||
-                !stock ||
-                !category
-            ) {
-                resStatus = 400;
-                resDescription =
-                    "Falló al actualizar, datos de producto incompletos";
-            }
-
-            const prodToUpdate = {
-                title,
-                description,
-                code,
-                price,
-                status,
-                stock,
-                category,
-                thumbnail,
-            };
-            try {
-                payload = await productsModel.updateOne(
-                    { _id: id },
-                    prodToUpdate
-                );
-                if (payload?.modifiedCount >= 1) {
+        try {
+            payload = await productsModel.updateOne({ _id: id }, prodToUpdate );
+            if (payload?.modifiedCount >= 1) {
+                resStatus = 200;
+                resDescription = "Sucess";
+            } else {
+                if (payload?.matchedCount >= 1) {
                     resStatus = 200;
-                    resDescription = "Sucess";
+                    resDescription =
+                        "No se detectaron modificaciones en el producto";
                 } else {
-                    if (payload?.matchedCount >= 1) {
-                        resStatus = 200;
-                        resDescription =
-                            "No se detectaron modificaciones en el producto";
-                    } else {
-                        resStatus = 400;
-                        resDescription =
-                            "Error: No se encontró ningún producto con el id enviado";
-                    }
+                    resStatus = 400;
+                    resDescription =
+                        "Error: No se encontró ningún producto con el id enviado";
                 }
-            } catch (error) {
-                console.log(
-                    "Error al actualizar la base de datos de MongoDB" + error
-                );
-                resStatus = 500;
-                resDescription =
-                    "Error al actualizar la base de datos de MongoDB";
             }
-        } else {
-            resStatus = 400;
-            resDescription = "Error: El formato de id es incorrecto";
-            console.log("Error: El formato de id es incorrecto");
+        } catch (error) {
+            console.log(
+                "Error al actualizar la base de datos de MongoDB" + error
+            );
+            resStatus = 500;
+            resDescription =
+                "Error al actualizar la base de datos de MongoDB";
         }
 
         return {
@@ -189,11 +153,6 @@ export default class MongoProductManager {
         let resStatus;
         let resDescription;
         let payload = null;
-
-        const regEx = /^[0-9a-fA-F]{24}$/;
-        const validIdFormat = regEx.test(id);
-
-        if (validIdFormat) {
             try {
                 const payload = await productsModel.deleteOne({ _id: id });
                 if (payload?.deletedCount >= 1) {
@@ -210,12 +169,6 @@ export default class MongoProductManager {
                 resDescription =
                     "Error al actualizar la base de datos de MongoDB";
             }
-        } else {
-            console.log("Error: El formato de id es incorrecto");
-            resStatus = 400;
-            resDescription = "Error: El formato de id es incorrecto";
-        }
-
         return {
             status: resStatus,
             description: resDescription,

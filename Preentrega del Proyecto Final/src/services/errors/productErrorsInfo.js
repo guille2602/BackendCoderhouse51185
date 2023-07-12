@@ -6,8 +6,8 @@ export const generateProductErrorInfo = (product) => {
     code: Tipo String / Se recibió: ${product.code}
     price: Tipo Number / Se recibió: ${product.price}
     status: Tipo Boolean / Se recibió: ${product.status}
-    stock: Tipo String / Se recibió: ${product.title}
-    category: Tipo String / Se recibió: ${product.title}
+    stock: Tipo String / Se recibió: ${product.stock}
+    category: Tipo String / Se recibió: ${product.category}
     `
 }
 
