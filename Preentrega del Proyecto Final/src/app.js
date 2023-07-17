@@ -19,6 +19,8 @@ import sessionRouter from './routes/sessions.routes.js'
 import initializePassport from "./config/passport.config.js";
 import config from './config/config.js';
 import errorHandler from './middlewares/errorHandler.js'
+import { addLogger } from './utils.js'
+import loggerRouter from './routes/logger.routes.js'
 
 //Server vars
 const MONGOOSE = config.mongoUrl;
@@ -158,12 +160,16 @@ io.on("connection", (socket) => {
     }); 
 });
 
+//Logger
+app.use(addLogger);
+
 //Routes config.
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/", viewsRouter);
 app.use("/chat", chatRouter);
 app.use("/api/sessions/", sessionRouter)
+app.use("/loggerTest", loggerRouter)
 
 //Error handler
 app.use(errorHandler);

@@ -3,6 +3,9 @@ import { dirname } from 'path';
 import bcrypt from 'bcrypt';
 import { faker } from '@faker-js/faker/locale/es_MX';
 import { v4 } from "uuid";
+import winston from 'winston';
+import path from 'path';
+import config from './config/config.js'
 
 //Absolut path
 const __filename = fileURLToPath(import.meta.url);
@@ -48,4 +51,62 @@ export const generateUser = () => {
         role: faker.datatype.boolean ? 'user' : 'admin'
     }
 
+}
+
+//Winston logger
+
+const envMode = config.envMode || "development";
+
+const customLevelOps = {
+    levels:{
+        fatal:0,
+        error:1,
+        warning:2,
+        info:3,
+        http:4,
+        debug:5 
+    },
+    colors: {
+        fatal:'red',
+        error:'magenta',
+        warning:'yellow',
+        info:'blue',
+        http:'green',
+        debug:'cyan',
+    }
+}
+
+const devLogger = winston.createLogger({
+    levels: customLevelOps.levels,
+    transports: [
+        new winston.transports.Console({level:"debug"})
+    ],
+    format: winston.format.combine(
+            winston.format.colorize( {colors : customLevelOps.colors}),
+            winston.format.simple()
+    )
+})
+
+const productionLogger = winston.createLogger({
+    levels: customLevelOps.levels,
+    transports: [
+        new winston.transports.Console({ level: "info"}),
+        new winston.transports.File({ 
+            filename: path.join(__dirname,'./errors.log'), level: "error" 
+        })
+    ],
+    format: winston.format.combine(
+        winston.format.colorize( {colors : customLevelOps.colors}),
+        winston.format.simple()
+)
+})
+
+//Middleware
+export const addLogger = (req, res, next) => {
+    if (envMode === "development") {
+        req.logger = devLogger;
+    } else {
+        req.logger = productionLogger;
+    }
+    next();
 }
