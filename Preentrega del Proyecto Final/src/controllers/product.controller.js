@@ -37,6 +37,7 @@ class ProductController {
             product,
         });
     } catch(error){
+        req.logger.error(error.cause)
         next(error);
     }
     }
@@ -56,6 +57,7 @@ class ProductController {
             const { status, description, payload } =
                 await productService.addProduct(req.body);
             if (status == 200) {
+                req.logger.info('Se ha agregado un producto nuevo');
                 const prodsList = await productService.readProducts();
                 io.emit("updatelist", prodsList);
             }
@@ -66,6 +68,7 @@ class ProductController {
             })
         }
         catch(error){
+            req.logger.error(error.cause)
             next(error);
         }
     }
@@ -105,6 +108,7 @@ class ProductController {
             })
         }
         catch(error){
+            req.logger.error(error.cause)
             next(error);
         }
     }
@@ -125,6 +129,7 @@ class ProductController {
             const { status, description, payload } =
                 await productService.deleteProduct(req.params.pid);
             if (status == 200) {
+                req.logger.info('Se ha agregado borrado un producto');
                 const prodsList = await productService.readProducts();
                 io.emit("updatelist", prodsList);
             }
@@ -134,6 +139,7 @@ class ProductController {
                 payload,
             });
         } catch (error){
+            req.logger.error(error.cause)
             next(error);
         }
     }

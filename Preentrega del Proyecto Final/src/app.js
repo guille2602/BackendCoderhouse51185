@@ -21,6 +21,7 @@ import config from './config/config.js';
 import errorHandler from './middlewares/errorHandler.js'
 import { addLogger } from './utils.js'
 import loggerRouter from './routes/logger.routes.js'
+import { productionLogger, devLogger } from './utils.js'
 
 //Server vars
 const MONGOOSE = config.mongoUrl;
@@ -41,7 +42,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 const server = app.listen(PORT, () => {
-    console.log(`Servidor funcionando en el puerto: ${PORT}`);
+    logger.info(`Servidor funcionando en el puerto: ${PORT}`);
 });
 
 //Sessions config with Mongo.
@@ -63,9 +64,11 @@ app.use(passport.session());
 
 //Socket config.
 
+const logger = config.envMode ==="development" ? devLogger : productionLogger;
+
 export const io = new Server(server);
 io.on("connection", (socket) => {
-    console.log("Nuevo cliente conectado");
+    logger.info("Nuevo cliente conectado");
 
     socket.on("addproduct", async (data) => {
         const { title, description, code, price, stock, category, thumbnail } =
@@ -97,7 +100,7 @@ io.on("connection", (socket) => {
                 io.emit("updatelist", parsedUpdatedList);
             }
         } catch (error) {
-            console.log("Error al agregar un producto en MongoDB" + error);
+            logger.error(`Error al conectar con MongoDB: ${error}`);
         }
     });
 
@@ -119,7 +122,7 @@ io.on("connection", (socket) => {
                 io.emit("updatelist", parsedUpdatedList);
             }
         } catch (error) {
-            console.log("Error al conectar con MongoDB" + error);
+            logger.error(`Error al conectar con MongoDB: ${error}`);
         }
     });
 
@@ -140,7 +143,7 @@ io.on("connection", (socket) => {
                 io.emit("updateChat", parsedchatLog); //emit => messageLogs
             }
         } catch (error) {
-            console.log("Error al agregar un producto en MongoDB" + error);
+            logger.error(`Error al conectar con MongoDB: ${error}`);
         }
     });
 
@@ -155,7 +158,7 @@ io.on("connection", (socket) => {
             io.emit("updateChat", parsedchatLog);
         } else {
             io.emit("failedLogin");
-            console.log('Login failed')
+            logger.info('Login failed')
         }
     }); 
 });

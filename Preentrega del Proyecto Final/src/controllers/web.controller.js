@@ -21,7 +21,7 @@ class WebViews {
                 prodsList,
             });
         } catch (error) {
-            console.log("Error al leer la base de datos de MongoDB", +error);
+            req.logger.error(`Error al leer la base de datos de MongoDB: ${error}`);
         }
     }
 

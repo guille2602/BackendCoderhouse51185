@@ -1,0 +1,16 @@
+[35merror[39m: 
+    Alguno de los campos requeridos no superó la validacion:
+    title: Tipo String / Se recibió: Producto Prueba Julio
+    description: Tipo String / Se recibió: Descripción de producto Julio
+    code: Tipo String / Se recibió: JUL0001
+    price: Tipo Number / Se recibió: undefined
+    status: Tipo Boolean / Se recibió: undefined
+    stock: Tipo String / Se recibió: 8
+    category: Tipo String / Se recibió: Julio
+    
+[35merror[39m: error test
+[31mfatal[39m: fatal test
+[35merror[39m: error test at 18/7/2023
+[31mfatal[39m: fatal error test at 18/7/2023
+[35merror[39m: error test at 18/7/2023, 12:17:08
+[31mfatal[39m: fatal error test at 18/7/2023, 12:17:08

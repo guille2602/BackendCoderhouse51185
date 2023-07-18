@@ -4,12 +4,12 @@ export class ChatRepository {
         this.dao = dao;
     }
 
-    async readChatlog(){
+    async readChatlog(req){
         try {
             const chatlog = await this.dao.find()
             return chatlog;
         } catch (error) {
-            console.log("Error al acceder al log de chats: " + error)
+            req.logger.error(`Error al acceder al log de chats: ${error}`)
         }
     }
 

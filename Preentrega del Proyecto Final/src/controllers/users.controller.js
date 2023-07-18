@@ -34,6 +34,7 @@ class SessionController {
         const isCoderPass = validatePassword(req.user, "adminCod3r123");
         if (req.user.email == "adminCoder@coder.com" && isCoderPass) {
             req.session.admin = true;
+            req.logger.info("Se ha logueado un administrador")
         } else {
             req.session.admin = false;
         }

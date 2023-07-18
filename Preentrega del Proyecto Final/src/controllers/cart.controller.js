@@ -32,6 +32,7 @@ class CartController {
                     message: "Id provided didn't pass validation",
                     errorCode: EErrors.INVALID_PARAM,
                 });
+                req.logger.error(`error: ${error.cause}`)
             }
             const { code, status, payload } = await cartsService.readCart(
                 req.params.cid
@@ -42,6 +43,7 @@ class CartController {
             });
         }
         catch (error) {
+            req.logger.error(error.cause)
             next(error);
         }
     }
@@ -59,6 +61,7 @@ class CartController {
                     message: "Id provided didn't pass validation",
                     errorCode: EErrors.INVALID_PARAM,
                 });
+                req.logger.error(`error: ${error.cause}`)
             }
             //handle json error
             let validation = true;
@@ -74,6 +77,7 @@ class CartController {
                     message: "Error updating cart with many products",
                     errorCode: EErrors.INVALID_JSON,
                 });
+                req.logger.error(`error: ${error.cause}`)
             }
             const { code, status, payload } = await cartsService.insertManyInCart(
             req.params.cid,
@@ -84,6 +88,7 @@ class CartController {
                 payload,
             })
         } catch (error){
+            req.logger.error(error.cause)
             next(error);
         }
     }
@@ -110,6 +115,7 @@ class CartController {
                 payload,
             });
         } catch(error){
+            req.logger.error(error.cause)
             next(error);
         }
     }
@@ -146,6 +152,7 @@ class CartController {
                 payload,
             });
         } catch(error){
+            req.logger.error(error.cause)
             next(error);
         }
     }
@@ -172,6 +179,7 @@ class CartController {
                 payload,
             });
         } catch (error){
+            req.logger.error(error.cause)
             next(error);
         }
     }
@@ -197,6 +205,7 @@ class CartController {
                 payload,
             });
         } catch (error){
+            req.logger.error(error.cause)
             next(error);
         }
     }
@@ -222,6 +231,7 @@ class CartController {
                     message: "Cart with Id provided not found",
                     errorCode: EErrors.INVALID_PARAM,
                 });
+                req.logger.error(`error: ${error.cause}`)
             }
             const prodsList = cart.payload.products;
             //chequeo de stock
@@ -305,7 +315,9 @@ class CartController {
                 payload,
             });
         } catch (error) {
+            req.logger.error(error.cause)
             next(error);
+
         }
     }
 }
