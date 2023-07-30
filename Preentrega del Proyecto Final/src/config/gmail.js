@@ -15,3 +15,18 @@ const transport = nodemailer.createTransport({
 })
 
 export default transport;
+
+export const sendRecoveryLink = async ( email, token) => {
+    const link=`http://localhost:8080/reset-password?=token=${token}`
+    await transport.sendMail({
+        from: config.gmail.user,
+        to: email,
+        subject: "Restablecer contraseña",
+        html: `
+            <div>
+                <h2>Has solicitado un cambio de contraseña, clickea el siguiente link para restablecer:</h2>
+                <a href="${link}"><button>Restabkecer contraseña</button></a>
+            </div>
+        `
+    })
+}

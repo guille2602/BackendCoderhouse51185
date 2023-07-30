@@ -5,7 +5,9 @@ import { faker } from '@faker-js/faker/locale/es_MX';
 import { v4 } from "uuid";
 import winston from 'winston';
 import path from 'path';
-import config from './config/config.js'
+import { Command } from "commander"
+import config from "./config/config.js"
+import jwt from 'jsonwebtoken';
 
 //Absolut path
 const __filename = fileURLToPath(import.meta.url);
@@ -55,7 +57,8 @@ export const generateUser = () => {
 
 //Winston logger
 
-const envMode = config.envMode || "development";
+const program = new Command();
+const envMode = program.opts().Mode;
 
 const customLevelOps = {
     levels:{
@@ -103,10 +106,24 @@ export const productionLogger = winston.createLogger({
 
 //Middleware
 export const addLogger = (req, res, next) => {
-    if (envMode === "development") {
+    if (envMode === "dev") {
         req.logger = devLogger;
     } else {
         req.logger = productionLogger;
     }
     next();
+}
+
+export const generateEmailToken = (email, expireTime) => {
+    const token = jwt.sign({email}, config.gmail.token, {expiresIn:expireTime})
+    return token
+}
+
+export const verifyEmailToken = ( token ) => {
+    try {
+        const info = jwt.verify(token, options.gmail.token);
+        return info.email;
+    } catch (error) {
+        return null;
+    }
 }

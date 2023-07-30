@@ -15,6 +15,7 @@ import viewsRouter from "./routes/views.routes.js";
 import __dirname from "./utils.js";
 import productsModel from "./dao/models/products.model.js";
 import messageModel from "./dao/models/messages.model.js";
+import userModel from "./dao/models/user.model.js"
 import sessionRouter from './routes/sessions.routes.js'
 import initializePassport from "./config/passport.config.js";
 import config from './config/config.js';
@@ -22,6 +23,7 @@ import errorHandler from './middlewares/errorHandler.js'
 import { addLogger } from './utils.js'
 import loggerRouter from './routes/logger.routes.js'
 import { productionLogger, devLogger } from './utils.js'
+import usersRouter from './routes/users.routes.js'
 
 //Server vars
 const MONGOOSE = config.mongoUrl;
@@ -71,6 +73,7 @@ io.on("connection", (socket) => {
     logger.info("Nuevo cliente conectado");
 
     socket.on("addproduct", async (data) => {
+        const admin = await userModel.findOne({email:"adminCoder@coder.com"});
         const { title, description, code, price, stock, category, thumbnail } =
             data;
         try {
@@ -83,6 +86,7 @@ io.on("connection", (socket) => {
                 stock,
                 category,
                 thumbnail,
+                owner: admin._id
             });
             if (sucess) {
                 const updatedList = await productsModel.find();
@@ -173,6 +177,7 @@ app.use("/", viewsRouter);
 app.use("/chat", chatRouter);
 app.use("/api/sessions/", sessionRouter)
 app.use("/loggerTest", loggerRouter)
+app.use("/users", usersRouter)
 
 //Error handler
 app.use(errorHandler);

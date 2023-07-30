@@ -1,6 +1,7 @@
 import { userService } from '../repositories/index.js';
-import { validatePassword } from '../utils.js';
+import { validatePassword, createHash, verifyEmailToken, generateEmailToken } from '../utils.js';
 import userDTO from '../dao/dto/user.dto.js';
+import { sendRecoveryLink } from '../config/gmail.js';
 
 class SessionController {
     async gitHubLogin(req, res) {
@@ -98,6 +99,78 @@ class SessionController {
         }
     }
 
+    async changeRole ( req , res, next ) {
+        try {
+            const user = await userService.getUserById({_id: req.params.uid});
+            if (user.role === "user"){
+                user.role = "premium";
+            } else if (user.role ==="premium"){
+                user.role = "user";
+            } else {
+                return res.json({
+                    status: "error",
+                    message: "User role not changed"
+                })
+            }
+            await userService.updateUser(user);
+            return res.json({
+                status:"sucess",
+                message:"Role has been changed"
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async passwordRecovery (req, res) {
+        try {
+            const { email } = req.body;
+            if (!email){
+                res.status(400).send({
+                    status:"failed",
+                    message: "No se ha recibido correo de usuario"
+                })
+            }
+            const user = await userService.getUser({ email: email});
+            if (!user){
+                res.send(`<h2>Ha ocurrido un error </h2><a href="/forgot-password">Volver a intentar</a>`)
+            }
+            const token = generateEmailToken(email,60*60)
+            await sendRecoveryLink(email, token)
+            res.send(`<h2>Se ha enviado un correo a su casilla para cambiar la contraseña.</h2><a href="/login">Volver</a>`)
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async resetPassword (req, res) {
+        try {
+            const token = req.query.token;
+            const { email, newPassword } = req.body;
+            const validEmail = verifyEmailToken(token)
+            if (!validEmail){
+                return res.send(`<h2>El enlace ha expirado, por favor genere uno nuevo</h2><a href="/forgot-password">Volver a generar</a>`)
+            }
+            const user = await userService.getUser({email:email})
+            if (!user){
+                return res.send("No usuario no está registrado")
+            }
+            if (validatePassword(newPassword,user)){
+                return res.send(`<h2>La contraseña no puede ser identica a la anterior</h2>`)
+            }
+            const userData = {
+                ...user._doc,
+                password: createHash(newPassword) 
+            };
+            const result = await userService.updateUser(userData);
+            res.render('login', {message:"Password has been successfully updated"})
+        } catch (error) {
+            next(error);
+        }
+    }
+
 }
+
 
 export default new SessionController();

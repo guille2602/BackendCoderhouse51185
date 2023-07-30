@@ -33,8 +33,16 @@ const productsSchema = new mongoose.Schema({
         type: String,
         required: true
     }, 
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users"
+    },
     thumbnail: [String]
 }) 
+
+productsSchema.pre('findOne', function (){
+    this.populate('owner')
+})
 
 productsSchema.plugin(mongoosePaginate);
 const productsModel = mongoose.model(productsCollection, productsSchema);
