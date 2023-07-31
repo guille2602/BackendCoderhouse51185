@@ -1,4 +1,5 @@
 import productsModel from "../models/products.model.js";
+import userModel from "../models/user.model.js";
 
 export default class MongoProductManager {
     async readProducts(limit = null) {
@@ -60,8 +61,9 @@ export default class MongoProductManager {
         let resStatus;
         let resDescription;
         let payload = null;
+        const admin = await userModel.findOne({email: "adminCoder@coder.com"})
 
-        const { title, description, code, price, stock, category, thumbnail } =
+        const { title, description, code, price, stock, category, thumbnail, owner = admin._id } =
             newProduct;
 
         if (!title || !description || !code || !price || !stock || !category) {
@@ -79,6 +81,7 @@ export default class MongoProductManager {
             stock,
             category,
             thumbnail,
+            owner
         };
 
         try {

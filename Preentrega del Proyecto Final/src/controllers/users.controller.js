@@ -144,7 +144,7 @@ class SessionController {
         }
     }
 
-    async resetPassword (req, res) {
+    async resetPassword (req, res, next) {
         try {
             const token = req.query.token;
             const { email, newPassword } = req.body;
@@ -156,7 +156,7 @@ class SessionController {
             if (!user){
                 return res.send("No usuario no está registrado")
             }
-            if (validatePassword(newPassword,user)){
+            if (validatePassword(user, newPassword)){
                 return res.send(`<h2>La contraseña no puede ser identica a la anterior</h2>`)
             }
             const userData = {
@@ -164,8 +164,9 @@ class SessionController {
                 password: createHash(newPassword) 
             };
             const result = await userService.updateUser(userData);
-            res.render('login', {message:"Password has been successfully updated"})
+            res.redirect("/login?message=PasswordSuccessfullyUpdated")
         } catch (error) {
+            console.log(error)
             next(error);
         }
     }

@@ -1,13 +1,12 @@
-const loginForm = document.getElementById('loginForm');
+const recoverPassForm = document.getElementById('recoverPassForm');
 
-loginForm.addEventListener('submit', ( event ) => {
+recoverPassForm.addEventListener('submit', ( event ) => {
     event.preventDefault();
-    //Mandar email y contraseña al back
-    const data = new FormData(loginForm);
+    const data = new FormData(recoverPassForm);
     const objectForm = {};
     data.forEach(( value, key ) => objectForm[key] = value)
     
-    fetch("/api/sessions/login",{
+    fetch("/api/sessions/forgot-password",{
         method: "POST",
         body: JSON.stringify(objectForm),
         headers:{
@@ -16,10 +15,14 @@ loginForm.addEventListener('submit', ( event ) => {
     }). then(( result ) => {
         if (result.status == 200){
             //Si es correcto, redirigir a lista de productos con bienvenida
-            window.location.replace('/products')
+            alert("Por favor revise su casilla de correo");
+            window.location.replace('/login')
         } else {
             //Enviar un sweet alert
-            console.log('Alguno de los datos es incorrecto')
+            console.log('Hubo un problema al cambiar la contraseña')
+            alert('Hubo un problema al cambiar la contraseña')
         }
     } )
+
+
 })

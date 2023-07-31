@@ -121,9 +121,10 @@ export const generateEmailToken = (email, expireTime) => {
 
 export const verifyEmailToken = ( token ) => {
     try {
-        const info = jwt.verify(token, options.gmail.token);
+        const info = jwt.verify(token, config.gmail.token);
         return info.email;
     } catch (error) {
+        console.log(error)
         return null;
     }
 }

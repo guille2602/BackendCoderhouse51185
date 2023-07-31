@@ -88,6 +88,19 @@ class WebViews {
         });
     }
 
+    renderForgotPassword(req, res) {
+        res.render("forgotpass", {
+            css: "home.css",
+        });
+    }
+
+    renderChangePassword(req, res) {
+        res.render("changepass", {
+            token: req.query.token,
+            css: "home.css",
+        });
+    }
+
     async renderMockingProducts ( req, res ){
         const quantity = req.query.quantity || 100;
         const products = [];

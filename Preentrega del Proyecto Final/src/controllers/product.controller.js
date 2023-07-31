@@ -1,5 +1,5 @@
 import { request, response } from "express";
-import { productService } from "../repositories/index.js";
+import { productService, userService } from "../repositories/index.js";
 import { io } from "../app.js";
 import { CustomError } from "../services/errors/CustomErrors.service.js";
 import { generateProductErrorInfo, generateProductErrorParams } from "../services/errors/productErrorsInfo.js"
@@ -45,7 +45,7 @@ class ProductController {
     async addProduct(req = request, res = response, next) {
         try{
             //Handle json error
-            const { title, description: desc, code, price, stock, category } = req.body;
+            const { title, description: desc, code, price, stock, category, thumbnail } = req.body;
             if (!title || !desc || !code || !price || !stock || !category) {
                 CustomError.createError({
                     name: "Create product error",
@@ -54,8 +54,20 @@ class ProductController {
                     errorCode: EErrors.INVALID_JSON,
                 });
             }
+            const owner = await userService.getUser({email: req.session.user.email});
+
+            const newProduct = {
+                title, 
+                description: desc,
+                code,
+                price,
+                stock,
+                category,
+                thumbnail,
+                owner: owner._id
+            };
             const { status, description, payload } =
-                await productService.addProduct(req.body);
+                await productService.addProduct(newProduct);
             if (status == 200) {
                 req.logger.info('Se ha agregado un producto nuevo');
                 const prodsList = await productService.readProducts();
@@ -75,7 +87,17 @@ class ProductController {
 
     async updateProduct(req , res, next) {
         try{
-            //Handle id error
+            //Mover esto despues a un middleware
+            const {product} = await productService.readProduct(req.params.pid);
+            const productOwner = product.owner._id
+            const user = await userService.getUser({email:req.user.email});
+            if (productOwner.toString() !== user._id.toString() && !req.session?.admin){
+                return res.status(400).send({
+                    status: "failed",
+                    description: "El usuario no puede editar productos que no le pertenecen",
+                    payload: null
+                })
+            }
             const OjbIdRegEx = /^[0-9a-fA-F]{24}$/;
             const validIdFormat = OjbIdRegEx.test(req.params.pid);
             if ( !validIdFormat ) {
@@ -116,6 +138,16 @@ class ProductController {
     async deleteProduct(req, res, next) {
         try{
             //Handle id error
+            const {product} = await productService.readProduct(req.params.pid);
+            const productOwner = product.owner._id
+            const user = await userService.getUser({email:req.user.email});
+            if (productOwner.toString() !== user._id.toString() && !req.session?.admin ){
+                return res.status(400).send({
+                    status: "failed",
+                    description: "El usuario no puede editar productos que no le pertenecen",
+                    payload: null
+                })
+            }
             const OjbIdRegEx = /^[0-9a-fA-F]{24}$/;
             const validIdFormat = OjbIdRegEx.test(req.params.pid);
             if ( !validIdFormat ) {

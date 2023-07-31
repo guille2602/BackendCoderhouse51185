@@ -12,5 +12,7 @@ router.get( "/login", publicAccess, webViews.renderLogin )
 router.get( "/register", webViews.renderRegister )
 router.get( "/profile", privateAccess, webViews.renderProfile )
 router.get( "/mockingproducts", webViews.renderMockingProducts )
+router.get( "/forgot-password", webViews.renderForgotPassword )
+router.get( "/reset-password", webViews.renderChangePassword )
 
 export default router;

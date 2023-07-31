@@ -1,0 +1,12 @@
+
+<div class="flex-column">
+    <h1>Cambio de contraseña</h1>
+    <form method="post" action="/api/sessions/reset-password?token={{token}}">
+        <label for="email">Ingrese mail:</label>
+        <input name="email" type="email" >
+        <label for="newPassword">Ingrese contraseña nueva:</label>
+        <input name="newPassword" type="password">
+        <br>
+        <input class="btn btn-primary" type="submit">
+    </form>
+</div>

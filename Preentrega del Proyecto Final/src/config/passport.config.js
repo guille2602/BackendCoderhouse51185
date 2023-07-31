@@ -23,7 +23,7 @@ const initializePassport = () => {
                     first_name:profile._json.name,
                     last_name:' ',
                     age:18,
-                    email:profile._json.email || "noemail@mail.com",
+                    email,
                     password:'',
                 }
                 const emptyCart = { 

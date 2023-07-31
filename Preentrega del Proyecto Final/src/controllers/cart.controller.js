@@ -1,4 +1,4 @@
-import { cartsService, productService, ticketService } from "../repositories/index.js";
+import { cartsService, productService, ticketService, userService } from "../repositories/index.js";
 import { v4 as uuidv4 } from "uuid";
 import transport from "../config/gmail.js";
 import { CustomError } from "../services/errors/CustomErrors.service.js";
@@ -106,6 +106,20 @@ class CartController {
                     errorCode: EErrors.INVALID_PARAM,
                 });
             }
+
+            //Validate own products
+            const {product} = await productService.readProduct(req.params.pid);
+            const productOwner = product.owner._id;
+            const user = await userService.getUser({email:req.user.email});
+            const userId = user._id;
+            if (productOwner.toString() == userId.toString() ){
+                return res.status(400).send({
+                    status: "failed",
+                    description: "El usuario no puede agregar sus productos al carrito",
+                    payload: null
+                })
+            }
+            //end of validation
             const { code, status, payload } = await cartsService.addToCart(
                 req.params.cid,
                 req.params.pid
