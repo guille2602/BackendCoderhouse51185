@@ -23,5 +23,10 @@ export default {
         pass: process.env.GMAIL_PASS,
         token: process.env.SECRET_TOKEN
     },
+    github: {
+        clientId: process.env.GITHUB_CLIENTID,
+        clientSecret: process.env.GITHUB_CLIENTSECRET,
+        clientcallback: process.env.GITHUB_CLIENTCALLBACKURL
+    },
     envMode: process.env.ENV_MODE,
 }
