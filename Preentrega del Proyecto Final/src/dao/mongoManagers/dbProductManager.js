@@ -157,7 +157,7 @@ export default class MongoProductManager {
         let resDescription;
         let payload = null;
             try {
-                const payload = await productsModel.deleteOne({ _id: id });
+                payload = await productsModel.deleteOne({ _id: id });
                 if (payload?.deletedCount >= 1) {
                     resStatus = 200;
                     resDescription = "Sucess";

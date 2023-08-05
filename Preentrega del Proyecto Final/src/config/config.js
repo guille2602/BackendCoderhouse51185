@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import __dirname from '../utils.js'
 import path from "path";
 import { Command } from "commander"
+import swaggerJsDoc from "swagger-jsdoc"
 
 const program = new Command();
 program.option("-mode <modo>", "Modo de inicio", "dev")
@@ -30,3 +31,17 @@ export default {
     },
     envMode: process.env.ENV_MODE,
 }
+
+const swaggerOptions = {
+    definition: {
+        openapi:"3.0.1",
+        info: {
+            title: "Documentación de ecommerce",
+            version: "1.0.0",
+            description: "Definición de endpoints de la api"
+        },
+    },
+    apis:[`${path.join(__dirname,"/docs/**/*.yaml")}`]
+}
+
+export const swaggerSpecs = swaggerJsDoc(swaggerOptions);

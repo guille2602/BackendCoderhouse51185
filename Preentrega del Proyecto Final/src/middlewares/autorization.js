@@ -19,7 +19,7 @@ export const checkRole = ( roles ) => {
             })
         }
         if (!roles.includes(req.user.role)){
-            return res.json({
+            return res.status(401).json({
                 status: "error",
                 message: "Not authorized role"
             })

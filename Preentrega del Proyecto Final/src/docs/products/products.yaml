@@ -1,0 +1,299 @@
+paths:
+  /api/products/:
+    get:
+      summary: Obtiene todos los productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Devuelve un listado de todos los productos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schema/Product'
+        "500":
+          description: Error interno del servidor
+    post:
+      summary: Crea un producto nuevo a partir de los datos enviados por body
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#components/requestBodies/addProduct'
+      responses:
+        "200": 
+          description: Información del estado de la respuesta y payload del producto.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  description:
+                    type: string
+                    example: "sucess"
+                  payload:
+                    $ref: '#components/schema/Product' 
+        "400":
+          description: Error de requerimiento, no se han pasado todos los datos requeridos.
+        "401":
+          description: No se cuenta con permisos de administrador o usuario premium.
+        "500":
+          description: Error interno del servidor
+
+  /api/products/{pid}:
+    get:
+      summary: Devuelve el producto con el id indicado como parámetro
+      tags:
+        - Product
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: pid es el id del producto que se quiere obtener
+          schema:
+            $type: string
+      responses:
+        "200": 
+          description: Información de la respuesta y producto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  description:
+                    type: string
+                    example: "sucess"
+                  payload:
+                    type: object
+                    properties:
+                    $ref: '#components/schema/Product'
+        "500":
+          description: Error interno del servidor
+    put: 
+      summary: Actualiza el producto con el id seleccionado
+      tags:
+        - Product
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: pid es el id del producto
+          schema:
+            $type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#components/requestBodies/updateProduct'
+      responses:
+        "200": 
+          description: Información de la respuesta y producto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  description:
+                    type: string
+                    example: "sucess"
+                  payload:
+                    type: object
+                    properties:
+                      acknowledged: 
+                        description: Indica si el id fue reconocido como correcto
+                        type: boolean
+                        example: true
+                      modifiedCount: 
+                        description: Indica si se produjeron cambios respecto al documento original
+                        type: number
+                        example: 1
+                      upsertedId:
+                        type: string
+                        example: null
+                      upsertedCount:
+                        type: number
+                        example: 0
+                      matchedCount:
+                        description: Indica si el id proporcionado fue encontrado en la base de datos
+                        type: number
+                        example: 1
+      "400":
+        description: Error de requerimiento, no se han pasado todos los datos requeridos.
+      "401":
+        description: No se cuenta con permisos de administrador o usuario premium.
+      "403":
+        description: El usuario no tiene permitido modificar un producto porque no es de su autoría.
+    delete: 
+      summary: Elimina el producto con el id seleccionado
+      tags:
+        - Product
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: pid es el id del producto
+          schema:
+            $type: string
+      responses:
+        "200": 
+          description: Información de la respuesta y producto
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    example: 200
+                  description:
+                    type: string
+                    example: "sucess"
+                  payload:
+                    type: object
+                    properties:
+                      acknowledged: 
+                        description: Indica si el id fue reconocido como correcto 
+                        type: boolean
+                        example: true,
+                      deletedCount: 
+                        description: Indica cuantos elementos han sido eliminados.
+                        type: number
+                        example: 1
+      "400":
+        description: Error de requerimiento, no se han pasado todos los datos requeridos.
+      "401":
+        description: No se cuenta con permisos de administrador o usuario premium.
+      "403":
+        description: El usuario no tiene permitido modificar un producto porque no es de su autoría.
+
+components:
+  schema:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id de producto generado por base de datos.
+        title:
+          type: string
+          description: Nombre del producto.
+        description:
+          type: string
+          description: Descripción del producto.
+        code:
+          type: string
+          description: Código de producto (Funciona como índice).
+        price:
+          type: number
+          description: Precio del producto.
+        status:
+          type: Boolean
+          description: Indicador para saber si el producto se encuentra activo.
+        stock:
+          type: number
+          description: Cantidad de productos disponibles.
+        category:
+          type: string
+          description: Categoría a la cual pertenece el producto.
+        owner:
+          type: ObjectId
+          description: Id del dueño del producto.
+        thumbnail:
+          type: array
+          description: Arreglo de urls de fotos del producto.
+      example:
+        _id: ObjectId('645bda4e18579662c5695a70')
+        title: Nombre de producto
+        description: Descripción de producto
+        code: COD0001
+        price: 99
+        status: true
+        stock: 10
+        category: Categoría
+        owner: ObjectId('64907e2737a2e5bfe4160980')
+        thumbnail: ["https://cdn1.vectorstock.com/i/1000x1000/79/10/product-icon-simple-element-vector-27077910.jpg"]
+  requestBodies:
+    addProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Nombre del producto.
+        description:
+          type: string
+          description: Descripción del producto.
+        code:
+          type: string
+          description: Código de producto (Funciona como índice).
+        price:
+          type: number
+          description: Precio del producto.
+        stock:
+          type: number
+          description: Cantidad de productos disponibles.
+        category:
+          type: string
+          description: Categoría a la cual pertenece el producto.
+        thumbnail:
+          type: array
+          description: Arreglo de urls de fotos del producto.
+      example:
+        title: Nombre de producto
+        description: Descripción de producto
+        code: COD0001
+        price: 99
+        status: true
+        stock: 10
+        category: Categoría
+        thumbnail: ["https://cdn1.vectorstock.com/i/1000x1000/79/10/product-icon-simple-element-vector-27077910.jpg"]
+    updateProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Nombre del producto.
+        description:
+          type: string
+          description: Descripción del producto.
+        code:
+          type: string
+          description: Código de producto (Funciona como índice).
+        price:
+          type: number
+          description: Precio del producto.
+        status:
+          type: boolean
+          description: Indicador si el producto está activo en la tienda o no.
+        stock:
+          type: number
+          description: Cantidad de productos disponibles.
+        category:
+          type: string
+          description: Categoría a la cual pertenece el producto.
+        thumbnail:
+          type: array
+          description: Arreglo de urls de fotos del producto.
+      example:
+        title: Nombre de producto
+        description: Descripción de producto
+        code: COD0001
+        price: 99
+        status: true
+        stock: 10
+        category: Categoría
+        thumbnail: ["https://cdn1.vectorstock.com/i/1000x1000/79/10/product-icon-simple-element-vector-27077910.jpg"]

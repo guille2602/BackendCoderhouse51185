@@ -24,6 +24,8 @@ import { addLogger } from './utils.js'
 import loggerRouter from './routes/logger.routes.js'
 import { productionLogger, devLogger } from './utils.js'
 import usersRouter from './routes/users.routes.js'
+import { swaggerSpecs } from "./config/config.js"
+import swaggerUi from "swagger-ui-express"
 
 //Server vars
 const MONGOOSE = config.mongoUrl;
@@ -162,7 +164,7 @@ io.on("connection", (socket) => {
             io.emit("updateChat", parsedchatLog);
         } else {
             io.emit("failedLogin");
-            logger.info('Login failed')
+            logger.info('Login failed');
         }
     }); 
 });
@@ -175,9 +177,10 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/", viewsRouter);
 app.use("/chat", chatRouter);
-app.use("/api/sessions/", sessionRouter)
-app.use("/loggerTest", loggerRouter)
-app.use("/users", usersRouter)
+app.use("/api/sessions/", sessionRouter);
+app.use("/loggerTest", loggerRouter);
+app.use("/users", usersRouter);
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 //Error handler
 app.use(errorHandler);

@@ -53,6 +53,10 @@ class ProductController {
                     message: "An error ocurred while creating product",
                     errorCode: EErrors.INVALID_JSON,
                 });
+                return res.status(400).json({
+                    status: "failed",
+                    description: "Bad request, incomplete data"
+                })
             }
             const owner = await userService.getUser({email: req.session.user.email});
 
@@ -92,7 +96,7 @@ class ProductController {
             const productOwner = product.owner._id
             const user = await userService.getUser({email:req.user.email});
             if (productOwner.toString() !== user._id.toString() && !req.session?.admin){
-                return res.status(400).send({
+                return res.status(403).send({
                     status: "failed",
                     description: "El usuario no puede editar productos que no le pertenecen",
                     payload: null
@@ -116,6 +120,12 @@ class ProductController {
                         message: "An error ocurred while creating product",
                         errorCode: EErrors.INVALID_JSON,
                     });
+
+                    return res.status(400).json({
+                        status: "failed",
+                        description: "Bad request, incomplete data"
+                    })
+
             }
 
             const { status, description, payload } = await productService.updateProduct(req.params.pid, req.body);
@@ -142,7 +152,7 @@ class ProductController {
             const productOwner = product.owner._id
             const user = await userService.getUser({email:req.user.email});
             if (productOwner.toString() !== user._id.toString() && !req.session?.admin ){
-                return res.status(400).send({
+                return res.status(403).send({
                     status: "failed",
                     description: "El usuario no puede editar productos que no le pertenecen",
                     payload: null
@@ -157,6 +167,10 @@ class ProductController {
                     message: "Id provided didn't pass validation",
                     errorCode: EErrors.INVALID_PARAM,
                 });
+                return res.status(400).json({
+                    status: "failed",
+                    description: "Bad request, incomplete data"
+                })
             }
             const { status, description, payload } =
                 await productService.deleteProduct(req.params.pid);

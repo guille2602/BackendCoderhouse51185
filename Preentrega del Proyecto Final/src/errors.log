@@ -49,3 +49,6 @@
 [35merror[39m: undefined
 [35merror[39m: undefined
 [35merror[39m: undefined
+[35merror[39m: 
+    El id no es válido, se esperaba ObjectId / Se recibió: {pid}
+    
