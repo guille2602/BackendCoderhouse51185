@@ -331,7 +331,6 @@ class CartController {
         } catch (error) {
             req.logger.error(error.cause)
             next(error);
-
         }
     }
 }

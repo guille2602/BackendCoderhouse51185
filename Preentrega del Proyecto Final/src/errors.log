@@ -52,3 +52,13 @@
 [35merror[39m: 
     El id no es válido, se esperaba ObjectId / Se recibió: {pid}
     
+[35merror[39m: 
+    El id no es válido: 
+    Se esperaba en Cart ObjectId / Se recibió: 6485fa85bbc9cfc8533679e4
+    Se esperaba en Product ObjectId / Se recibió: 645bda4e18579662c5695a7
+    
+[35merror[39m: 
+    El id no es válido: 
+    Se esperaba en Cart ObjectId / Se recibió: 6485fa85bbc9cfc8533679e4
+    Se esperaba en Product ObjectId / Se recibió: 645bda4e18579662c5695a7
+    

@@ -52,7 +52,7 @@ paths:
     get:
       summary: Devuelve el producto con el id indicado como parámetro
       tags:
-        - Product
+        - Products
       parameters:
         - name: pid
           in: path
@@ -85,7 +85,7 @@ paths:
     put: 
       summary: Actualiza el producto con el id seleccionado
       tags:
-        - Product
+        - Products
       parameters:
         - name: pid
           in: path
@@ -143,7 +143,7 @@ paths:
     delete: 
       summary: Elimina el producto con el id seleccionado
       tags:
-        - Product
+        - Products
       parameters:
         - name: pid
           in: path

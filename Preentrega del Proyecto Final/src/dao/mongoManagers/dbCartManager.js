@@ -46,19 +46,18 @@ export default class MongoCartManager {
                 cart = await cartsModel.findOne({ _id: id }).lean();
                 if (cart) {
                     code = 200;
-                    status = "Sucess";
+                    status = "sucess";
                 } else {
-                    console.log("Error: El id ingresado no existe");
                     code = 400;
-                    status = "Error: El id ingresado no existe";
+                    status = "error: El id ingresado no existe";
                 }
             } catch (error) {
                 code = 500;
-                status = "Error al leer la base de datos de MongoDB";
+                status = "error al leer la base de datos de MongoDB";
             }
         } else {
             code = 400;
-            status = "Error: El formato de id es incorrecto";
+            status = "error: El formato de id es incorrecto";
         }
         return {
             code,
@@ -76,7 +75,7 @@ export default class MongoCartManager {
             return {
                 code: 400,
                 description:
-                    "Error: No se han enviado todos los datos para agregar un producto al carrito",
+                    "error: No se han enviado todos los datos para agregar un producto al carrito",
                 payload: null,
             };
         }
@@ -93,7 +92,7 @@ export default class MongoCartManager {
                 if (!productExists) {
                     return {
                         code: 400,
-                        status: "Error: El id de producto es incorrecto",
+                        status: "error: El id de producto es incorrecto",
                         payload: null,
                     };
                 }
@@ -102,7 +101,7 @@ export default class MongoCartManager {
                 if (!cartExists) {
                     return {
                         code: 400,
-                        status: "Error: El id de carrito es incorrecto",
+                        status: "error: El id de carrito es incorrecto",
                         payload: null,
                     };
                 }
@@ -129,20 +128,20 @@ export default class MongoCartManager {
 
                 return {
                     code: 200,
-                    status: "Sucess",
+                    status: "sucess",
                     payload,
                 };
             } catch (error) {
                 return {
                     code: 500,
-                    status: "Error al actualizar el carrito",
+                    status: "error al actualizar el carrito",
                     payload,
                 };
             }
         } else {
             return {
                 code: 400,
-                status: "Error: El formato de id es incorrecto",
+                status: "error: El formato de id es incorrecto",
             };
         }
     }
