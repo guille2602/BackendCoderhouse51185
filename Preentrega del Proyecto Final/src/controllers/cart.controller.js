@@ -83,7 +83,7 @@ class CartController {
             req.params.cid,
             products
             );
-            res.status(code).send({
+            return res.status(code).send({
                 status,
                 payload,
             })
@@ -124,7 +124,7 @@ class CartController {
                 req.params.cid,
                 req.params.pid
             );
-            res.status(code).send({
+            return res.status(code).send({
                 status,
                 payload,
             });

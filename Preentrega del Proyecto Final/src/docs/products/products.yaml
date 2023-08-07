@@ -62,7 +62,7 @@ paths:
             $type: string
       responses:
         "200": 
-          description: Información de la respuesta y producto
+          description: Devuelve información del producto
           content:
             application/json:
               schema:
@@ -78,6 +78,8 @@ paths:
                     type: object
                     properties:
                     $ref: '#components/schema/Product'
+        "400":
+          description: Se ha proporcionado un id incorrecto o inexistente.
         "500":
           description: Error interno del servidor
     put: 

@@ -15,12 +15,16 @@ export default class MongoCartManager {
             cart = await cartsModel.create(newCart);
             if (cart) {
                 code = 200;
-                status = "Sucess";
+                status = "sucess";
             }
         } catch (error) {
             console.log("Error al crear carrito en MongoDB" + error);
             code = 500;
             status = "Error al crear carrito en MongoDB";
+            return {
+                code,
+                status,
+            };
         }
         return {
             code,

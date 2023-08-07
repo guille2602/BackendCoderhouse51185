@@ -17,11 +17,17 @@ export const onlyuserAuth = ( req , res , next ) => {
 }
 
 export const validateUser = async ( req , res , next) => {
-    const user = await userService.getUser({email:req.user.email});
+    let user
+    if (req.user){
+        user = await userService.getUser({email:req.user.email});
+    } else return res.status(401).json({
+        status: "failed",
+        message: "No se encuentra logueado"
+    })
     if ( req.params.cid.toString() !== user.cart._id.toString()){
         return res.status(403).send({
-            status: "Failed",
-            message:`Los usuarios solo pueden acceder a su propio carrito: ${user.cart._id === req.params.cid}`
+            status: "failed",
+            message:`Los usuarios solo pueden acceder a su propio carrito`
         })
     }
     next();
