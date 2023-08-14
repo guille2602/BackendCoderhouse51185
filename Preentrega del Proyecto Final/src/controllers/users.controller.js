@@ -55,7 +55,7 @@ class SessionController {
 
     sucessRegister(req, res) {
         res.send({
-            status: "Sucess",
+            status: "sucess",
             message: "Usuario creado existosamente",
         });
     }

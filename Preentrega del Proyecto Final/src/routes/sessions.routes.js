@@ -24,8 +24,8 @@ sessionRouter.post(
     sessionController.login
 );
 sessionRouter.get("/failregister", sessionController.failedRegister);
-sessionRouter.post(
-    "/register",
+
+sessionRouter.post( "/register",
     passport.authenticate("register", { failureRedirect: "/api/sessions/failregister" }),
     sessionController.sucessRegister
 );

@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/app.js",
+    "test1": "mocha test/supertest.test.js"
   },
   "keywords": [],
   "author": "",
@@ -33,5 +34,10 @@
     "sweetalert2": "^11.7.5",
     "uuid": "^9.0.0",
     "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "supertest": "^6.3.3",
+    "mocha": "^10.2.0",
+    "chai": "^4.3.7"
   }
 }
