@@ -13,7 +13,7 @@ const errorHandler = ( error, req , res , next ) => {
         case EErrors.INVALID_PARAM:
             return res.status(400).json({status:"error", message: error.message})
         default:
-            return res.json({status:"error", message: error.message})
+            return res.status(400).json({status:"error", message: error.message})
     }
     next();
 }

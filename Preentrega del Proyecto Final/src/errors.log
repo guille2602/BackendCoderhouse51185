@@ -213,3 +213,49 @@
     stock: Tipo String / Se recibió: 20
     category: Tipo String / Se recibió: Test
     
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: undefined
+[35merror[39m: 
+    Alguno de los campos requeridos no superó la validacion:
+    title: Tipo String / Se recibió: Producto de prueba
+    description: Tipo String / Se recibió: Descripción del producto
+    code: Tipo String / Se recibió: TEST001
+    price: Tipo Number / Se recibió: undefined
+    status: Tipo Boolean / Se recibió: undefined
+    stock: Tipo String / Se recibió: 10
+    category: Tipo String / Se recibió: Test
+    
+[35merror[39m: 
+    Alguno de los campos requeridos no superó la validacion:
+    title: Tipo String / Se recibió: Producto de prueba
+    description: Tipo String / Se recibió: Descripción del producto
+    code: Tipo String / Se recibió: TEST001
+    price: Tipo Number / Se recibió: 99
+    status: Tipo Boolean / Se recibió: undefined
+    stock: Tipo String / Se recibió: 20
+    category: Tipo String / Se recibió: Test
+    
+[35merror[39m: undefined

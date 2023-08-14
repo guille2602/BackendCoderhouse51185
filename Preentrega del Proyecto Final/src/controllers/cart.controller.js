@@ -307,7 +307,7 @@ class CartController {
             <h1>Información de su compra</h1>
             <p>
             <b>N° de ticket:</b> ${payload.code}<br>
-            <b>Fecha y hora de compra:</b>  ${payload.purchase_datetime.toLocaleDateString()}, ${payload.purchase_datetime.toLocaleTimeString()}<br>
+            <b>Fecha y hora de compra:</b>  ${payload.purchase_datetime}<br>
             <b>Importe total:</b> $${payload.amount}<br>
             ${rejectedProds.length > 0 ? rejectedProdsText : ""}
             </p>
