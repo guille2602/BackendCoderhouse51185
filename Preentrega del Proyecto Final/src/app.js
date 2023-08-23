@@ -179,7 +179,7 @@ app.use("/", viewsRouter);
 app.use("/chat", chatRouter);
 app.use("/api/sessions/", sessionRouter);
 app.use("/loggerTest", loggerRouter);
-app.use("/users", usersRouter);
+app.use("/api/users", usersRouter);
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 //Error handler

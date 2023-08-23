@@ -2,6 +2,7 @@ import { userService } from '../repositories/index.js';
 import { validatePassword, createHash, verifyEmailToken, generateEmailToken } from '../utils.js';
 import userDTO from '../dao/dto/user.dto.js';
 import { sendRecoveryLink } from '../config/gmail.js';
+import userModel from '../dao/models/user.model.js';
 
 class SessionController {
     async gitHubLogin(req, res) {
@@ -39,6 +40,10 @@ class SessionController {
         } else {
             req.session.admin = false;
         }
+        const user = await userModel.findOne({email: req.user.email});
+        user.last_connection = new Date();
+        await userModel.updateOne({email: req.user.email}, user);
+
         res.status(200).send({
             status: "Sucess",
             message: "Logueado correctamente",
@@ -61,6 +66,7 @@ class SessionController {
     }
 
     async logout(req, res) {
+        const userEmail = JSON.parse(JSON.stringify(req.user.email));
         req.session.destroy((e) => {
             if (e) {
                 res.status(500).send({
@@ -70,6 +76,9 @@ class SessionController {
                 });
             }
         });
+        const user = await userModel.findOne({email: userEmail})
+        user.last_connection = new Date();
+        await userModel.updateOne({email: userEmail}, user)
         res.redirect("/login");
     }
 
@@ -116,6 +125,48 @@ class SessionController {
             return res.json({
                 status:"sucess",
                 message:"Role has been changed"
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async updateUser (req, res, next ) {
+        try {
+            const uId = req.params.uid;
+            const user = await userModel.findById(uId);
+            const identificacion = req.files['identificacion']?.[0] || null;
+            const domicilio = req.files['domicilio']?.[0] || null;
+            const estadoDeCuenta = req.files['estadoDeCuenta']?.[0] || null;
+            const docs = [];
+            if ( identificacion ){
+                docs.push({
+                    name: "identificacion",
+                    reference: identificacion.filename
+                })
+            }
+            if ( domicilio ){
+                docs.push({
+                    name: "domicilio",
+                    reference: domicilio.filename
+                })
+            }
+            if ( estadoDeCuenta ){
+                docs.push({
+                    name: "estadoDeCuenta",
+                    reference: estadoDeCuenta.filename
+                })
+            }
+            if (docs.length === 3){
+                user.status = "completo"
+            } else {
+                user.status = "incompleto"
+            }
+            user.documents = docs;
+            await userModel.findByIdAndUpdate(user._id, user);
+            res.status(200).json({
+                status: "success",
+                message: "Documentos actualizados correctamente"
             })
         } catch (error) {
             next(error);

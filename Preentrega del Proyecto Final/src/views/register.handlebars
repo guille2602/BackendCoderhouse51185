@@ -1,6 +1,6 @@
 <div class="flex-column">
     <h1>Registro</h1>
-    <form id="registerForm">
+    <form id="registerForm" enctype="multipart/form-data">
         <label for="first_name">Nombre</label>
         <input name="first_name">
         <label for="last_name">Apellido</label>
@@ -11,8 +11,12 @@
         <input name="age" type="number">
         <label for="password">Contraseña</label>
         <input name="password" type="password">
+        <label for="file">Foto de perfil:</label>
+        <input type="file" placeholder="Imagen de perfil" name="avatar">
+        <br/>
         <input type="submit" class="btn btn-primary">
     </form>
+    <br/>
     <span clasS="flex-row">
         <p>¿Ya posee una cuenta? </p><a href="/login">Ingrese aquí</a>
     </span>

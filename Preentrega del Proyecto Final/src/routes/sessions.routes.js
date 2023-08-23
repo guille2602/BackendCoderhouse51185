@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import sessionController from "../controllers/users.controller.js";
+import { profileUploader } from "../middlewares/filesUpload.js";
 
 const sessionRouter = Router();
 
@@ -26,6 +27,7 @@ sessionRouter.post(
 sessionRouter.get("/failregister", sessionController.failedRegister);
 
 sessionRouter.post( "/register",
+    profileUploader.single("avatar"),
     passport.authenticate("register", { failureRedirect: "/api/sessions/failregister" }),
     sessionController.sucessRegister
 );

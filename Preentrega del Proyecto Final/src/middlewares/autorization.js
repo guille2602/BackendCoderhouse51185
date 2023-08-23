@@ -27,3 +27,14 @@ export const checkRole = ( roles ) => {
         next();
     }
 }
+
+export const checkAuth = ( req, res, next) => {
+    if (req.user){
+        next();
+    } else {
+        return res.status(401).json({
+            status: "error",
+            message: "Not autenticated"
+        })
+    }
+}
