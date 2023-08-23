@@ -44,7 +44,7 @@ export const checkAuth = ( req, res, next) => {
 export const checkStatus = async (req, res, next) => {
     const user = await userModel.findOne({_id:req.params.uid});
     req.email = user.email;
-    if (user.status === "completo") next();
+    if (user.status === "completo" || user.role === "premium") next();
     else return res.status(400).json({
         status: "failed",
         message: "El usuario debe adjuntar toda la documentación para aumentar su rango a premium"

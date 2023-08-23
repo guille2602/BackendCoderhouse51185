@@ -45,7 +45,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\":\"Producto Prueba Julio\",\r\n    \"description\": \"Descripción de producto Julio\",\r\n    \"code\": \"JUL0001\",\r\n    \"price\": \"95\",\r\n    \"stock\": \"8\",\r\n    \"category\": \"Julio\",\r\n    \"thumbnail\": \"\"\r\n}",
+					"raw": "{\r\n    \"title\":\"Productoooo\",\r\n    \"description\": \"Random description\",\r\n    \"code\": \"JUL0001\",\r\n    \"price\": \"95\",\r\n    \"stock\": \"8\",\r\n    \"category\": \"Julio\",\r\n    \"thumbnail\": \"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -75,7 +75,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\":\"Producto 2\",\r\n    \"description\":\"Descripción modificada 2\",\r\n    \"code\":\"ILU0001\",\r\n    \"price\": \"100\",\r\n    \"status\": true,\r\n    \"stock\": 30,\r\n    \"category\":\"Home\",\r\n    \"thumbnail\":\"[]\"\r\n}",
+					"raw": "{\r\n    \"title\":\"Producto 3 (31/07)\",\r\n    \"description\":\"Descripción modificada 2\",\r\n    \"code\":\"ILU0001\",\r\n    \"price\": \"100\",\r\n    \"status\": true,\r\n    \"stock\": 30,\r\n    \"category\":\"Home\",\r\n    \"thumbnail\":\"[]\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -83,7 +83,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/products/645c0107cacd6d9e85abd32f",
+					"raw": "http://localhost:8080/api/products/64583f030ff1c8a93caed839",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -92,7 +92,7 @@
 					"path": [
 						"api",
 						"products",
-						"645c0107cacd6d9e85abd32f"
+						"64583f030ff1c8a93caed839"
 					]
 				}
 			},
@@ -113,7 +113,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/products/645bda4e18579662c5695a6",
+					"raw": "http://localhost:8080/api/products/64c8291e4fcb17fd824d5288",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -122,7 +122,7 @@
 					"path": [
 						"api",
 						"products",
-						"645bda4e18579662c5695a6"
+						"64c8291e4fcb17fd824d5288"
 					]
 				}
 			},
