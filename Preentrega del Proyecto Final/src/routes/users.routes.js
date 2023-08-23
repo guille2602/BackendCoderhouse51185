@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { checkRole, checkAuth } from "../middlewares/autorization.js";
+import { checkRole, checkAuth, checkStatus } from "../middlewares/autorization.js";
 import userController from "../controllers/users.controller.js";
 import { documentsUploader } from "../middlewares/filesUpload.js";
 
@@ -8,6 +8,7 @@ const userRouter = Router();
 userRouter.get(
     "/premium/:uid",
     checkRole(["admin"]),
+    checkStatus,
     userController.changeRole
 );
 userRouter.put(

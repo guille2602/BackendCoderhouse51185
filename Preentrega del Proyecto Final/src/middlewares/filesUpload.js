@@ -1,6 +1,7 @@
 import multer from 'multer'
 import __dirname from '../utils.js';
 import path from 'path'
+import userModel from '../dao/models/user.model.js';
 
 
 export const validateFields = (body) => {
@@ -17,10 +18,9 @@ const multerFilterProfile = (req, file, cb) => {
     isValid ? cb(null, true) : cb(null, false);
 };
 
-
 const profileStorage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb (null, path.join(__dirname,"/multer/users/images"))
+        cb (null, path.join(__dirname,"/multer/users/profiles"))
     },
     filename: function (req, file, cb) {
         cb(null, `${req.body.email}-profile-${file.originalname}`)
@@ -34,11 +34,19 @@ const documentStorage = multer.diskStorage({
         cb (null, path.join(__dirname,"/multer/users/documents"))
     },
     filename: function (req, file, cb) {
-        cb(null, `${req.body.email}-document-${file.originalname}`)
+        cb(null, `${req.email}-document-${file.originalname}`)
     }
 })
 
-export const documentsUploader = multer({storage: documentStorage})
+const multerFilterDocuments = async (req, file, cb) => {
+    const userEmail = await userModel.findOne({_id:req.params.uid});
+    req.email = userEmail.email;
+    if (!req.email) {
+        return cb(new Error('email not found'), false);
+    } else return cb(null, true);
+}
+
+export const documentsUploader = multer({storage: documentStorage, fileFilter: multerFilterDocuments})
 
 const productStorage = multer.diskStorage({
     destination: function (req, file, cb) {
