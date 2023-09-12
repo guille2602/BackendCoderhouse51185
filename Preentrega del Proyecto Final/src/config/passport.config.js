@@ -68,7 +68,7 @@ const initializePassport = () => {
                         age,
                         password: createHash( password ),
                         role,
-                        avatar: req.file.path || ""
+                        avatar: req.file ? req.file.path : ""
                     };
                     const emptyCart = { 
                         products: [] 

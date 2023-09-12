@@ -27,7 +27,7 @@ const profileStorage = multer.diskStorage({
     }
 })
 
-export const profileUploader = multer({storage: profileStorage, fileFilter: multerFilterProfile})
+export const profileUploader = multer({storage: profileStorage})
 
 const documentStorage = multer.diskStorage({
     destination: function (req, file, cb) {

@@ -22,6 +22,24 @@ export class SessionsRepository{
         }
     }
 
+    async deleteUserById(id){
+        try {
+            const deletedUser = this.dao.deleteOne({_id: id})
+            return deletedUser;
+        } catch (error) {
+            console.log("Error al eliminar el usuario: " + error)
+        }
+    }
+
+    async getAllUsers() {
+        try {
+            const usersList = this.dao.find();
+            return usersList;
+        } catch (error){
+            console.log("Error al leer la base de datos de MongoDB")
+        }
+    }
+
     async updateUser(user){
         try {
             result = await this.dao.updateOne({_id: user._id}, user)
