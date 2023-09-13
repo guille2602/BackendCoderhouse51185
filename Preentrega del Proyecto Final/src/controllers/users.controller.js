@@ -48,7 +48,7 @@ class SessionController {
     async login(req, res) {
         if (!req.user) {
             res.status(400).send({
-                status: "Sucess",
+                status: "success",
                 message: "Credenciales inválidas",
             });
             return;
@@ -70,7 +70,7 @@ class SessionController {
         await userModel.updateOne({ email: req.user.email }, user);
 
         res.status(200).send({
-            status: "Sucess",
+            status: "success",
             message: "Logueado correctamente",
             payload: req.res.user,
         });
@@ -85,7 +85,7 @@ class SessionController {
 
     sucessRegister(req, res) {
         res.send({
-            status: "sucess",
+            status: "success",
             message: "Usuario creado existosamente",
         });
     }
@@ -116,7 +116,7 @@ class SessionController {
             }
             if (user) {
                 res.status(200).send({
-                    status: "Sucess",
+                    status: "success",
                     payload: user,
                 });
             } else {
@@ -140,15 +140,19 @@ class SessionController {
                 user.role = "premium";
             } else if (user.role === "premium") {
                 user.role = "user";
-            } else {
+            } else if (user.role === "admin")
+                { return res.json({
+                    status: "Failed",
+                    message: "Admin can't change role"
+                })
+                } else 
                 return res.json({
                     status: "error",
                     message: "User role not changed",
                 });
-            }
             await userService.updateUser(user);
             return res.json({
-                status: "sucess",
+                status: "success",
                 message: "Role has been changed",
             });
         } catch (error) {
@@ -292,5 +296,25 @@ class SessionController {
             next(error);
         }
     }
+
+    async deleteUser ( req, res, next ) {
+        const uid = req.params.uid;
+        try {
+            const result = await userService.deleteUserById(uid);
+            if (result.deletedCount == 1) {
+            return res.status(200).send({
+                status: 'success',
+                payload: result,
+            })
+            } else {
+                return res.status(200).send({
+                    status: 'failed',
+                })
+            }
+        } catch (error) {
+            next(error)
+        }
+    }
+
 }
 export default new SessionController();

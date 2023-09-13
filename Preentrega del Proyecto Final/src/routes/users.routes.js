@@ -17,9 +17,15 @@ userRouter.get(
 
 userRouter.delete(
     "/",
+    checkRole(["admin"]),
     userController.deleteInactiveUsers
 );
 
+userRouter.delete(
+    "/:uid",
+    checkRole(["admin"]),
+    userController.deleteUser
+);
 
 userRouter.get(
     "/premium/:uid",

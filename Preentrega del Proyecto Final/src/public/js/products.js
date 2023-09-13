@@ -7,7 +7,7 @@ function getCurrentCartId() {
 function handleAddToCart(event, product) {
   getCurrentCartId()
   .then(cartId => {
-    fetch(`/api/carts/${cartId}/product/${product}`, {
+    fetch(`/api/carts/${cartId}/products/${product}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -15,8 +15,8 @@ function handleAddToCart(event, product) {
       })
         .then(response => response.json())
         .then(data => {
-          data.status == "Sucess" && alert("Producto agregado al carrito");
-          data.status == "Failed" && alert("No autorizado");
+          data.status == "success" && alert("Producto agregado al carrito");
+          data.status == "failed" && alert("No autorizado");
         })
         .catch(error => {
           console.error('Error:', error);
@@ -42,7 +42,7 @@ async function handlePurchase(event){
     data.rejected.length > 0 && data.rejected.forEach(element => {
       text = text.concat( `\n ${element.product.title} (Cant: ${element.quantity})`);
     })
-    if ( data.status === "Sucess"){
+    if ( data.status === "success"){
       alert(`
       Compra finalizada con éxito! \n
       Fecha y hora: ${data.ticket.purchase_datetime} \n 
@@ -51,7 +51,7 @@ async function handlePurchase(event){
       ${data.rejected.length > 0 ? text : ""}
       `)
     }
-    if ( data.status === "Failed" ){
+    if ( data.status === "failed" ){
       alert('Se ha producido un error en la compra');
       console.log(data);
     }
@@ -70,11 +70,11 @@ async function handleEmptyCart(event){
   })
   .then(response => response.json())
   .then(data =>{
-    if ( data.status === "Sucess"){
+    if ( data.status === "success"){
       alert(`Carrito vaciado con éxito`)
       location.reload();
     }
-    if ( data.status === "Failed" ){
+    if ( data.status === "failed" ){
       alert('Ha ocurrido un error al vaciar el carrito');
     }
   })
@@ -103,11 +103,11 @@ function handleDeleteProduct(event, pid ){
   })
   .then(response => response.json())
   .then(data =>{
-    if ( data.status === "Sucess"){
+    if ( data.status === "success"){
       alert(`Producto eliminado correctamente`)
       location.reload();
     }
-    if ( data.status === "Failed" ){
+    if ( data.status === "failed" ){
       alert('Ha ocurrido un error al eliminar el producto');
     }
   })

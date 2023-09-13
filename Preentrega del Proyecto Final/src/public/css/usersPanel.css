@@ -1,0 +1,15 @@
+.custom-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.bottom-btns{
+    margin-top: 1em;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+}

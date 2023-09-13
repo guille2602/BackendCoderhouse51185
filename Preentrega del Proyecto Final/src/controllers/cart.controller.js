@@ -109,10 +109,10 @@ class CartController {
 
             //Validate own products
             const {product} = await productService.readProduct(req.params.pid);
-            const productOwner = product.owner._id;
+            const productOwnerId = product.owner._id;
             const user = await userService.getUser({email:req.user.email});
             const userId = user._id;
-            if (productOwner.toString() == userId.toString() ){
+            if (productOwnerId.toString() == userId.toString()){
                 return res.status(400).send({
                     status: "failed",
                     description: "El usuario no puede agregar sus productos al carrito",
@@ -280,7 +280,7 @@ class CartController {
                 purchaser,
             };
             
-            const sucess = await productService.updateStock(acceptedProds);
+            const success = await productService.updateStock(acceptedProds);
 
             if (acceptedProds.length === 0){
                 return res.status(400).send({
@@ -292,7 +292,7 @@ class CartController {
             
             const { statusCode, status, message, payload } = await ticketService.createTicket(ticket);
 
-            if (sucess) {
+            if (success) {
                 await cartsService.emptyCart(req.params.cid)
                 cartsService.insertManyInCart(req.params.cid, rejectedProds);
             }

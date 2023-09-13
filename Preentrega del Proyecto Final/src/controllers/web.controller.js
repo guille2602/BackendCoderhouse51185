@@ -1,5 +1,5 @@
 import { cartsService } from "../repositories/index.js";
-import { productService } from "../repositories/index.js";
+import { productService, userService } from "../repositories/index.js";
 import { generateProduct } from "../utils.js";
 
 class WebViews {
@@ -49,11 +49,10 @@ class WebViews {
             prevLink,
             nextLink,
         } = await productService.paginateContent(limit, sort, page, query);
-
         res.render("products", {
             user: req.session.user,
             admin: req.session.admin,
-            css: "../css/products.css",
+            css: "../css/productsList.css",
             code,
             status,
             payload,
@@ -113,6 +112,16 @@ class WebViews {
             css: "../css/products.css"
         });
     }
+
+    async renderUsersPanel ( req, res ){
+        const users = await userService.getAllUsers();
+        const filteredUsers = users.filter(user => user.role !== "admin")
+        res.render("usersPanel", {
+            css: "../css/usersPanel.css",
+            users: filteredUsers,
+        });
+    }
+
 }
 
 export default new WebViews();

@@ -10,7 +10,7 @@ registerForm.addEventListener('submit', (event) => {
     })
     .then (result => result.json())
     .then (result => {
-        if (result.status === "sucess") {
+        if (result.status === "success") {
             registerForm.reset();
             window.location.replace("/login");
         } else {

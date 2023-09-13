@@ -30,7 +30,7 @@ export default class MongoProductManager {
                 product = await productsModel.findOne({ _id: id });
                 if (product) {
                     status = 200;
-                    description = "Sucess";
+                    description = "success";
                 } else {
                     console.log("Error: El id de producto ingresado no existe");
                     description =
@@ -87,7 +87,7 @@ export default class MongoProductManager {
         try {
             payload = await productsModel.create(product);
             resStatus = 200;
-            resDescription = "Sucess";
+            resDescription = "success";
         } catch (error) {
             console.log("Error al leer la base de datos de MongoDB" + error);
             resStatus = 500;
@@ -122,7 +122,7 @@ export default class MongoProductManager {
             payload = await productsModel.updateOne({ _id: id }, prodToUpdate );
             if (payload?.modifiedCount >= 1) {
                 resStatus = 200;
-                resDescription = "Sucess";
+                resDescription = "success";
             } else {
                 if (payload?.matchedCount >= 1) {
                     resStatus = 200;
@@ -160,7 +160,7 @@ export default class MongoProductManager {
                 payload = await productsModel.deleteOne({ _id: id });
                 if (payload?.deletedCount >= 1) {
                     resStatus = 200;
-                    resDescription = "Sucess";
+                    resDescription = "success";
                 } else {
                     resStatus = 400;
                     resDescription =
@@ -218,6 +218,7 @@ export default class MongoProductManager {
                 status: item.status,
                 stock: item.stock,
                 category: item.category,
+                thumbnail: item.thumbnail
             }));
             const prevLink = `?page=${hasPrevPage ? prevPage : null}&limit=${
                 limit ? limit : null
@@ -227,7 +228,7 @@ export default class MongoProductManager {
             }&${query ? query : null}&sort=${sort}`;
             return {
                 code: 200,
-                status: "sucess",
+                status: "success",
                 payload: parsedProdsList,
                 totalPages,
                 prevPage,
@@ -272,7 +273,7 @@ export default class MongoProductManager {
             const payload = await productsModel.bulkWrite(updates);
             // console.log(payload)
             return{
-                status: "Sucess",
+                status: "success",
                 description: "Productos actualizados exitosamente",
                 statusCode: 200,
                 payload
@@ -280,7 +281,7 @@ export default class MongoProductManager {
         } catch (error) {
             console.log("Error al actualizar lote de productos:", error)
             return{
-                status:"Failed",
+                status:"failed",
                 description: "Falló al actualizar el lote de productos",
                 statusCode: 500,
                 payload: null,

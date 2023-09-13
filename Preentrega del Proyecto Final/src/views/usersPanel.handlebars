@@ -1,0 +1,44 @@
+<div class="container-md custom-container">
+    <h1 class="mb-5">Panel de usuarios</h1>
+    <table class="table" >
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">User</th>
+                <th scope="col">Rol</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+         <tbody>
+            {{#each users}}
+            <tr>
+                <th scope="row">{{this._id}}</th>
+                <td>{{this.email}}</td>
+                <td>{{this.role}}</td>
+                <td>
+                    <button 
+                        type="button" 
+                        id="change-rol-btn" 
+                        class="btn btn-primary btn-sm" 
+                        onclick="onRoleUpdate(event, '{{this._id}}')"
+                    >
+                        Modificar Rol
+                    </button>
+                    <button 
+                        type="button" 
+                        class="btn btn-danger btn-sm" 
+                        onclick="onDelete(event, '{{this._id}}')"
+                    >
+                        Eliminar
+                    </button>
+                </td>
+            </tr>
+            {{/each}}
+         </tbody>
+    </table>
+    <div class="bottom-btns">
+        <a href="/profile" class="btn btn-secondary btn-sm">Ir al perfil</a>
+        <a href="/products" class="btn btn-secondary btn-sm">Volver a productos</a>
+    </div>
+</div>
+<script src="js/usersPanel.js"></script>

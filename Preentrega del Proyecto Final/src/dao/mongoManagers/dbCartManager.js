@@ -15,7 +15,7 @@ export default class MongoCartManager {
             cart = await cartsModel.create(newCart);
             if (cart) {
                 code = 200;
-                status = "sucess";
+                status = "success";
             }
         } catch (error) {
             console.log("Error al crear carrito en MongoDB" + error);
@@ -46,7 +46,7 @@ export default class MongoCartManager {
                 cart = await cartsModel.findOne({ _id: id }).lean();
                 if (cart) {
                     code = 200;
-                    status = "sucess";
+                    status = "success";
                 } else {
                     code = 400;
                     status = "error: El id ingresado no existe";
@@ -128,7 +128,7 @@ export default class MongoCartManager {
 
                 return {
                     code: 200,
-                    status: "sucess",
+                    status: "success",
                     payload,
                 };
             } catch (error) {
@@ -208,13 +208,13 @@ export default class MongoCartManager {
             ) {
                 return {
                     code: 200,
-                    status: "Sucess",
+                    status: "success",
                     payload: result,
                 };
             } else {
                 return {
                     code: 200,
-                    status: `Sucess with errors: No se pudo actualizar ${invalidProds.length} elementos`,
+                    status: `success with errors: No se pudo actualizar ${invalidProds.length} elementos`,
                     payload: invalidProds,
                 };
             }
@@ -240,7 +240,7 @@ export default class MongoCartManager {
                 if (result.modifiedCount == 1) {
                     return {
                         code: 200,
-                        status: "Sucess",
+                        status: "success",
                         payload: result,
                     };
                 } else {
@@ -287,7 +287,7 @@ export default class MongoCartManager {
                 const result = await cartsModel.updateOne({ _id: cid }, cart);
                 return {
                     code: 200,
-                    status: "Sucess",
+                    status: "success",
                     payload: result,
                 };
             } catch (error) {
@@ -330,7 +330,7 @@ export default class MongoCartManager {
             const result = await cartsModel.updateOne({ _id: cid }, cart);
             return {
                 code: 200,
-                status: "Sucess",
+                status: "success",
                 payload: result,
             };
         } catch (error) {

@@ -33,7 +33,7 @@ export class SessionsRepository{
 
     async getAllUsers() {
         try {
-            const usersList = this.dao.find();
+            const usersList = this.dao.find().lean();
             return usersList;
         } catch (error){
             console.log("Error al leer la base de datos de MongoDB")
