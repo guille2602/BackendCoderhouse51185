@@ -197,7 +197,7 @@ export default class MongoCartManager {
             if (invalidProds.length == newProducts.length) {
                 return {
                     code: 400,
-                    status: "Failed: No se han superado las validaciones",
+                    status: "failed: No se han superado las validaciones",
                     payload: newProducts,
                 };
             }
@@ -322,7 +322,7 @@ export default class MongoCartManager {
             if (!cart) {
                 return {
                     code: 400,
-                    status: "Failed: No se encuentra el id de carrito",
+                    status: "failed: No se encuentra el id de carrito",
                     payload: null,
                 };
             }

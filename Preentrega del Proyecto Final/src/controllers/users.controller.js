@@ -40,7 +40,7 @@ class SessionController {
 
     failedLogin(req, res) {
         res.status(400).send({
-            status: "Failed",
+            status: "failed",
             message: "Falló el logueo de usuario",
         });
     }
@@ -78,7 +78,7 @@ class SessionController {
 
     failedRegister(req, res) {
         res.status(400).send({
-            status: "Failed",
+            status: "failed",
             message: "Fallo el registro de usuario",
         });
     }
@@ -95,7 +95,7 @@ class SessionController {
         req.session.destroy((e) => {
             if (e) {
                 res.status(500).send({
-                    status: "Failed",
+                    status: "failed",
                     message: "No se pudo cerrar la sesión",
                     payload: error,
                 });
@@ -121,13 +121,13 @@ class SessionController {
                 });
             } else {
                 res.status(400).send({
-                    status: "Failed",
+                    status: "failed",
                     message: "No se encontró sesión de usuario iniciada",
                 });
             }
         } catch (error) {
             res.status(500).send({
-                status: "Failed",
+                status: "failed",
                 message: `Error al leer: ${error}`,
             });
         }
@@ -142,7 +142,7 @@ class SessionController {
                 user.role = "user";
             } else if (user.role === "admin")
                 { return res.json({
-                    status: "Failed",
+                    status: "failed",
                     message: "Admin can't change role"
                 })
                 } else 

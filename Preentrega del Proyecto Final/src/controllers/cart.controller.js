@@ -284,7 +284,7 @@ class CartController {
 
             if (acceptedProds.length === 0){
                 return res.status(400).send({
-                    status:"Failed",
+                    status:"failed",
                     message:"No hay stock suficiente para procesar el pedido",
                     payload: null,
                 })

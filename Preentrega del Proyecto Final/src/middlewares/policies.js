@@ -2,7 +2,7 @@ import { userService } from "../repositories/index.js"
 
 export const onlyAdminAuth = ( req , res , next ) => {
     if(!req.session.admin) return res.status(403).send({
-        status: "Failed",
+        status: "failed",
         message:"Se requieren permisos de administrador"
     })
     next();
@@ -10,7 +10,7 @@ export const onlyAdminAuth = ( req , res , next ) => {
 
 export const onlyuserAuth = ( req , res , next ) => {
     if(req.session.admin) return res.status(403).send({
-        status: "Failed",
+        status: "failed",
         message:"Acceso autorizado solo a usuarios"
     })
     next();

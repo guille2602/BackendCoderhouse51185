@@ -6,9 +6,17 @@ class WebViews {
 
     async renderCart(req, res) {
         const { payload } = await cartsService.readCart(req.params.cid);
+        let total = 0;
+        payload.products.map(item => {
+            item.subtotal = parseInt(item.product.price) * parseInt(item.quantity);
+            total += item.subtotal;
+        })
+
         res.render("cart", {
-            css: "../../css/home.css",
+            user: req.session.user,
+            css: "../../css/cart.css",
             payload: payload.products,
+            total: total,
         });
     }
 
