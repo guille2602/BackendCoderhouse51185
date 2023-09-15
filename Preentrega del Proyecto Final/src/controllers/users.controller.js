@@ -249,7 +249,6 @@ class SessionController {
             const userData = {...user};
             userData.password = createHash(newPassword);
             const result = await userService.updateUser(userData);
-            console.log(userData)
             res.redirect("/login?message=PasswordSuccessfullyUpdated");
         } catch (error) {
             next(error);

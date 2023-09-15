@@ -12,7 +12,7 @@ class MongoTicketManager {
             // if (!code || !purchase_datetime || !amount || !purchaser) //Se sacó la validación de purchaser porque en github autentication no trae el mail.
             if (!code || !purchase_datetime || !amount ) {
                 return {
-                    status: "Failed",
+                    status: "failed",
                     statusCode: 400,
                     message: "Datos incompletos al crear ticket",
                     payload: null,
@@ -20,14 +20,14 @@ class MongoTicketManager {
             }
             const payload = await ticketModel.create(ticket);
             return {
-                status: "Sucess",
+                status: "success",
                 message: "Ticket creado correctamente",
                 statusCode: 200,
                 payload,
             };
         } catch (error) {
             return {
-                status: "Failed",
+                status: "failed",
                 statusCode: 500,
                 message: `Ocurrió un error al conectar con la base de datos: ${error}`,
                 payload: null,

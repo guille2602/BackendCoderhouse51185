@@ -15,11 +15,16 @@ loginForm.addEventListener('submit', ( event ) => {
         }
     }). then(( result ) => {
         if (result.status == 200){
-            //Si es correcto, redirigir a lista de productos con bienvenida
             window.location.replace('/products')
         } else {
-            //Enviar un sweet alert
-            console.log('Alguno de los datos es incorrecto')
+            Swal.fire({
+                icon: "error",
+                title: "Datos incorrectos",
+                text: "Revise la información suministrada",
+                // willClose: () => {
+                //     location.reload();
+                // }
+            })
         }
     } )
 })

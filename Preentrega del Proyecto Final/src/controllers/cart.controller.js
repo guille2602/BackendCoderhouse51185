@@ -10,6 +10,7 @@ import {
     generateCartNotFoundError 
 } from "../services/errors/cartErrorsInfo.js";
 import { EErrors } from "../services/errors/enums.js"
+import { devLogger } from "../utils.js"; // Esto hay que sacarlo
 
 class CartController {
     async createCart(req, res) {
@@ -247,6 +248,10 @@ class CartController {
                 });
                 req.logger.error(`error: ${error.cause}`)
             }
+            if (cart.payload?.products?.length == 0) return res.status(400).send({
+                status: "failed",
+                message: "empty cart"
+            })
             const prodsList = cart.payload.products;
             //chequeo de stock
             let acceptedProds = [];
@@ -290,7 +295,8 @@ class CartController {
                 })
             }
             
-            const { statusCode, status, message, payload } = await ticketService.createTicket(ticket);
+            const ticketResponse = await ticketService.createTicket(ticket);
+            const { statusCode, status, message, payload }  = ticketResponse;
 
             if (success) {
                 await cartsService.emptyCart(req.params.cid)
@@ -298,7 +304,7 @@ class CartController {
             }
 
             let rejectedProdsText = "<h3>Productos rechazados por falta de stock:</h3><br>";
-            if (rejectedProds.length>0){
+            if (rejectedProds?.length>0){
                 rejectedProds.forEach(prod=>{
                     rejectedProdsText = rejectedProdsText + `<b>Producto:</b> ${prod.product.title} - <b>Cantidad:</b> ${prod.quantity}<br>`
                 })

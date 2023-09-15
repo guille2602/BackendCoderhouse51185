@@ -3,10 +3,18 @@ const onRoleUpdate = async (event, uid) => {
     await fetch (`/api/users/premium/${uid}`)
     .then(response => response.json())
     .then( (data) => {
-        data.status === "success" && alert('Rol cambiado correctamente');
-        data.status === "failed" && alert('No se puede cambiar el rol, se debe completar documentación')
-        console.log(data)
-        location.reload();
+        data.status === "success" && Swal.fire({
+            icon: "success",
+            title: "Rol modificado correctamente.",
+            willClose: () => {
+                location.reload();
+            },
+        });
+        data.status === "failed" && Swal.fire({
+            icon: "error",
+            title: "Error al modificar el rol",
+            text: "Por favor revise la documentación a presentar"
+        });
     }
     )
 }
@@ -19,8 +27,13 @@ const onDelete = async (event, uid) => {
     .then(response => response.json())
     .then(data => {
         console.log(data)
-        data.status === "success" && alert('Usuario eliminado correctamente');
-        data.status === "failed" && alert('Ocurrió un error al eliminar');
-        location.reload();
+        data.status === "success" && Swal.fire({
+            icon: "success",
+            title: "Usuario eliminado correctamente",
+        });
+        data.status === "failed" && Swal.fire({
+            icon: "error",
+            title: "Ha ocurrido un error al eliminar el usuario",
+        });
     })
 }

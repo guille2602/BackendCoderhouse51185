@@ -22,12 +22,21 @@ function handleAddToCart(event, product) {
             .then((response) => response.json())
             .then((data) => {
                 data.status == "success" &&
-                    alert("Producto agregado al carrito");
+                    Swal.fire({
+                        icon: "success",
+                        title: "Producto agregado al carrito",
+                    })
                 if (data.status == "failed") {
                     data.description ===
                     "El usuario no puede agregar sus productos al carrito"
-                        ? alert("No puedes comprar tus propios productos")
-                        : alert("No autorizado");
+                        ? Swal.fire({
+                            icon: "warning",
+                            title: "No puedes comprar tus propios productos",
+                        })
+                        : Swal.fire({
+                            icon: "warning",
+                            title: "No estas autorizado a agregar productos al carrito",
+                        });
                 }
             })
             .catch((error) => {

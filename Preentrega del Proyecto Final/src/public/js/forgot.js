@@ -14,13 +14,18 @@ recoverPassForm.addEventListener('submit', ( event ) => {
         }
     }). then(( result ) => {
         if (result.status == 200){
-            //Si es correcto, redirigir a lista de productos con bienvenida
-            alert("Por favor revise su casilla de correo");
-            window.location.replace('/login')
+            Swal.fire({
+                icon: "info",
+                title: "Por favor revise su casilla de correo",
+                willClose: () => {
+                    location.replace('/login');
+                }
+            })
         } else {
-            //Enviar un sweet alert
-            console.log('Hubo un problema al cambiar la contraseña')
-            alert('Hubo un problema al cambiar la contraseña')
+            Swal.fire({
+                icon: "error",
+                title: "Hubo un problema al cambiar la contraseña",
+            })
         }
     } )
 
