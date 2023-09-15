@@ -307,6 +307,19 @@ export default class MongoCartManager {
         }
     }
 
+    async deleteOne(cid){
+        try {
+            const result = await cartsModel.deleteOne(cid);
+            if (result) return res.status(200).send({
+                status: 'success',
+            }) 
+        } catch (error) {
+            res.status(500).send({
+                result: 'failed'
+            })
+        }
+    }
+
     async emptyCart(cid) {
         const regEx = /^[0-9a-fA-F]{24}$/;
         const validIdFormat = regEx.test(cid);

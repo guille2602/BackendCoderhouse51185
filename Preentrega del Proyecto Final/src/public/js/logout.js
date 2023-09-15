@@ -10,3 +10,16 @@ logoutButton.addEventListener("click", ( event ) => {
         {console.log("Error al cerrar la sesión")}
     })
 })
+
+function getCurrentCartId() {
+    return fetch("/api/sessions/current")
+        .then((response) => response.json())
+        .then((data) => data?.payload?.cart?._id);
+}
+
+function handleGoToCart(event) {
+    event.preventDefault();
+    getCurrentCartId().then((cartId) => {
+        window.location.replace(`/carts/${cartId}`);
+    });
+}

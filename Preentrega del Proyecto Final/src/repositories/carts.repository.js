@@ -39,4 +39,9 @@ export class CartsRepository {
         return payload;
     }
 
+    async deleteCart(cartId){
+        const payload = await this.dao.deleteOne(cartId);
+        return payload;
+    }
+
 }

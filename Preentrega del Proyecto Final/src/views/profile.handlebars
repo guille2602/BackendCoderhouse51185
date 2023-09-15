@@ -19,12 +19,12 @@
 <div class="profile-container">
         <div class="avatar-container">
             <img 
-                src={{#if avatar}}
-                        "{{avatar}}" 
+                {{#if avatar}}
+                       src="{{avatar}}" 
                     {{else}}
-                        "https://towerstonecorp.com/wp-content/uploads/sites/8/2022/11/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg"
+                        src="https://towerstonecorp.com/wp-content/uploads/sites/8/2022/11/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg"
                     {{/if}}
-                alt="profile photo">
+                alt="Profile photo">
         </div>
         <div class="profile-info">
             <h4>Nombre:</h4>
@@ -37,7 +37,10 @@
         </div>
     <div class="row">
         <button class="btn btn-danger mb-2" id="logout-btn">Cerrar sesión</button>
-        <a href="/products" class="btn btn-primary mb-4">Volver a productos</a>
+        <a href="/products" class="btn btn-primary mb-2">Volver a productos</a>
+        {{#if admin}}
+            <a href="/users-panel" class="btn btn-warning mb-4">Gestionar usuarios</a>
+        {{/if}} 
     </div>
 </div>
 <script src="/js/logout.js"></script>

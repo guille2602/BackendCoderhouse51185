@@ -5,6 +5,7 @@ function getCurrentCartId() {
 }
 
 function handleAddToCart(event, product) {
+    event.stopPropagation();
     getCurrentCartId().then((cartId) => {
         fetch(`/api/carts/${cartId}/products/${product}`, {
             method: "POST",

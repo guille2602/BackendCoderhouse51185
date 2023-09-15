@@ -86,8 +86,10 @@ class WebViews {
     } 
 
     renderLogin(req, res) {
+        const message = req.query.message || null
         res.render("login", {
             css: "home.css",
+            message
         });
     }
 
@@ -98,13 +100,12 @@ class WebViews {
     }
 
     async renderProfile(req, res) {
-
-        const { avatar } =  await userService.getUser(req.session.email)
-        console.log(avatar);
+        const { avatar } =  await userService.getUser({email: req.session.user.email})
         res.render("profile", {
             css: "profile.css",
             user: req.session.user,
             admin: req.session.admin,
+            avatar,
         });
     }
 

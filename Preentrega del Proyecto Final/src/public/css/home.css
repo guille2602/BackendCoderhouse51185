@@ -82,7 +82,7 @@ body{
 
 }
 
-.flex-column form{
+.flex-column form, .content form{
     display: flex;
     flex-direction: column;
     gap: 0.5em;
@@ -92,6 +92,7 @@ body{
 .flex-row{
     display: flex;
     flex-direction: row;
+    justify-content: center;
     gap: 0.5em;
 }
 
@@ -104,4 +105,42 @@ body{
 
 .gh-button *{
     width: 100%;
+}
+
+.main-container{
+    width: 100vw;
+    height: 100vh;
+    margin:0;
+    padding: auto;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    background-color: #292c3e;
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    justify-content: center;
+    background-color: white;
+    padding: 3em;
+    border-radius: 2rem;
+}
+
+.forgot-pass-link{
+    text-align: center;
+}
+
+.brand-title{
+    text-decoration: none;
+    color: white;
+    font-size: 30pt;
+    font-weight: 500;
+    margin-bottom: 3rem;
+}
+
+.brand-title:hover{
+    text-shadow: 0 0 10px rgba(255,255,255,0.75);
 }

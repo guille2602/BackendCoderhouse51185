@@ -6,7 +6,7 @@ export class SessionsRepository{
 
     async getUser(email){
         try {
-            const user = this.dao.findOne(email);
+            const user = this.dao.findOne(email).lean();
             return user;
         } catch (error) {
             console.log("Error al leer el usuario: " + error)

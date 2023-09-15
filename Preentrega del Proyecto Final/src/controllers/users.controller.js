@@ -1,4 +1,4 @@
-import { userService } from "../repositories/index.js";
+import { userService, cartsService } from "../repositories/index.js";
 import transport from "../config/gmail.js";
 import {
     validatePassword,
@@ -246,14 +246,12 @@ class SessionController {
                     `<h2>La contraseña no puede ser identica a la anterior</h2>`
                 );
             }
-            const userData = {
-                ...user._doc,
-                password: createHash(newPassword),
-            };
+            const userData = {...user};
+            userData.password = createHash(newPassword);
             const result = await userService.updateUser(userData);
+            console.log(userData)
             res.redirect("/login?message=PasswordSuccessfullyUpdated");
         } catch (error) {
-            console.log(error);
             next(error);
         }
     }
@@ -300,8 +298,11 @@ class SessionController {
     async deleteUser ( req, res, next ) {
         const uid = req.params.uid;
         try {
+            const user = await userService.getUser({ _id:uid })
+            const cid = user._id;
             const result = await userService.deleteUserById(uid);
             if (result.deletedCount == 1) {
+            if (user) {cartsService.deleteCart({ _id: cid })}
             return res.status(200).send({
                 status: 'success',
                 payload: result,

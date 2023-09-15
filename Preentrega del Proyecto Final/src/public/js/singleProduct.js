@@ -4,6 +4,13 @@ function getCurrentCartId() {
         .then((data) => data?.payload?.cart?._id);
 }
 
+function handleGoToCart(event) {
+    event.preventDefault();
+    getCurrentCartId().then((cartId) => {
+        window.location.replace(`/carts/${cartId}`);
+    });
+}
+
 function handleAddToCart(event, product) {
     getCurrentCartId().then((cartId) => {
         fetch(`/api/carts/${cartId}/products/${product}`, {
@@ -26,12 +33,5 @@ function handleAddToCart(event, product) {
             .catch((error) => {
                 console.error("Error:", error);
             });
-    });
-}
-
-function handleGoToCart(event) {
-    event.preventDefault();
-    getCurrentCartId().then((cartId) => {
-        window.location.replace(`/carts/${cartId}`);
     });
 }
