@@ -1,0 +1,42 @@
+<div class="navbar-container">
+    <a class="nav-title" href="/products">e-commerce 51185<a/>
+     <div class="nav-btns-container">
+        {{#if user}} 
+        <button onClick="handleGoToCart(event)" class="navbar-link">
+            <i class="fa fa-shopping-cart" style="color: white"></i> Carrito
+        </button>
+        {{/if}}
+        <a style="padding: auto" href="/profile" class="navbar-link">
+            {{#if user}} 
+                Perfil
+            {{else}}
+                Ingresar
+            {{/if}}
+        </a>
+    </div>
+</div>
+
+<div class="product-container">
+        <div class="product-card">
+            <div class="card-image-container">
+                <img class="card-image" src="{{product.thumbnail.[0]}}"/>
+            </div>
+            <div class="info-area">
+                <div class="card-main-info-container">
+                    <h4 class="mb-1">{{product.title}}</h4>
+                    <p style="font-size: 10pt; font-weight: 400" class="card-footer mb-2">ID: {{product._id}} | SKU: {{product.code}} | Stock: {{product.stock}}</p>
+                    <h5>${{product.price}}</h5>
+                    <p style="font-size: 10pt; margin-bottom: 0.5em;">Categoría: {{product.category}}</p>
+                    <p class="card-product-description">{{product.description}}</p>
+                <button class="addToCart btn btn-primary" onclick="handleAddToCart(event,'{{product._id}}')">
+                    Agregar al carrito
+                </button>
+            </div>
+        </div>
+</div>
+<div class="back-btn-container">
+    <a class="btn btn-primary" href="/products">Volver</a>
+</div>
+
+<script src="../js/singleProduct.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">

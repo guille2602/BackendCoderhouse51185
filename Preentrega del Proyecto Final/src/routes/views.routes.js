@@ -6,8 +6,9 @@ const router = Router();
 
 router.get( "/carts/:cid", webViews.renderCart);
 router.get( "/realtimeproducts", webViews.renderRealTimeProducts );
-router.get( "/", webViews.renderHome );
+router.get( "/", webViews.renderProductsPage );
 router.get( "/products", webViews.renderProductsPage );
+router.get( "/products/:pid", webViews.renderProductPage );
 router.get( "/login", publicAccess, webViews.renderLogin )
 router.get( "/register", webViews.renderRegister )
 router.get( "/profile", privateAccess, webViews.renderProfile )

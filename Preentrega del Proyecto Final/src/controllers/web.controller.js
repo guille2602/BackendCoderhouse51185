@@ -75,6 +75,16 @@ class WebViews {
         });
     }
 
+    async renderProductPage (req, res) {
+        const pid = req.params.pid;
+        const { product } = await productService.readProduct(pid);
+        res.render("singleProduct", {
+            css: "../../css/singleProduct.css",
+            product: product,
+            user: req.session.user
+        })
+    } 
+
     renderLogin(req, res) {
         res.render("login", {
             css: "home.css",
@@ -87,9 +97,12 @@ class WebViews {
         });
     }
 
-    renderProfile(req, res) {
+    async renderProfile(req, res) {
+
+        const { avatar } =  await userService.getUser(req.session.email)
+        console.log(avatar);
         res.render("profile", {
-            css: "home.css",
+            css: "profile.css",
             user: req.session.user,
             admin: req.session.admin,
         });

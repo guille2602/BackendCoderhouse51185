@@ -17,24 +17,27 @@
 </div>
 
 <div class="products-list">
-    {{#each payload}}
-        <div class="product-card">
-            <div class="card-image-container">
-                <img class="card-image" src="{{this.thumbnail.[0]}}"/>
-            </div>
-            <div class="card-main-info-container">
-                <h5>{{this.title}}</h5>
-                <h6>${{this.price}}</h6>
 
-            </div>
-            <div class="card-details-container">
-                <p>Category: {{this.category}}</p>
-                <p class="card-product-description">{{this.description}}</p>
-            </div>
-            <p class="card-footer">Id: {{this.id}} | SKU: {{this.code}} | Stock: {{this.stock}}</p>
-            <button class="addToCart btn btn-primary" onclick="handleAddToCart(event,'{{this.id}}')">
-                Agregar al carrito
-            </button>
+    {{#each payload}}
+        <div class="product-card" onclick="goToProduct(event,'{{this.id}}')">
+            {{!-- <a href="/products/{{this.id}}"> --}}
+                <div class="card-image-container">
+                    <img class="card-image" src="{{this.thumbnail.[0]}}"/>
+                </div>
+                <div class="card-main-info-container">
+                    <h5>{{this.title}}</h5>
+                    <h6>${{this.price}}</h6>
+
+                </div>
+                <div class="card-details-container">
+                    <p>Category: {{this.category}}</p>
+                    <p class="card-product-description">{{this.description}}</p>
+                </div>
+                <p class="card-footer">Id: {{this.id}} | SKU: {{this.code}} | Stock: {{this.stock}}</p>
+                <button class="addToCart btn btn-primary" onclick="handleAddToCart(event,'{{this.id}}')">
+                    Agregar al carrito
+                </button>
+        {{!-- </a> --}}
         </div>
     {{/each}}
 </div>

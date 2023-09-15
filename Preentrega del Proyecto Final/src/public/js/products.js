@@ -95,6 +95,7 @@ async function handleEmptyCart(event) {
 
 function handleGoToCart(event) {
     event.preventDefault();
+    event.stopPropagation();
 
     getCurrentCartId().then((cartId) => {
         window.location.replace(`/carts/${cartId}`);
@@ -122,4 +123,9 @@ function handleDeleteProduct(event, pid) {
                 }
             });
     });
+}
+
+function goToProduct(event, id){
+    event.preventDefault();
+    location.replace(`/products/${id}`)
 }

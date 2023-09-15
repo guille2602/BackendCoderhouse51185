@@ -27,7 +27,7 @@ export default class MongoProductManager {
 
         if (validIdFormat) {
             try {
-                product = await productsModel.findOne({ _id: id });
+                product = await productsModel.findOne({ _id: id }).lean();
                 if (product) {
                     status = 200;
                     description = "success";

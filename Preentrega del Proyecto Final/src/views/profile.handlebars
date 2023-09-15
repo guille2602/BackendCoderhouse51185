@@ -1,14 +1,44 @@
-<div class="flex-column">
-    <h2>Nombre:</h2>
-    <p>{{user.name}}</p>
-    <h2>Correo</h2>
-    <p>{{user.email}}</p>
-    {{#if admin}}
-    <p><b>Se ha conectado como administrador</b></p>
-    {{/if}}
+<div class="navbar-container">
+    <a class="nav-title" href="/products">e-commerce 51185<a/>
+     <div class="nav-btns-container">
+        {{#if user}} 
+        <button onClick="handleGoToCart(event)" class="navbar-link">
+            <i class="fa fa-shopping-cart" style="color: white"></i> Carrito
+        </button>
+        {{/if}}
+        <a style="padding: auto" href="/profile" class="navbar-link">
+            {{#if user}} 
+                Perfil
+            {{else}}
+                Ingresar
+            {{/if}}
+        </a>
+    </div>
+</div>
+
+<div class="profile-container">
+        <div class="avatar-container">
+            <img 
+                src={{#if avatar}}
+                        "{{avatar}}" 
+                    {{else}}
+                        "https://towerstonecorp.com/wp-content/uploads/sites/8/2022/11/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg"
+                    {{/if}}
+                alt="profile photo">
+        </div>
+        <div class="profile-info">
+            <h4>Nombre:</h4>
+            <p>{{user.name}}</p>
+            <h4>Correo</h4>
+            <p>{{user.email}}</p>
+            {{#if admin}}
+                <p><b>Se ha conectado como administrador</b></p>
+            {{/if}} 
+        </div>
     <div class="row">
         <button class="btn btn-danger mb-2" id="logout-btn">Cerrar sesión</button>
         <a href="/products" class="btn btn-primary mb-4">Volver a productos</a>
     </div>
 </div>
 <script src="/js/logout.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
