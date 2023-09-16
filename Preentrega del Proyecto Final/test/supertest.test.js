@@ -26,7 +26,7 @@ describe ('Test de ecommerce', () => {
             }
             const { statusCode, _body } = await requester.post('/api/sessions/register').send(userMock);
             expect(statusCode).to.be.equal(200);
-            expect(_body.status).to.be.equal("sucess");
+            expect(_body.status).to.be.equal("success");
         })
 
 
@@ -86,10 +86,10 @@ describe ('Test de ecommerce', () => {
                 thumbnail: []
             }
             const failResponse = await requester.post('/api/products').send(productMock).set("Cookie", cookie)
-            const sucessResponse = await requester.post('/api/products').send({...productMock, price: 99}).set("Cookie", cookie);
+            const successResponse = await requester.post('/api/products').send({...productMock, price: 99}).set("Cookie", cookie);
             expect(failResponse.statusCode).to.be.equal(400);
-            expect(sucessResponse._body.description).to.be.equal("Sucess");
-            testProductId = sucessResponse._body.payload._id
+            expect(successResponse._body.description).to.be.equal("success");
+            testProductId = successResponse._body.payload._id
             expect(testProductId).to.be.ok;
         })
 
@@ -125,12 +125,12 @@ describe ('Test de ecommerce', () => {
         
         let cookie;
         const cid = "6485fa85bbc9cfc8533679e4";
-        const pid = "64d985613a2a6a3f0b6956bf"
+        const pid = "650161003b025c2ad6bff2a1"
 
         before( async function () {
             const userMock = {
-                email:"guille@mail.com",
-                password:"123456"
+                email:"guille.2602@gmail.com",
+                password:"123456789"
             }
             const loginResponse = await requester.post('/api/sessions/login').send(userMock);
             cookie = loginResponse.headers['set-cookie']
@@ -142,13 +142,13 @@ describe ('Test de ecommerce', () => {
             const { _body } = await requester.post(`/api/carts/${cid}/products/${pid}`).set("Cookie", cookie);
             const failTest = await requester.post(`/api/carts/${cid}/products/64d985613a2a6a3f0b6956bc`).set("Cookie", cookie);
             expect(_body.payload.modifiedCount).to.be.equal(1);
-            expect(failTest._body.status).not.to.be.equal("sucess");
+            expect(failTest._body.status).not.to.be.equal("success");
         })
 
         it ('El endpoint PUT api/carts/:cid/products/:pid debe modificar la cantidad de un producto solo del dueño del carrito' , async () => {
 
             const { _body } = await requester.put(`/api/carts/${cid}/products/${pid}`).send({quantity:10}).set("Cookie", cookie);
-            expect(_body.status).to.be.equal("Sucess");
+            expect(_body.status).to.be.equal("success");
             const anotherCart = "6495b2bd4a4f2cbe817e8a4c"
             const cart = await cartsModel.findOne({_id:cid});
             expect(cart.products[0].quantity).to.be.equal(10);
