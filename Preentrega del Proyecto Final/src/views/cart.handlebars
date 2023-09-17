@@ -19,7 +19,7 @@
 <div class="cart-container">
     <h1 class="main-title">Productos de carrito</h1>
         {{#each payload}}
-            <a style="text-decoration: none; color: black" href="/products">
+            <a style="text-decoration: none; color: black" href="/products/{{this.product._id}}">
             <div class="cart-card">
                 <div class="img-container">
                     <img class="img" src="{{this.product.thumbnail.[0]}}">
