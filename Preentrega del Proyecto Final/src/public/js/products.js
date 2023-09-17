@@ -27,6 +27,11 @@ function handleAddToCart(event, product) {
                                 icon: "warning",
                                 title: "Debes iniciar sesión para agregar productos al carrito",
                         })
+                        data.message === "Acceso autorizado solo a usuarios" &&
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Los administradores no pueden comprar productos",
+                        })
                     } else {
                     data.description ===
                     "El usuario no puede agregar sus productos al carrito"
