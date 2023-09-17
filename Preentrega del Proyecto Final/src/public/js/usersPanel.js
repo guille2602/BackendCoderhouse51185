@@ -30,6 +30,9 @@ const onDelete = async (event, uid) => {
         data.status === "success" && Swal.fire({
             icon: "success",
             title: "Usuario eliminado correctamente",
+            willClose: () => {
+                location.reload();
+            },
         });
         data.status === "failed" && Swal.fire({
             icon: "error",

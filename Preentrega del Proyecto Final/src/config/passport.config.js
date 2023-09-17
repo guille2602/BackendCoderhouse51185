@@ -52,9 +52,12 @@ const initializePassport = () => {
             async (req, username, password, done) => {
                 const { first_name, last_name, email, age } = req.body;
                 try {
+                    if (!first_name || ! last_name || !email || !age ){
+                        return done(null, false);
+                    }
                     let user = await userModel.findOne({ email: username });
                     if (user) {
-                        console.log("El usuario ya existe");
+                        req.logger.info("El usuario ya existe")
                         return done(null, false);
                     }
                     let role;

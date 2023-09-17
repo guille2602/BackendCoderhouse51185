@@ -310,11 +310,11 @@ export default class MongoCartManager {
     async deleteOne(cid){
         try {
             const result = await cartsModel.deleteOne(cid);
-            if (result) return res.status(200).send({
+            if (result) return ({
                 status: 'success',
             }) 
         } catch (error) {
-            res.status(500).send({
+            return ({
                 result: 'failed'
             })
         }

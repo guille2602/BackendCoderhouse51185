@@ -12,6 +12,7 @@ function handleGoToCart(event) {
 }
 
 function handleAddToCart(event, product) {
+    event.stopPropagation();
     getCurrentCartId().then((cartId) => {
         fetch(`/api/carts/${cartId}/products/${product}`, {
             method: "POST",
@@ -22,11 +23,18 @@ function handleAddToCart(event, product) {
             .then((response) => response.json())
             .then((data) => {
                 data.status == "success" &&
-                    Swal.fire({
-                        icon: "success",
-                        title: "Producto agregado al carrito",
-                    })
+                Swal.fire({
+                    icon: "success",
+                    title: "Producto agregado al carrito",
+                })
                 if (data.status == "failed") {
+                    if (data.message){
+                        data.message === "No se encuentra logueado" &&
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Debes iniciar sesión para agregar productos al carrito",
+                        })
+                    } else {
                     data.description ===
                     "El usuario no puede agregar sus productos al carrito"
                         ? Swal.fire({
@@ -37,6 +45,7 @@ function handleAddToCart(event, product) {
                             icon: "warning",
                             title: "No estas autorizado a agregar productos al carrito",
                         });
+                    }
                 }
             })
             .catch((error) => {

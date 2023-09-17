@@ -21,6 +21,13 @@ function handleAddToCart(event, product) {
                     title: "Producto agregado al carrito",
                 })
                 if (data.status == "failed") {
+                    if (data.message){
+                        data.message === "No se encuentra logueado" &&
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Debes iniciar sesión para agregar productos al carrito",
+                        })
+                    } else {
                     data.description ===
                     "El usuario no puede agregar sus productos al carrito"
                         ? Swal.fire({
@@ -31,6 +38,7 @@ function handleAddToCart(event, product) {
                             icon: "warning",
                             title: "No estas autorizado a agregar productos al carrito",
                         });
+                    }
                 }
             })
             .catch((error) => {

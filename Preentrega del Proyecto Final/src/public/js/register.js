@@ -14,7 +14,10 @@ registerForm.addEventListener('submit', (event) => {
             registerForm.reset();
             window.location.replace("/login");
         } else {
-            console.log(result)
+            Swal.fire({
+                icon: "error",
+                title: "Verifique los datos ingresados",
+            })
         }
     })
 })

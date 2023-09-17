@@ -50,3 +50,23 @@ export const checkStatus = async (req, res, next) => {
         message: "El usuario debe adjuntar toda la documentación para aumentar su rango a premium"
     })
 }
+
+export const checkUserAuth = async ( req, res, next) => {
+    if (!req.user) return res.status(401).send({
+        status: "error",
+        message: "Not autenticated"
+    })
+    const loggedUser = await userModel.findOne({email: req.user.email})
+    if (!loggedUser) return res.status(400).json({
+        status: "failed",
+        message: "Bad request"
+    })
+    if (req.user.email === loggedUser.email){
+        next();
+    } else {
+        return res.status(403).json({
+            status: "error",
+            message: "Not autorized"
+        })
+    }
+}

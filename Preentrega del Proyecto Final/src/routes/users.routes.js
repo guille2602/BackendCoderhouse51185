@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
     checkRole,
-    checkAuth,
+    checkUserAuth,
     checkStatus,
 } from "../middlewares/autorization.js";
 import userController from "../controllers/users.controller.js";
@@ -9,7 +9,6 @@ import { documentsUploader } from "../middlewares/filesUpload.js";
 
 const userRouter = Router();
 
-// Hay que documentar este endpoint
 userRouter.get(
     "/",
     userController.getAllUsers
@@ -36,7 +35,7 @@ userRouter.get(
 
 userRouter.put(
     "/:uid/documents",
-    checkAuth,
+    checkUserAuth,
     documentsUploader.fields([
         { name: "identificacion", maxCount: 1 },
         { name: "domicilio", maxCount: 1 },
